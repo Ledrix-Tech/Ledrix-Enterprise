@@ -1,0 +1,158 @@
+<?php
+
+namespace App\Providers;
+
+use App\Services\PayPalGateway;
+use App\Services\PaymentGatewayFactory;
+use App\Services\StripeGateway;
+use App\View\Composers\MarketingTrialComposer;
+use Illuminate\Mail\MailManager;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Transport\Smtp\Stream\SocketStream;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        $this->app->singleton(
+            StripeGateway::class,
+            fn () => new StripeGateway(config('services.stripe.secret'))
+        );
+
+        $this->app->bind(PayPalGateway::class, function () {
+            return new PayPalGateway([
+                'client_id'   => config('services.paypal.client_id'),
+                'secret'      => config('services.paypal.secret'),
+                'base'        => config('services.paypal.base_url', 'https://api.paypal.com'),
+                'webhook_id'  => config('services.paypal.webhook_id'),
+            ]);
+        });
+
+        $this->app->singleton(PaymentGatewayFactory::class);
+
+        // Shared hosting often presents *.web-hosting.com TLS certs for mail.domain.com.
+        $this->app->extend('mail.manager', function (MailManager $manager, $app) {
+            return new class($app) extends MailManager
+            {
+                protected function configureSmtpTransport(EsmtpTransport $transport, array $config)
+                {
+                    $transport = parent::configureSmtpTransport($transport, $config);
+
+                    $verifyPeer = $config['verify_peer'] ?? true;
+                    if (filter_var($verifyPeer, FILTER_VALIDATE_BOOLEAN)) {
+                        return $transport;
+                    }
+
+                    $stream = $transport->getStream();
+                    if ($stream instanceof SocketStream) {
+                        $options = $stream->getStreamOptions();
+                        $options['ssl']['verify_peer'] = false;
+                        $options['ssl']['verify_peer_name'] = false;
+                        $options['ssl']['allow_self_signed'] = true;
+                        $stream->setStreamOptions($options);
+                    }
+
+                    return $transport;
+                }
+            };
+        });
+    }
+    // app/Providers/AuthServiceProvider.php
+    protected $policies = [
+        \App\Models\Lead::class => \App\Policies\LeadPolicy::class,
+    ];
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Paginator::useBootstrap();
+
+        \Illuminate\Support\Facades\Auth::provider('unscoped_eloquent', function ($app, array $config) {
+            return new \App\Auth\UnscopedEloquentUserProvider($app['hash'], $config['model']);
+        });
+
+        try {
+            app(\App\Services\Billing\PlatformBillingSettingsService::class)->applyToConfig();
+        } catch (\Throwable) {
+            // Central DB may be unavailable during early boot / migrate.
+        }
+
+        View::composer(['admin.*', 'sellers.*'], function ($view) {
+            $view->with('authAdmin', Auth::guard('admin')->user());
+        });
+
+        View::composer([
+            'front.pages.index',
+            'front.pages.contact',
+            'front.pages.pricing',
+            'front.pages.features',
+            'front.pages.about',
+            'front.pages.faq',
+        ], MarketingTrialComposer::class);
+
+        View::composer('sellers.*', function ($view) {
+            if (! function_exists('tenantFeatures')) {
+                return;
+            }
+
+            $features = tenantFeatures();
+            $view->with('tenantFeatures', $features);
+            $view->with('tenantHasPayments', tenantHasPayments());
+            $view->with('showLeadPrediction', tenantFeature('lead_prediction'));
+            $view->with('tenantHasClientPortal', tenantFeature('client_portal'));
+            $view->with('tenantHasSupportTickets', tenantFeature('support_tickets'));
+            $view->with('tenantHasMilestonePayments', tenantFeature('milestone_payments'));
+            $view->with('tenantHasStripe', tenantFeature('stripe'));
+            $view->with('tenantHasPayPal', tenantFeature('paypal'));
+            $view->with('tenantHasApiAccess', tenantFeature('api_access'));
+            $view->with('tenantHasDualInvoicing', tenantFeature('dual_invoicing'));
+            $view->with('tenantHasSellerLeaderboard', tenantFeature('seller_leaderboard'));
+            $view->with('tenantHasWhiteLabel', tenantFeature('white_label'));
+            $view->with('tenantHasCustomDomain', tenantFeature('custom_domain'));
+        });
+
+        View::composer('admin.*', function ($view) {
+            if (! function_exists('tenantFeature')) {
+                return;
+            }
+
+            $view->with('tenantHasPayments', tenantHasPayments());
+            $view->with('tenantHasClientPortal', tenantFeature('client_portal'));
+            $view->with('tenantHasSupportTickets', tenantFeature('support_tickets'));
+            $view->with('tenantHasStripe', tenantFeature('stripe'));
+            $view->with('tenantHasPayPal', tenantFeature('paypal'));
+            $view->with('tenantHasApiAccess', tenantFeature('api_access'));
+            $view->with('tenantHasDualInvoicing', tenantFeature('dual_invoicing'));
+            $view->with('tenantHasWhiteLabel', tenantFeature('white_label'));
+            $view->with('tenantHasCustomDomain', tenantFeature('custom_domain'));
+
+            $tenantId = \App\Support\TenantContext::resolve();
+            $logo = null;
+            if ($tenantId) {
+                $logo = \App\Models\Central\Tenant::query()->whereKey($tenantId)->value('logo');
+            }
+            $view->with('tenantBrandLogo', $logo);
+        });
+
+        // dynamic route prfix changed
+        // $url = app('url');
+        // $url->macro('route', function ($name, $parameters = [], $absolute = true) use ($url) {
+        //     $guardPrefix = auth('seller')->check() ? 'seller' : 'admin';
+
+        //     if (!str_starts_with($name, 'admin.') && !str_starts_with($name, 'seller.')) {
+        //         $name = "{$guardPrefix}.{$name}";
+        //     }
+
+        //     return $url->to(route($name, $parameters, $absolute));
+        // });
+    }
+}
