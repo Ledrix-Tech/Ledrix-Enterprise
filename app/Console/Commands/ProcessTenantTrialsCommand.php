@@ -9,7 +9,7 @@ class ProcessTenantTrialsCommand extends Command
 {
     protected $signature = 'tenants:process-trials';
 
-    protected $description = 'Send trial reminders, issue Payoneer invoices, and expire unpaid subscriptions';
+    protected $description = 'Send trial reminders and expire unpaid subscriptions';
 
     public function handle(ProcessTenantTrialsService $service): int
     {

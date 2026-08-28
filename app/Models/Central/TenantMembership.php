@@ -34,6 +34,10 @@ class TenantMembership extends Model
         'renewal_reminder_3d_sent_at',
         'renewal_reminder_1d_sent_at',
         'renewal_expired_notice_sent_at',
+        'past_due_at',
+        'dunning_notice_0_sent_at',
+        'dunning_notice_3_sent_at',
+        'dunning_notice_7_sent_at',
         'conversion_source',
         'status',
         'meta',
@@ -50,6 +54,10 @@ class TenantMembership extends Model
         'renewal_reminder_3d_sent_at'   => 'datetime',
         'renewal_reminder_1d_sent_at'   => 'datetime',
         'renewal_expired_notice_sent_at'=> 'datetime',
+        'past_due_at'                   => 'datetime',
+        'dunning_notice_0_sent_at'      => 'datetime',
+        'dunning_notice_3_sent_at'      => 'datetime',
+        'dunning_notice_7_sent_at'      => 'datetime',
         'amount'                        => 'decimal:2',
         'meta'                          => 'array',
     ];
@@ -135,6 +143,10 @@ class TenantMembership extends Model
             'renewal_reminder_3d_sent_at'    => null,
             'renewal_reminder_1d_sent_at'    => null,
             'renewal_expired_notice_sent_at' => null,
+            'past_due_at'                    => null,
+            'dunning_notice_0_sent_at'       => null,
+            'dunning_notice_3_sent_at'       => null,
+            'dunning_notice_7_sent_at'       => null,
         ]);
     }
 

@@ -30,6 +30,8 @@ Route::post('/status/subscribe', [\App\Http\Controllers\FrontViews\StatusPageCon
     ->name('status.subscribe');
 Route::get('/status/confirm/{token}', [\App\Http\Controllers\FrontViews\StatusPageController::class, 'confirm'])
     ->name('status.confirm');
+Route::get('/status/unsubscribe/{token}', [\App\Http\Controllers\FrontViews\StatusPageController::class, 'unsubscribe'])
+    ->name('status.unsubscribe');
 
 // Paid-ads landing pages (focused CTAs — use these as campaign destinations)
 Route::get('/lp/agency-crm-trial', [LandingPagesController::class, 'trial'])->name('lp.trial');

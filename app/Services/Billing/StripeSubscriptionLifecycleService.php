@@ -6,6 +6,7 @@ use App\Models\Central\Tenant;
 use App\Models\Central\TenantInvoice;
 use App\Models\Central\TenantMembership;
 use App\Models\Central\TenantPayment;
+use App\Services\Tenant\TenantDunningService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -17,6 +18,7 @@ class StripeSubscriptionLifecycleService
     public function __construct(
         private readonly ActivateTenantSubscriptionService $activation,
         private readonly CreateSubscriptionInvoiceService $invoices,
+        private readonly TenantDunningService $dunning,
     ) {}
 
     public function bindCheckoutSession(TenantPayment $payment, object $session): void
@@ -207,12 +209,10 @@ class StripeSubscriptionLifecycleService
             ->where('stripe_subscription_id', $subscriptionId)
             ->first();
 
-        if (! $membership || $membership->status === 'past_due') {
+        if (! $membership) {
             return;
         }
 
-        if ($membership->status === 'active') {
-            $membership->forceFill(['status' => 'past_due'])->save();
-        }
+        $this->dunning->markPastDue($membership);
     }
 }

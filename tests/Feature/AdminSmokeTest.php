@@ -89,6 +89,7 @@ class AdminSmokeTest extends TestCase
         return [
             'brands'       => ['admin.brands.get'],
             'sellers'      => ['admin.sellers.get'],
+            'projects'     => ['admin.projects.index'],
             'account keys' => ['admin.account-keys.get'],
         ];
     }

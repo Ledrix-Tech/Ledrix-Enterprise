@@ -13,7 +13,7 @@
     </p>
 
     <p>
-        To keep CRM access after your trial, you will receive a Payoneer payment request with your subscription amount and a unique payment reference.
+        To keep CRM access after your trial, pay from Organization Billing with Stripe (international) or Meezan bank transfer (Pakistan).
     </p>
 
     <a href="{{ route('tenant.billing') }}" class="email-btn">View Billing</a>

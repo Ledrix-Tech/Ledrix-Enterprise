@@ -31,4 +31,15 @@ return [
     */
     'past_due_grace_days' => (int) env('SUBSCRIPTION_PAST_DUE_GRACE_DAYS', env('JAZZCASH_GRACE_DAYS', 7)),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Dunning ladder (days after entering past_due)
+    |--------------------------------------------------------------------------
+    |
+    | Day 0 is sent immediately when a membership becomes past_due.
+    | Later steps are sent by tenants:process-subscriptions.
+    |
+    */
+    'dunning_ladder_days' => array_map('intval', explode(',', env('SUBSCRIPTION_DUNNING_DAYS', '0,3,7'))),
+
 ];

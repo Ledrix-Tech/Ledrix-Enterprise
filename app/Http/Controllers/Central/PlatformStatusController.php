@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Central\PlatformStatusComponent;
 use App\Models\Central\PlatformStatusIncident;
 use App\Services\Platform\PlatformStatusService;
+use App\Services\Platform\StatusIncidentNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -70,9 +71,11 @@ class PlatformStatusController extends Controller
             $data['resolved_at'] = now();
         }
 
-        PlatformStatusIncident::query()->create($data);
+        $incident = PlatformStatusIncident::query()->create($data);
 
-        return back()->with('success', 'Incident published on the public status page.');
+        app(StatusIncidentNotifier::class)->notify($incident, 'published');
+
+        return back()->with('success', 'Incident published on the public status page. Subscribers have been emailed.');
     }
 
     public function updateIncident(Request $request, int $id, PlatformStatusService $status)
@@ -96,9 +99,15 @@ class PlatformStatusController extends Controller
             $data['resolved_at'] = null;
         }
 
+        $previousStatus = $incident->status;
         $incident->update($data);
 
-        return back()->with('success', 'Incident updated.');
+        $event = ($data['status'] ?? '') === 'resolved' ? 'resolved' : 'updated';
+        if ($previousStatus !== ($data['status'] ?? $previousStatus) || $event === 'updated') {
+            app(StatusIncidentNotifier::class)->notify($incident->fresh(), $event);
+        }
+
+        return back()->with('success', 'Incident updated. Subscribers have been emailed.');
     }
 
     public function destroyIncident(int $id, PlatformStatusService $status)

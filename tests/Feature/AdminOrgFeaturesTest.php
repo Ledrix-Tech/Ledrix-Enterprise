@@ -64,6 +64,8 @@ class AdminOrgFeaturesTest extends TestCase
             ->assertOk()
             ->assertSee('Team seats', false);
 
+        \Illuminate\Support\Facades\Mail::fake();
+
         $this->actingAs($admin, 'admin')
             ->post(route('admin.org.team.store'), [
                 'name'     => 'Finance User',
@@ -72,6 +74,14 @@ class AdminOrgFeaturesTest extends TestCase
                 'role'     => 'finance',
             ])
             ->assertRedirect(route('admin.org.team'));
+
+        \Illuminate\Support\Facades\Mail::assertSent(\App\Mail\TenantTeamInviteMail::class, function ($mail) use ($tenant) {
+            return $mail->hasTo('finance-seat@example.com')
+                && $mail->tenant->id === $tenant->id
+                && $mail->role === 'finance'
+                && $mail->memberName === 'Finance User'
+                && ! str_contains(strtolower($mail->envelope()->subject), 'password');
+        });
 
         $finance = Admin::withoutGlobalScopes()
             ->where('email', 'finance-seat@example.com')
@@ -85,6 +95,42 @@ class AdminOrgFeaturesTest extends TestCase
             ->assertRedirect(route('admin.org.team'));
 
         $this->assertNull(Admin::withoutGlobalScopes()->find($finance->id));
+    }
+
+    public function test_opening_and_replying_to_support_ticket_emails_ops(): void
+    {
+        [, $admin] = $this->seedTenantAdmin();
+        config(['services.bank_transfer.notify_email' => 'ops@example.com']);
+        \Illuminate\Support\Facades\Mail::fake();
+
+        $this->actingAs($admin, 'admin')
+            ->post(route('admin.org.support.store'), [
+                'subject'     => 'Billing PDF fails',
+                'description' => 'Download returns 500.',
+                'category'    => 'billing',
+                'priority'    => 'high',
+            ])
+            ->assertRedirect();
+
+        $ticket = \App\Models\Central\PlatformSupportTicket::query()->first();
+        $this->assertNotNull($ticket);
+
+        \Illuminate\Support\Facades\Mail::assertSent(\App\Mail\PlatformSupportOpsMail::class, function ($mail) use ($ticket) {
+            return $mail->hasTo('ops@example.com')
+                && $mail->event === 'created'
+                && (int) $mail->ticket->id === (int) $ticket->id;
+        });
+
+        $this->actingAs($admin, 'admin')
+            ->post(route('admin.org.support.reply', $ticket->id), [
+                'message' => 'Still failing after retry.',
+            ])
+            ->assertRedirect();
+
+        \Illuminate\Support\Facades\Mail::assertSent(\App\Mail\PlatformSupportOpsMail::class, function ($mail) {
+            return $mail->event === 'tenant_replied'
+                && $mail->replyMessage === 'Still failing after retry.';
+        });
     }
 
     public function test_admin_cannot_remove_last_admin_seat(): void
@@ -430,6 +476,37 @@ class AdminOrgFeaturesTest extends TestCase
                 $table->text('override_reason')->nullable();
                 $table->unsignedBigInteger('overridden_by')->nullable();
                 $table->timestamp('expires_at')->nullable();
+                $table->timestamps();
+            });
+        }
+
+        if (! Schema::connection('central')->hasTable('platform_support_tickets')) {
+            Schema::connection('central')->create('platform_support_tickets', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('tenant_id');
+                $table->unsignedBigInteger('assigned_to')->nullable();
+                $table->string('subject');
+                $table->longText('description');
+                $table->string('category')->default('other');
+                $table->string('priority')->default('medium');
+                $table->string('status')->default('open');
+                $table->timestamp('first_replied_at')->nullable();
+                $table->timestamp('resolved_at')->nullable();
+                $table->timestamp('closed_at')->nullable();
+                $table->json('meta')->nullable();
+                $table->timestamps();
+            });
+        }
+
+        if (! Schema::connection('central')->hasTable('platform_support_replies')) {
+            Schema::connection('central')->create('platform_support_replies', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('ticket_id');
+                $table->string('sender_type');
+                $table->unsignedBigInteger('sender_id');
+                $table->longText('message');
+                $table->string('attachment_path')->nullable();
+                $table->boolean('is_internal')->default(false);
                 $table->timestamps();
             });
         }

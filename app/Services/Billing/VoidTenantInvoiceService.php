@@ -2,8 +2,10 @@
 
 namespace App\Services\Billing;
 
+use App\Mail\TenantInvoiceVoidedMail;
 use App\Models\Central\AuditLog;
 use App\Models\Central\TenantInvoice;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\Auth;
 use RuntimeException;
 
@@ -47,6 +49,14 @@ class VoidTenantInvoiceService
             ]
         );
 
-        return $invoice->fresh('payment');
+        $invoice = $invoice->fresh(['payment', 'tenant']) ?? $invoice;
+        SafeMail::send(
+            $invoice->tenant?->email,
+            fn () => new TenantInvoiceVoidedMail($invoice, $reason),
+            'Tenant invoice voided mail',
+            ['invoice_id' => $invoice->id, 'tenant_id' => $invoice->tenant_id],
+        );
+
+        return $invoice;
     }
 }

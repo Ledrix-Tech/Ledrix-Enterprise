@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Central\PlatformStatusComponent;
 use App\Models\Central\PlatformStatusIncident;
+use App\Models\Central\PlatformStatusSubscriber;
 use Tests\Support\UsesSqliteCentral;
 use Tests\TestCase;
 
@@ -54,5 +55,39 @@ class StatusPageTest extends TestCase
         $this->assertDatabaseHas('platform_status_subscribers', [
             'email' => 'ops@example.com',
         ], 'central');
+    }
+
+    public function test_status_unsubscribe_removes_subscriber(): void
+    {
+        $subscriber = PlatformStatusSubscriber::issue('ops@example.com');
+        $subscriber->forceFill(['confirmed_at' => now()])->save();
+
+        $this->get(route('status.unsubscribe', ['token' => $subscriber->token]))
+            ->assertRedirect(route('status.get'));
+
+        $this->assertDatabaseMissing('platform_status_subscribers', [
+            'email' => 'ops@example.com',
+        ], 'central');
+    }
+
+    public function test_publishing_an_incident_emails_confirmed_subscribers(): void
+    {
+        \Illuminate\Support\Facades\Mail::fake();
+
+        $subscriber = PlatformStatusSubscriber::issue('ops@example.com');
+        $subscriber->forceFill(['confirmed_at' => now()])->save();
+
+        $incident = PlatformStatusIncident::query()->create([
+            'title'      => 'API latency elevated',
+            'body'       => 'Investigating.',
+            'severity'   => 'minor',
+            'status'     => 'investigating',
+            'started_at' => now(),
+        ]);
+
+        $sent = app(\App\Services\Platform\StatusIncidentNotifier::class)->notify($incident, 'published');
+
+        $this->assertSame(1, $sent);
+        \Illuminate\Support\Facades\Mail::assertSent(\App\Mail\StatusIncidentMail::class, 1);
     }
 }

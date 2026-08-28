@@ -118,6 +118,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('tenantHasSellerLeaderboard', tenantFeature('seller_leaderboard'));
             $view->with('tenantHasWhiteLabel', tenantFeature('white_label'));
             $view->with('tenantHasCustomDomain', tenantFeature('custom_domain'));
+            $view->with('tenantHasProjects', tenantFeature('projects'));
+            $view->with('tenantHasPerformanceBonus', tenantFeature('performance_bonus'));
         });
 
         View::composer('admin.*', function ($view) {
@@ -134,6 +136,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('tenantHasDualInvoicing', tenantFeature('dual_invoicing'));
             $view->with('tenantHasWhiteLabel', tenantFeature('white_label'));
             $view->with('tenantHasCustomDomain', tenantFeature('custom_domain'));
+            $view->with('tenantHasProjects', tenantFeature('projects'));
+            $view->with('tenantHasPerformanceBonus', tenantFeature('performance_bonus'));
 
             $tenantId = \App\Support\TenantContext::resolve();
             $logo = null;

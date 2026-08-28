@@ -84,6 +84,17 @@ Route::group(['prefix' => 'seller'], function () {
         Route::get('/renewed/{order}/orders', [SellerOrderController::class, 'sellerOrderRenewals'])->name('seller.renewed-orders.get');
         Route::get('/assigned-leads-orders', [SellerOrderController::class, 'sellerPMOrders'])->name('seller.assigned-leads-orders.get');
 
+        Route::middleware('tenant.feature:projects')->group(function () {
+            Route::get('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'index'])->name('seller.projects.index');
+            Route::post('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'store'])->name('seller.projects.store');
+            Route::get('/projects/{id}', [\App\Http\Controllers\Admin\ProjectController::class, 'show'])->name('seller.projects.show')->whereNumber('id');
+            Route::put('/projects/{id}', [\App\Http\Controllers\Admin\ProjectController::class, 'update'])->name('seller.projects.update')->whereNumber('id');
+            Route::delete('/projects/{id}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroy'])->name('seller.projects.destroy')->whereNumber('id');
+            Route::post('/projects/{id}/tasks', [\App\Http\Controllers\Admin\ProjectController::class, 'storeTask'])->name('seller.projects.tasks.store')->whereNumber('id');
+            Route::put('/projects/{id}/tasks/{task}', [\App\Http\Controllers\Admin\ProjectController::class, 'updateTask'])->name('seller.projects.tasks.update')->whereNumber('id')->whereNumber('task');
+            Route::delete('/projects/{id}/tasks/{task}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroyTask'])->name('seller.projects.tasks.destroy')->whereNumber('id')->whereNumber('task');
+        });
+
         Route::middleware('tenant.feature:stripe|paypal')->group(function () {
             Route::get('/payments', [SellerOrderController::class, 'sellerPayments'])->name('seller.payments.get');
         });

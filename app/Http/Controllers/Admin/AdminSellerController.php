@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Lead;
 use App\Models\Brand;
 use App\Models\Seller;
+use App\Models\PerformanceBonus;
 use Illuminate\Http\Request;
 use App\Models\LeadAssignment;
 use Illuminate\Validation\Rule;
@@ -84,8 +85,59 @@ class AdminSellerController extends Controller
         }
 
         $data = SellerPerformance::build($id);
+        $data['bonusRules'] = PerformanceBonus::query()
+            ->where('seller_id', $id)
+            ->latest()
+            ->get();
+        $data['canManageBonus'] = tenantFeature('performance_bonus') && isAdmin();
 
         return view('admin.pages.executive-performance', $data);
+    }
+
+    public function storeBonus(Request $request, int $id)
+    {
+        abort_unless(tenantFeature('performance_bonus'), 403);
+        $seller = Seller::query()->findOrFail($id);
+
+        $validated = $this->bonusRules($request);
+        $validated['seller_id'] = $seller->id;
+        $validated['brand_id'] = $seller->brand_id;
+        $validated['tenant_id'] = $seller->tenant_id;
+        $validated['status'] = $validated['status'] ?? 'active';
+
+        PerformanceBonus::query()->create($validated);
+
+        return back()->with('success', 'Performance bonus rule saved.');
+    }
+
+    public function updateBonus(Request $request, int $bonus)
+    {
+        abort_unless(tenantFeature('performance_bonus'), 403);
+        $row = PerformanceBonus::query()->findOrFail($bonus);
+        $row->update($this->bonusRules($request));
+
+        return back()->with('success', 'Bonus rule updated.');
+    }
+
+    public function destroyBonus(int $bonus)
+    {
+        abort_unless(tenantFeature('performance_bonus'), 403);
+        PerformanceBonus::query()->findOrFail($bonus)->delete();
+
+        return back()->with('success', 'Bonus rule removed.');
+    }
+
+    /** @return array<string, mixed> */
+    private function bonusRules(Request $request): array
+    {
+        return $request->validate([
+            'target_revenue' => ['required', 'numeric', 'min:0'],
+            'bonus_amount'   => ['required', 'numeric', 'min:0'],
+            'period_start'   => ['nullable', 'date'],
+            'period_end'     => ['nullable', 'date', 'after_or_equal:period_start'],
+            'currency'       => ['nullable', 'string', 'size:3'],
+            'status'         => ['nullable', Rule::in(['pending', 'active', 'paid'])],
+        ]);
     }
 
     // old performance code seller

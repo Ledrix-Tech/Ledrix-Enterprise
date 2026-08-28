@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Mail\PlatformSupportReplyMail;
 use App\Models\Central\PlatformSupportReply;
 use App\Models\Central\PlatformSupportTicket;
+use App\Support\SafeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-use Throwable;
 
 class PlatformSupportTicketController extends Controller
 {
@@ -92,18 +90,12 @@ class PlatformSupportTicketController extends Controller
 
         if (! $isInternal) {
             $ticket->loadMissing('tenant:id,email,name');
-            if ($ticket->tenant?->email) {
-                try {
-                    Mail::to($ticket->tenant->email)->send(
-                        new PlatformSupportReplyMail($ticket, $validated['message'])
-                    );
-                } catch (Throwable $e) {
-                    Log::warning('Support reply mail failed', [
-                        'ticket_id' => $ticket->id,
-                        'error'     => $e->getMessage(),
-                    ]);
-                }
-            }
+            SafeMail::send(
+                $ticket->tenant?->email,
+                fn () => new PlatformSupportReplyMail($ticket, $validated['message']),
+                'Support reply mail',
+                ['ticket_id' => $ticket->id],
+            );
         }
 
         return back()->with('success', $isInternal ? 'Internal note added.' : 'Reply sent to tenant.');

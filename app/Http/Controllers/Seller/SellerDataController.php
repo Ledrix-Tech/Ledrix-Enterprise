@@ -111,6 +111,10 @@ class SellerDataController extends Controller
         }
 
         $data = SellerPerformance::build($targetId);
+        $data['bonusRules'] = PerformanceBonus::query()
+            ->where('seller_id', $targetId)
+            ->latest()
+            ->get();
 
         return view('sellers.pages.executive-performance', $data);
     }

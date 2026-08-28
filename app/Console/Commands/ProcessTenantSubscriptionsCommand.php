@@ -19,6 +19,7 @@ class ProcessTenantSubscriptionsCommand extends Command
         $this->info('3-day renewal reminders sent: ' . ($stats['reminders_3d'] ?? 0));
         $this->info('1-day renewal reminders sent: ' . $stats['reminders_1d']);
         $this->info('Active memberships marked past due: ' . $stats['marked_past_due']);
+        $this->info('Dunning notices sent: ' . ($stats['dunning_sent'] ?? 0));
         $this->info('Past-due memberships expired: ' . $stats['expired']);
 
         return self::SUCCESS;

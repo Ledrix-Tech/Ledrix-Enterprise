@@ -6,7 +6,7 @@
     <div class="sa-page-header">
         <div>
             <h1>Subscription Payments</h1>
-            <p>Confirm pending Meezan / Payoneer transfers after verifying your statement. Automated Stripe / PayFast payments are listed below for reference.</p>
+            <p>Confirm pending Meezan transfers after verifying your statement. Automated Stripe / PayFast payments are listed below for reference.</p>
         </div>
     </div>
 

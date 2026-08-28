@@ -2,12 +2,16 @@
 
 namespace App\Services\Tenant;
 
+use App\Mail\TenantDataExportReadyMail;
 use App\Models\Central\Tenant;
 use App\Models\Central\TenantDataExportRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
+use Throwable;
 use ZipArchive;
 
 class TenantDataExportService
@@ -30,6 +34,7 @@ class TenantDataExportService
         'client_tickets',
         'projects',
         'project_tasks',
+        'performance_bonuses',
         'lead_assignments',
         'questionnairs',
         'questionnaires',
@@ -132,6 +137,29 @@ class TenantDataExportService
                 'files' => $manifest,
             ]),
         ])->save();
+
+        $this->notifyReady($export->fresh(), $tenant);
+    }
+
+    private function notifyReady(TenantDataExportRequest $export, Tenant $tenant): void
+    {
+        if (($export->meta['purpose'] ?? null) === 'backup') {
+            return;
+        }
+
+        if (! $tenant->email) {
+            return;
+        }
+
+        try {
+            Mail::to($tenant->email)->send(new TenantDataExportReadyMail($tenant, $export));
+        } catch (Throwable $e) {
+            Log::warning('Workspace export ready email failed', [
+                'tenant_id' => $tenant->id,
+                'export_id' => $export->id,
+                'error'     => $e->getMessage(),
+            ]);
+        }
     }
 
     private function dumpTable(string $connection, string $table, int $tenantId, string $dir): ?int

@@ -111,6 +111,10 @@ class TenantDataExportTest extends TestCase
         $this->assertStringContainsString('NOT a MySQL dump', $readme);
         $this->assertStringNotContainsString($tenant->password, $readme);
 
+        Mail::assertSent(\App\Mail\TenantDataExportReadyMail::class, function ($mail) use ($tenant) {
+            return $mail->tenant->id === $tenant->id;
+        });
+
         $this->actingAs($sa, 'super_admin')
             ->get(route('super-admin.data-exports.download', $export->id))
             ->assertOk();

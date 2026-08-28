@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Concerns\ResolvesOrganizationTenant;
 use App\Http\Controllers\Controller;
+use App\Mail\TenantTeamInviteMail;
 use App\Models\Admin;
 use App\Models\Central\AuditLog;
 use App\Services\Tenant\TenantLimitService;
 use App\Services\Tenant\TenantUsageService;
+use App\Support\SafeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -75,6 +77,13 @@ class OrganizationTeamController extends Controller
                 'subject_id'   => $member->id,
                 'description'  => "Created {$member->role} seat {$member->email}",
             ]
+        );
+
+        SafeMail::send(
+            $member->email,
+            fn () => new TenantTeamInviteMail($tenant, $member->name, $member->role),
+            'Tenant team invite mail',
+            ['tenant_id' => $tenant->id, 'admin_id' => $member->id],
         );
 
         return $this->organizationRedirect('team', [], 'success', 'Team member added.');

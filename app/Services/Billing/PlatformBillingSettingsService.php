@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 
 class PlatformBillingSettingsService
 {
-    public const PROVIDERS = ['stripe', 'payfast', 'meezan', 'jazzcash', 'payoneer'];
+    public const PROVIDERS = ['stripe', 'payfast', 'meezan', 'jazzcash'];
 
     private const CACHE_KEY = 'platform_billing_settings.v2';
 
@@ -75,15 +75,6 @@ class PlatformBillingSettingsService
                     'integrity_salt' => ['label' => 'Integrity salt', 'type' => 'password', 'required' => true, 'sensitive' => true],
                     'return_url'     => ['label' => 'Return URL', 'type' => 'url', 'required' => false],
                     'usd_to_pkr_rate'=> ['label' => 'USD→PKR rate', 'type' => 'text', 'required' => false, 'placeholder' => '280'],
-                ],
-            ],
-            'payoneer' => [
-                'label'  => 'Payoneer',
-                'help'   => 'Manual Payoneer invoices. Tenants pay your Payoneer email; Super Admin confirms in Subscription Payments.',
-                'fields' => [
-                    'receiver_email' => ['label' => 'Receiver email', 'type' => 'email', 'required' => true],
-                    'receiver_name'  => ['label' => 'Receiver name', 'type' => 'text', 'required' => false],
-                    'currency'       => ['label' => 'Currency', 'type' => 'text', 'required' => false, 'placeholder' => 'USD'],
                 ],
             ],
         ];
@@ -216,11 +207,6 @@ class PlatformBillingSettingsService
                     'services.jazzcash.integrity_salt'  => $credentials['integrity_salt'] ?? config('services.jazzcash.integrity_salt'),
                     'services.jazzcash.return_url'      => $credentials['return_url'] ?? config('services.jazzcash.return_url'),
                     'services.jazzcash.usd_to_pkr_rate' => (float) ($credentials['usd_to_pkr_rate'] ?? config('services.jazzcash.usd_to_pkr_rate')),
-                ]),
-                'payoneer' => config([
-                    'services.payoneer.receiver_email' => $credentials['receiver_email'] ?? config('services.payoneer.receiver_email'),
-                    'services.payoneer.receiver_name'  => $credentials['receiver_name'] ?? config('services.payoneer.receiver_name'),
-                    'services.payoneer.currency'       => $credentials['currency'] ?? config('services.payoneer.currency'),
                 ]),
                 default => null,
             };
@@ -356,11 +342,6 @@ class PlatformBillingSettingsService
                 'integrity_salt'  => config('services.jazzcash.integrity_salt'),
                 'return_url'      => config('services.jazzcash.return_url'),
                 'usd_to_pkr_rate' => config('services.jazzcash.usd_to_pkr_rate'),
-            ],
-            'payoneer' => [
-                'receiver_email' => config('services.payoneer.receiver_email'),
-                'receiver_name'  => config('services.payoneer.receiver_name'),
-                'currency'       => config('services.payoneer.currency', 'USD'),
             ],
             default => [],
         };

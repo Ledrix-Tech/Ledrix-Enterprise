@@ -88,7 +88,23 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/sellers', [AdminSellerController::class, 'adminSellers'])->name('admin.sellers.get');
             Route::post('/seller-post', [AdminSellerController::class, 'adminSellerPost'])->name('admin.seller.post');
             Route::get('/seller/{id?}/performance', [AdminSellerController::class, 'adminSellerPerformance'])->name('admin.seller-performance.get');
+            Route::middleware('tenant.feature:performance_bonus')->group(function () {
+                Route::post('/seller/{id}/bonus', [AdminSellerController::class, 'storeBonus'])->name('admin.seller.bonus.store')->whereNumber('id');
+                Route::put('/seller/bonus/{bonus}', [AdminSellerController::class, 'updateBonus'])->name('admin.seller.bonus.update')->whereNumber('bonus');
+                Route::delete('/seller/bonus/{bonus}', [AdminSellerController::class, 'destroyBonus'])->name('admin.seller.bonus.destroy')->whereNumber('bonus');
+            });
             Route::post('/seller-status', [AdminSellerController::class, 'sellerUpdateStatus'])->name('admin.seller.updateStatus');
+
+            Route::middleware('tenant.feature:projects')->group(function () {
+                Route::get('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'index'])->name('admin.projects.index');
+                Route::post('/projects', [\App\Http\Controllers\Admin\ProjectController::class, 'store'])->name('admin.projects.store');
+                Route::get('/projects/{id}', [\App\Http\Controllers\Admin\ProjectController::class, 'show'])->name('admin.projects.show')->whereNumber('id');
+                Route::put('/projects/{id}', [\App\Http\Controllers\Admin\ProjectController::class, 'update'])->name('admin.projects.update')->whereNumber('id');
+                Route::delete('/projects/{id}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroy'])->name('admin.projects.destroy')->whereNumber('id');
+                Route::post('/projects/{id}/tasks', [\App\Http\Controllers\Admin\ProjectController::class, 'storeTask'])->name('admin.projects.tasks.store')->whereNumber('id');
+                Route::put('/projects/{id}/tasks/{task}', [\App\Http\Controllers\Admin\ProjectController::class, 'updateTask'])->name('admin.projects.tasks.update')->whereNumber('id')->whereNumber('task');
+                Route::delete('/projects/{id}/tasks/{task}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroyTask'])->name('admin.projects.tasks.destroy')->whereNumber('id')->whereNumber('task');
+            });
 
             Route::post('/client-delete', [ManagementController::class, 'deleteClient'])->name('admin.client.delete');
             Route::post('/domain-delete', [ManagementController::class, 'deleteDomain'])->name('admin.domain.delete');

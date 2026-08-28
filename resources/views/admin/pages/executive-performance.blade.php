@@ -256,6 +256,78 @@
 
     </div>
 
+    @if ($canManageBonus ?? false)
+        <div class="crm-card mt-4">
+            <div class="crm-card-body">
+                <h5 class="mb-3">Bonus rules</h5>
+                <div class="table-responsive mb-3">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Target</th>
+                                <th>Bonus</th>
+                                <th>Period</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($bonusRules ?? [] as $rule)
+                                <tr>
+                                    <td>{{ number_format($rule->target_revenue, 2) }} {{ $rule->currency }}</td>
+                                    <td>{{ number_format($rule->bonus_amount, 2) }}</td>
+                                    <td>
+                                        {{ $rule->period_start?->format('M Y') ?? 'Ongoing' }}
+                                        @if ($rule->period_end) – {{ $rule->period_end->format('M Y') }} @endif
+                                    </td>
+                                    <td>{{ Str::headline($rule->status) }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ route('admin.seller.bonus.destroy', $rule) }}" onsubmit="return confirm('Remove this bonus rule?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger">Remove</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-muted">No bonus rules yet.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <form method="POST" action="{{ route('admin.seller.bonus.store', $seller->id) }}" class="row g-2">
+                    @csrf
+                    <div class="col-md-2">
+                        <input type="number" step="0.01" name="target_revenue" class="form-control" placeholder="Target revenue" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" step="0.01" name="bonus_amount" class="form-control" placeholder="Bonus amount" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date" name="period_start" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date" name="period_end" class="form-control">
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" name="currency" class="form-control" value="USD" maxlength="3">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="status" class="form-control">
+                            <option value="active">Active</option>
+                            <option value="pending">Pending</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-crm-teal w-100">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

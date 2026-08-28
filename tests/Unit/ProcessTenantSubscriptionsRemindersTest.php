@@ -84,6 +84,54 @@ class ProcessTenantSubscriptionsRemindersTest extends TestCase
         Mail::assertSent(TenantSubscriptionRenewalReminderMail::class, 3);
     }
 
+    public function test_dunning_ladder_sends_day_zero_when_marked_past_due(): void
+    {
+        Mail::fake();
+        $this->ensureDunningColumns();
+
+        $plan = PackagePricing::query()->create([
+            'name'          => 'Agency',
+            'slug'          => 'agency-dunning-'.uniqid(),
+            'monthly_price' => 99,
+            'yearly_price'  => 990,
+            'currency'      => 'USD',
+            'trial_days'    => 0,
+            'is_popular'    => false,
+            'is_public'     => true,
+            'sort_order'    => 1,
+            'status'        => 'active',
+        ]);
+
+        $tenant = Tenant::query()->create([
+            'plan_id'  => $plan->id,
+            'name'     => 'Dunning Co',
+            'slug'     => 'dunning-'.uniqid(),
+            'email'    => 'dunning-'.uniqid().'@example.com',
+            'password' => Hash::make('password'),
+            'status'   => 'active',
+        ]);
+
+        $membership = TenantMembership::query()->create([
+            'tenant_id'     => $tenant->id,
+            'plan_id'       => $plan->id,
+            'billing_cycle' => 'monthly',
+            'amount'        => 99,
+            'currency'      => 'USD',
+            'api_key'       => 'key_dunning_'.uniqid(),
+            'start_date'    => now()->subMonth()->toDateString(),
+            'end_date'      => now()->subDay()->toDateString(),
+            'status'        => 'active',
+            'renewed_by'    => 'tenant',
+        ]);
+
+        $stats = app(ProcessTenantSubscriptionsService::class)->run();
+
+        $this->assertSame(1, $stats['marked_past_due']);
+        Mail::assertSent(\App\Mail\TenantDunningMail::class, 1);
+        $this->assertSame('past_due', $membership->fresh()->status);
+        $this->assertNotNull($membership->fresh()->dunning_notice_0_sent_at);
+    }
+
     private function ensureReminderColumns(): void
     {
         if (! Schema::connection('central')->hasTable('tenant_memberships')) {
@@ -103,18 +151,36 @@ class ProcessTenantSubscriptionsRemindersTest extends TestCase
                 $table->timestamp('renewal_reminder_3d_sent_at')->nullable();
                 $table->timestamp('renewal_reminder_1d_sent_at')->nullable();
                 $table->timestamp('renewal_expired_notice_sent_at')->nullable();
+                $table->timestamp('past_due_at')->nullable();
+                $table->timestamp('dunning_notice_0_sent_at')->nullable();
+                $table->timestamp('dunning_notice_3_sent_at')->nullable();
+                $table->timestamp('dunning_notice_7_sent_at')->nullable();
                 $table->timestamps();
             });
 
             return;
         }
 
-        foreach (['renewal_reminder_7d_sent_at', 'renewal_reminder_3d_sent_at', 'renewal_reminder_1d_sent_at', 'renewal_expired_notice_sent_at'] as $col) {
+        foreach ([
+            'renewal_reminder_7d_sent_at',
+            'renewal_reminder_3d_sent_at',
+            'renewal_reminder_1d_sent_at',
+            'renewal_expired_notice_sent_at',
+            'past_due_at',
+            'dunning_notice_0_sent_at',
+            'dunning_notice_3_sent_at',
+            'dunning_notice_7_sent_at',
+        ] as $col) {
             if (! Schema::connection('central')->hasColumn('tenant_memberships', $col)) {
                 Schema::connection('central')->table('tenant_memberships', function (Blueprint $table) use ($col) {
                     $table->timestamp($col)->nullable();
                 });
             }
         }
+    }
+
+    private function ensureDunningColumns(): void
+    {
+        $this->ensureReminderColumns();
     }
 }

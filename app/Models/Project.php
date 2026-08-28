@@ -22,13 +22,15 @@ class Project extends Model
         'start_date',
         'due_date',
         'description',
-        'meta'
+        'meta',
+        'pm_assigned_at',
     ];
 
     protected $casts = [
         'meta' => 'array',
         'start_date' => 'date',
         'due_date' => 'date',
+        'pm_assigned_at' => 'datetime',
     ];
 
     public function tasks()
@@ -54,5 +56,10 @@ class Project extends Model
     public function lead()
     {
         return $this->belongsTo(Lead::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

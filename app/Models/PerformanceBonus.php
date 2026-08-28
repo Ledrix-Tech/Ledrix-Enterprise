@@ -21,6 +21,13 @@ class PerformanceBonus extends Model
         'status'
     ];
 
+    protected $casts = [
+        'target_revenue' => 'decimal:2',
+        'bonus_amount'   => 'decimal:2',
+        'period_start'   => 'date',
+        'period_end'     => 'date',
+    ];
+
     public function seller()
     {
         return $this->belongsTo(Seller::class);

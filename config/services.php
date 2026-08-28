@@ -71,15 +71,6 @@ return [
         'secret' => env('RECAPTCHA_SECRET'),
     ],
 
-    'payoneer' => [
-        // Merchant fields: Super Admin → Payment Accounts (central DB). Env is optional fallback only.
-        'receiver_email' => env('PAYONEER_RECEIVER_EMAIL'),
-        'receiver_name'  => env('PAYONEER_RECEIVER_NAME'),
-        'currency'       => env('PAYONEER_CURRENCY', 'USD'),
-        'grace_days'     => (int) env('PAYONEER_GRACE_DAYS', 7),
-        'trial_reminder_days' => (int) env('PAYONEER_TRIAL_REMINDER_DAYS', 3),
-    ],
-
     /*
     | JazzCash — tenant SaaS subscriptions (PKR).
     | Merchant credentials: Super Admin → Payment Accounts (central DB).

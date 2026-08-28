@@ -2,8 +2,10 @@
 
 namespace App\Services\Billing;
 
+use App\Mail\TenantPaymentRefundedMail;
 use App\Models\Central\AuditLog;
 use App\Models\Central\TenantPayment;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\Auth;
 use RuntimeException;
 use Stripe\Refund;
@@ -104,8 +106,22 @@ class RefundTenantPaymentService
             ]
         );
 
+        $payment = $payment->fresh(['tenant', 'invoice']) ?? $payment;
+        SafeMail::send(
+            $payment->tenant?->email,
+            fn () => new TenantPaymentRefundedMail(
+                $payment,
+                $refundAmount,
+                $creditApplied,
+                $stripeRefunded,
+                $reason,
+            ),
+            'Tenant payment refunded mail',
+            ['payment_id' => $payment->id, 'tenant_id' => $payment->tenant_id],
+        );
+
         return [
-            'payment'         => $payment->fresh(),
+            'payment'         => $payment,
             'credit_applied'  => $creditApplied,
             'stripe_refunded' => $stripeRefunded,
         ];

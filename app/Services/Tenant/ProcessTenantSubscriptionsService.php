@@ -2,7 +2,6 @@
 
 namespace App\Services\Tenant;
 
-use App\Mail\TenantSubscriptionExpiredMail;
 use App\Mail\TenantSubscriptionRenewalReminderMail;
 use App\Models\Central\TenantMembership;
 use Illuminate\Support\Facades\Log;
@@ -11,6 +10,10 @@ use Throwable;
 
 class ProcessTenantSubscriptionsService
 {
+    public function __construct(
+        private readonly TenantDunningService $dunning,
+    ) {}
+
     public function run(): array
     {
         return [
@@ -18,6 +21,7 @@ class ProcessTenantSubscriptionsService
             'reminders_3d'    => $this->sendRenewalReminders(3, 'renewal_reminder_3d_sent_at'),
             'reminders_1d'    => $this->sendRenewalReminders(1, 'renewal_reminder_1d_sent_at'),
             'marked_past_due' => $this->markExpiredActiveAsPastDue(),
+            'dunning_sent'    => $this->dunning->sendScheduledNotices(),
             'expired'         => $this->expireOverdueMemberships(),
         ];
     }
@@ -80,25 +84,8 @@ class ProcessTenantSubscriptionsService
             ->get();
 
         foreach ($memberships as $membership) {
-            $membership->update(['status' => 'past_due']);
+            $this->dunning->markPastDue($membership);
             $count++;
-
-            $tenant = $membership->tenant;
-
-            if (! $tenant || $membership->renewal_expired_notice_sent_at) {
-                continue;
-            }
-
-            try {
-                Mail::to($tenant->email)->send(new TenantSubscriptionExpiredMail($tenant, $membership));
-                $membership->update(['renewal_expired_notice_sent_at' => now()]);
-            } catch (Throwable $e) {
-                Log::warning('Subscription expired notice email failed', [
-                    'tenant_id'     => $tenant->id,
-                    'membership_id' => $membership->id,
-                    'message'       => $e->getMessage(),
-                ]);
-            }
         }
 
         return $count;

@@ -166,7 +166,7 @@ Route::group(['prefix' => 'super-admin', 'namespace' => 'SuperAdmin'], function 
         Route::get('/billing-settings', [PlatformBillingSettingsController::class, 'edit'])->name('super-admin.billing-settings.get');
         Route::put('/billing-settings/{provider}', [PlatformBillingSettingsController::class, 'update'])
             ->name('super-admin.billing-settings.update')
-            ->where('provider', 'stripe|payfast|meezan|jazzcash|payoneer');
+            ->where('provider', 'stripe|payfast|meezan|jazzcash');
 
         Route::get('/fx-rates', [PlatformFxRateController::class, 'edit'])->name('super-admin.fx-rates.get');
         Route::post('/fx-rates', [PlatformFxRateController::class, 'store'])->name('super-admin.fx-rates.store');

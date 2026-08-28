@@ -173,7 +173,7 @@
     <h2>4. Billing &amp; payments (platform)</h2>
 
     <div class="feature">
-        <div class="name">Payment Accounts (Stripe, Meezan primary; PayFast / JazzCash / Payoneer optional)</div>
+        <div class="name">Payment Accounts (Stripe, Meezan primary; PayFast / JazzCash optional)</div>
         <p class="why"><span class="label">Why</span> Platform collects SaaS subscription money; credentials must live centrally and stay rotatable.</p>
         <p class="when"><span class="label">When</span> Before first paid signup. Primary rails: <strong>Pakistan → Meezan (PKR)</strong>, <strong>international → Stripe</strong> (UAE Stripe account can replace keys later without code changes). Keep PayFast/JazzCash off until you need them.</p>
         <p class="how"><span class="label">How</span> Super Admin → Payment Accounts: enable providers, paste keys/secrets, save. Never commit secrets to git. After changes, smoke-test one Stripe and one Meezan path.</p>
@@ -244,8 +244,8 @@
 
     <div class="feature">
         <div class="name">Subscription payments &amp; manual confirm</div>
-        <p class="why"><span class="label">Why</span> Meezan bank transfer / Payoneer are not instant; ops must mark paid to activate membership.</p>
-        <p class="when"><span class="label">When</span> Pending bank transfer after tenant reports a transaction ID; Payoneer settlements.</p>
+        <p class="why"><span class="label">Why</span> Meezan bank transfer is not instant; ops must mark paid to activate membership.</p>
+        <p class="when"><span class="label">When</span> Pending bank transfer after tenant reports a transaction ID.</p>
         <p class="how"><span class="label">How</span> Super Admin → Subscription Payments: review pending, confirm when funds clear. This activates/extends the tenant subscription.</p>
     </div>
 
@@ -370,7 +370,7 @@
         </tr>
         <tr>
             <td>Daily</td>
-            <td>Pending Meezan/Payoneer payments · support tickets · open status incidents · failed Stripe webhook events</td>
+            <td>Pending Meezan payments · support tickets · open status incidents · failed Stripe webhook events</td>
         </tr>
         <tr>
             <td>Weekly</td>
@@ -632,7 +632,6 @@
     <h2>14. Intentionally deferred (context)</h2>
     <p>Do not treat these as required for launch with Meezan + Stripe:</p>
     <ul>
-        <li>PayFast / JazzCash <strong>server</strong> ITN webhooks (F-03) — turn on only if those Payment Accounts go live</li>
         <li>Per-tenant automatic SSL/vhost for custom domains — app routing is shipped; hosting/CDN still required for production hostnames</li>
         <li><strong>F-28-migrate</strong> — bulk migration tooling for existing tenants on shared primary DB (new tenants auto-provision when isolation is on)</li>
     </ul>

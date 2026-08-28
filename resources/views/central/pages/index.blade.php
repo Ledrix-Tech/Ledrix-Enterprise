@@ -55,7 +55,7 @@
             <div class="sa-stat-icon"><i class="bi bi-wallet2"></i></div>
             <div class="sa-stat-label">Pending Manual Payments</div>
             <div class="sa-stat-value">{{ $pendingSubscriptionPayments }}</div>
-            <div class="sa-stat-meta">Meezan + Payoneer</div>
+            <div class="sa-stat-meta">Meezan bank transfer</div>
         </a>
     </div>
 

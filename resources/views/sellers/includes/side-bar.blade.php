@@ -69,6 +69,14 @@
                     <i class="bi bi-receipt"></i><span>Orders</span>
                 </a>
             </li>
+            @if ($tenantHasProjects ?? false)
+                <li>
+                    <a class="crm-nav-link {{ str_starts_with((string) $route, 'seller.projects.') ? 'active' : '' }}"
+                        href="{{ route('seller.projects.index') }}">
+                        <i class="bi bi-kanban"></i><span>Projects</span>
+                    </a>
+                </li>
+            @endif
         @else
             <li>
                 <a class="crm-nav-link {{ $route === 'seller.seller-performance.get' ? 'active' : '' }}"
@@ -126,6 +134,14 @@
                     <i class="bi bi-receipt"></i><span>Orders</span>
                 </a>
             </li>
+            @if ($tenantHasProjects ?? false)
+                <li>
+                    <a class="crm-nav-link {{ str_starts_with((string) $route, 'seller.projects.') ? 'active' : '' }}"
+                        href="{{ route('seller.projects.index') }}">
+                        <i class="bi bi-kanban"></i><span>Projects</span>
+                    </a>
+                </li>
+            @endif
             @if ($tenantHasPayments ?? false)
                 <li>
                     <a class="crm-nav-link {{ $route === 'seller.payments.get' ? 'active' : '' }}"

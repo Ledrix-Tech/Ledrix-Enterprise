@@ -59,7 +59,7 @@ class MembershipController extends Controller
         $pendingPayments = TenantPayment::query()
             ->with('invoice')
             ->where('tenant_id', $tenant->id)
-            ->whereIn('gateway', ['payoneer', 'bank_transfer'])
+            ->whereIn('gateway', ['bank_transfer'])
             ->where('status', 'pending')
             ->latest()
             ->get();

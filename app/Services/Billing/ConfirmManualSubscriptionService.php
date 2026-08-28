@@ -13,11 +13,11 @@ class ConfirmManualSubscriptionService
 
     public function confirm(TenantPayment $payment, ?string $adminNote = null): TenantPayment
     {
-        if (! in_array($payment->gateway, ['payoneer', 'bank_transfer'], true)) {
+        if (! in_array($payment->gateway, ['bank_transfer', 'payoneer'], true)) {
             throw new RuntimeException('This payment cannot be manually confirmed.');
         }
 
-        $renewedBy = $payment->gateway === 'payoneer' ? 'payoneer' : 'tenant';
+        $renewedBy = 'tenant';
 
         $isCli = app()->runningInConsole();
         $superAdmin = auth('super_admin')->user();

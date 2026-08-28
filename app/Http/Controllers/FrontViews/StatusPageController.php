@@ -58,4 +58,19 @@ class StatusPageController extends Controller
             ->route('status.get')
             ->with('success', 'Subscription confirmed for '.$subscriber->email.'.');
     }
+
+    public function unsubscribe(string $token)
+    {
+        if (! Schema::connection('central')->hasTable('platform_status_subscribers')) {
+            abort(404);
+        }
+
+        $subscriber = PlatformStatusSubscriber::query()->where('token', $token)->firstOrFail();
+        $email = $subscriber->email;
+        $subscriber->delete();
+
+        return redirect()
+            ->route('status.get')
+            ->with('success', 'Unsubscribed '.$email.' from status emails.');
+    }
 }

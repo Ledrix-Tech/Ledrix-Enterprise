@@ -2,11 +2,13 @@
 
 namespace Tests\Unit;
 
+use App\Mail\TenantSuspendedMail;
 use App\Models\Central\AuditLog;
 use App\Models\Central\Tenant;
 use App\Models\Central\TenantApiToken;
 use App\Services\Tenant\TenantLifecycleService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Tests\Support\UsesSqliteCentral;
@@ -21,6 +23,7 @@ class TenantLifecycleServiceTest extends TestCase
         parent::setUp();
         $this->bootSqliteCentral();
         $this->ensureMembershipsTable();
+        Mail::fake();
     }
 
     public function test_suspend_sets_metadata_revokes_tokens_and_audits(): void
@@ -53,6 +56,12 @@ class TenantLifecycleServiceTest extends TestCase
         $this->assertTrue(
             AuditLog::query()->where('action', 'tenant.suspended')->where('tenant_id', $tenant->id)->exists()
         );
+
+        Mail::assertSent(TenantSuspendedMail::class, function (TenantSuspendedMail $mail) use ($tenant) {
+            return $mail->hasTo($tenant->email)
+                && $mail->tenant->id === $tenant->id
+                && $mail->reason === 'Policy violation';
+        });
     }
 
     public function test_activate_clears_suspend_metadata(): void

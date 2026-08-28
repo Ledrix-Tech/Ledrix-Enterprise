@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Concerns\ResolvesOrganizationTenant;
 use App\Http\Controllers\Controller;
+use App\Mail\PlatformSupportOpsMail;
 use App\Models\Central\PlatformSupportReply;
 use App\Models\Central\PlatformSupportTicket;
+use App\Support\SafeMail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -52,6 +54,13 @@ class PlatformSupportController extends Controller
             'priority'    => $validated['priority'],
             'status'      => 'open',
         ]);
+
+        $ticket->setRelation('tenant', $tenant);
+        SafeMail::toOps(
+            fn () => new PlatformSupportOpsMail($ticket, 'created'),
+            'Support ticket opened mail',
+            ['ticket_id' => $ticket->id, 'tenant_id' => $tenant->id],
+        );
 
         return $this->organizationRedirect(
             'support.show',
@@ -101,6 +110,13 @@ class PlatformSupportController extends Controller
         } else {
             $ticket->touch();
         }
+
+        $ticket->setRelation('tenant', $tenant);
+        SafeMail::toOps(
+            fn () => new PlatformSupportOpsMail($ticket, 'tenant_replied', $validated['message']),
+            'Support ticket tenant reply mail',
+            ['ticket_id' => $ticket->id, 'tenant_id' => $tenant->id],
+        );
 
         return back()->with('success', 'Reply sent.');
     }

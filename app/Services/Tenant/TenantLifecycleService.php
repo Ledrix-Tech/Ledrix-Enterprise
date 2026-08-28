@@ -2,10 +2,12 @@
 
 namespace App\Services\Tenant;
 
+use App\Mail\TenantSuspendedMail;
 use App\Models\Central\AuditLog;
 use App\Models\Central\Tenant;
 use App\Models\Central\TenantApiToken;
 use App\Models\Central\TenantMembership;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Throwable;
@@ -62,6 +64,13 @@ class TenantLifecycleService
                     'suspended_at'     => $tenant->suspended_at?->toIso8601String(),
                 ],
             ]
+        );
+
+        SafeMail::send(
+            $tenant->email,
+            fn () => new TenantSuspendedMail($tenant, $reason),
+            'Tenant suspend mail',
+            ['tenant_id' => $tenant->id],
         );
 
         return $tenant;

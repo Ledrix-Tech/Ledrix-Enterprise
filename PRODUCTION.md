@@ -214,7 +214,6 @@ REDIS_HOST=127.0.0.1
 | BYOD domain DNS verify | Yes | Yes |
 | BYOD domain HTTPS | Limited | Yes |
 | Stripe + Meezan billing | Yes | Yes |
-| PayFast / JazzCash webhooks | When enabled (F-03) | When enabled |
 | GDPR export / backup | Yes | Yes |
 | API + tenant webhooks | Yes | Yes |
 | SA impersonation / audit | Yes | Yes |
@@ -349,7 +348,7 @@ PAYPAL client vars + PAYPAL webhook_id if using env-level PayPal
 # SaaS billing ops
 BILLING_ADMIN_EMAIL=billing@yourdomain.com   # demo/contact/ops alerts
 # Optional gateway env seeds (prefer Super Admin → Payment Accounts in prod):
-# JAZZCASH_*, PAYFAST_*, MEEZAN_*, PAYONEER_RECEIVER_EMAIL
+# JAZZCASH_*, PAYFAST_*, MEEZAN_*
 ```
 
 **Never commit `.env` or real passwords to git.**
@@ -482,7 +481,6 @@ Managed in **Super Admin → Payment Accounts** (preferred over `.env` alone).
 | PayFast | Pakistan PKR hosted checkout |
 | Meezan | PKR bank transfer + Raast QR (manual confirm) |
 | JazzCash | PKR merchant checkout (if enabled) |
-| Payoneer | Manual USD invoice (SA confirms) |
 
 **Stripe platform webhook (required for reliable activation):**
 

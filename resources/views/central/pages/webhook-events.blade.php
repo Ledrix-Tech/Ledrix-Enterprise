@@ -17,7 +17,7 @@
                     <label class="form-label" for="provider">Provider</label>
                     <select name="provider" id="provider" class="form-select">
                         <option value="">All</option>
-                        @foreach (['stripe', 'payfast', 'jazzcash', 'meezan', 'payoneer', 'paypal'] as $provider)
+                        @foreach (['stripe', 'payfast', 'jazzcash', 'meezan', 'paypal'] as $provider)
                             <option value="{{ $provider }}" @selected(request('provider') === $provider)>{{ ucfirst($provider) }}</option>
                         @endforeach
                     </select>

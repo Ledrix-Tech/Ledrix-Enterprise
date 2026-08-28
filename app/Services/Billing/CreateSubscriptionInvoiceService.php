@@ -108,8 +108,8 @@ class CreateSubscriptionInvoiceService
             throw new RuntimeException('JazzCash is not available. Contact support.');
         }
 
-        if ($gateway === 'payoneer' && ! app(PlatformBillingSettingsService::class)->isReady('payoneer')) {
-            throw new RuntimeException('Payoneer is not available. Contact support.');
+        if ($gateway === 'payoneer') {
+            throw new RuntimeException('Payoneer billing has been removed. Use Stripe or Meezan.');
         }
 
         $reference = 'LDRX-' . $tenant->id . '-' . strtoupper(Str::random(8));
@@ -123,7 +123,6 @@ class CreateSubscriptionInvoiceService
             'payfast'       => 'payfast',
             'stripe'        => 'stripe',
             'bank_transfer' => 'tenant',
-            'payoneer'      => 'payoneer',
             default         => 'tenant',
         };
 
