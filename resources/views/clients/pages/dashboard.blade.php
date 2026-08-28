@@ -57,6 +57,19 @@
             <div class="crm-dash-kpi-meta"><span>Complete project questionnaires</span></div>
         </a>
 
+        <a href="{{ route('client.projects.index') }}" class="crm-dash-kpi">
+            <div class="crm-dash-kpi-top">
+                <div>
+                    <div class="crm-dash-kpi-label">Projects</div>
+                    <div class="crm-dash-kpi-value"><i class="bi bi-kanban"></i></div>
+                </div>
+                <div class="crm-dash-kpi-icon crm-dash-kpi-icon--teal">
+                    <i class="bi bi-bar-chart-line"></i>
+                </div>
+            </div>
+            <div class="crm-dash-kpi-meta"><span>Track delivery status and progress</span></div>
+        </a>
+
         <a href="{{ route('client.invoice.get') }}" class="crm-dash-kpi">
             <div class="crm-dash-kpi-top">
                 <div>

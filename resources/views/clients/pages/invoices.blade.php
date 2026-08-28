@@ -75,6 +75,11 @@
                                     <a href="{{ route('client.invoice.details', $order) }}" class="btn btn-sm btn-crm-outline">
                                         <i class="bi bi-eye"></i> View
                                     </a>
+                                    @if ($order->project)
+                                        <a href="{{ route('client.projects.show', $order->project) }}" class="btn btn-sm btn-crm-outline">
+                                            <i class="bi bi-kanban"></i> Project
+                                        </a>
+                                    @endif
                                     <a href="{{ route('client.raise-ticket.get', $order) }}" class="btn btn-sm btn-crm-primary">
                                         <i class="bi bi-plus-lg"></i> Ticket
                                     </a>

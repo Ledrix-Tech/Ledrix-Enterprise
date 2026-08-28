@@ -49,7 +49,7 @@ class PagesController extends Controller
         $client = auth('client')->user();
 
         $query = Order::query()
-            ->with(['brand:id,brand_name', 'seller:id,name', 'client:id,name,email'])
+            ->with(['brand:id,brand_name', 'seller:id,name', 'client:id,name,email', 'project'])
             ->where('client_id', $client->id);
 
         if ($request->filled('package')) {
@@ -87,6 +87,7 @@ class PagesController extends Controller
             'client:id,name,email',
             'paymentLinks:id,order_id,unit_amount,status,paid_at,token,last_issued_url,last_issued_at,expires_at,is_active_link,currency',
             'payments:id,order_id,amount,currency,status,created_at',
+            'project',
         ]);
 
         // Must match checkout: is_active_link + unpaid + not expired (PaymentLink::isActiveLink).

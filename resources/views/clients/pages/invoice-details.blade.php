@@ -120,6 +120,12 @@
                         $currency = $order->currency ?? 'USD';
                     @endphp
 
+                    @if ($order->project)
+                        <a href="{{ route('client.projects.show', $order->project) }}" class="btn btn-crm-outline w-100 mb-3">
+                            <i class="bi bi-kanban"></i> View project progress
+                        </a>
+                    @endif
+
                     <div class="pay-link">
                         @if ($due > 0)
                             @if (!empty($latestActiveLink) && !empty($payUrl))

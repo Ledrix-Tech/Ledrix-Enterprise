@@ -24,6 +24,12 @@
             </a>
         </li>
         <li>
+            <a class="crm-nav-link {{ str_starts_with($route, 'client.projects.') ? 'active' : '' }}"
+                href="{{ route('client.projects.index') }}">
+                <i class="bi bi-kanban"></i><span>Projects</span>
+            </a>
+        </li>
+        <li>
             <a class="crm-nav-link {{ $route === 'client.invoice.get' || str_starts_with($route, 'client.invoice.') ? 'active' : '' }}"
                 href="{{ route('client.invoice.get') }}">
                 <i class="bi bi-receipt"></i><span>Invoices</span>

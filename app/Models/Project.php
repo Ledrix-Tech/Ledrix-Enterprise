@@ -62,4 +62,24 @@ class Project extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function completedTasksCount(): int
+    {
+        return $this->tasks->where('status', 'completed')->count();
+    }
+
+    public function progressPercent(): int
+    {
+        $total = $this->tasks->count();
+        if ($total > 0) {
+            return (int) round(($this->completedTasksCount() / $total) * 100);
+        }
+
+        return match ($this->status) {
+            'completed' => 100,
+            'in_progress' => 50,
+            'cancelled' => 0,
+            default => 10,
+        };
+    }
 }

@@ -56,5 +56,10 @@ Route::group(['prefix' => 'client', 'namespace' => 'Client'], function () {
 
         Route::get('/briefs', [ClientBriefController::class, 'clientBriefs'])->name('client.brief.get');
         Route::post('/brief-form', [ClientBriefController::class, 'clientBriefPost'])->name('client.brief-form.post');
+
+        Route::get('/projects', [\App\Http\Controllers\API\Client\ProjectController::class, 'index'])->name('client.projects.index');
+        Route::get('/projects/{id}', [\App\Http\Controllers\API\Client\ProjectController::class, 'show'])
+            ->whereNumber('id')
+            ->name('client.projects.show');
     });
 });

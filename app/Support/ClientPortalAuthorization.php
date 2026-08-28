@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Client;
 use App\Models\Order;
+use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 
 final class ClientPortalAuthorization
@@ -30,5 +31,16 @@ final class ClientPortalAuthorization
         return Order::query()
             ->where('client_id', self::client()->id)
             ->findOrFail($orderId);
+    }
+
+    public static function assertOwnsProject(Project $project): void
+    {
+        $project->loadMissing(['order:id,client_id', 'lead:id,client_id']);
+        $clientId = (int) self::client()->id;
+
+        $owns = (int) ($project->order?->client_id ?? 0) === $clientId
+            || (int) ($project->lead?->client_id ?? 0) === $clientId;
+
+        abort_unless($owns, 403, 'You do not have access to this project.');
     }
 }

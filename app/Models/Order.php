@@ -191,6 +191,16 @@ class Order extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function project()
+    {
+        return $this->hasOne(Project::class)->latestOfMany();
+    }
+
 
     // app/Models/Order.php
     public function scopeOwnedBy($q, int $sellerId)
