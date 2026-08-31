@@ -130,6 +130,18 @@ return [
             'answer' => 'Yes. Run every brand under one account without mixing pipelines. Admins see the full picture; sellers only see their assignments; clients get a secure portal.',
         ],
         [
+            'question' => 'Do clients get their own portal?',
+            'answer' => 'Yes. Each client signs into a client dashboard — not the seller panel. They see their own orders, invoices and payment history, project progress when your team opens a project, briefs, tickets, and a message thread with the assigned seller. They cannot see other clients or your pipeline.',
+        ],
+        [
+            'question' => 'Can sellers or clients check project status without contacting support?',
+            'answer' => 'Yes. Clients open Projects in their portal for status and task progress, plus invoices. They can also message the assigned seller on that order — a human thread, not a bot. Sellers reply from the seller panel on the same order. No extra Slack channel required.',
+        ],
+        [
+            'question' => 'What notifications does Ledrix send automatically?',
+            'answer' => 'Ledrix emails the right person for specific events — the list is fixed, not a DIY rules builder. Closers get mail when a lead is assigned. Clients get payment-link, payment-received, payment-failed, brief-request, and portal-invite emails. Assigned sellers and the project manager also get payment-received mail. Your team gets mail when a client opens a support ticket (and deadline reminders). Chat messages and project-status changes stay in the portal — they do not trigger a separate email today.',
+        ],
+        [
             'question' => 'What payment gateways does Ledrix CRM support?',
             'answer' => 'Stripe and PayPal payment links from inside the lead/order flow — so your closer can collect while the buyer is still hot. Milestone billing and subscription billing are also supported on eligible plans.',
         ],

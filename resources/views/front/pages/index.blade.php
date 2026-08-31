@@ -219,6 +219,136 @@
             </div>
         </section>
 
+        {{-- Role-scoped portals --}}
+        <section class="mkt-section mkt-section-alt mkt-home-audience" aria-labelledby="home-roles-heading">
+            <div class="container">
+                <div class="text-center mb-4 mb-lg-5">
+                    <h2 class="mkt-section-title" id="home-roles-heading">Every role gets its own view</h2>
+                    <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
+                        Admin, seller, and client each sign into a different dashboard. Same company. Same brands. Nobody shares a login or a pile of tickets.
+                    </p>
+                </div>
+                <div class="row g-4">
+                    <article class="col-lg-4">
+                        <div class="mkt-home-audience-card h-100">
+                            <div class="mkt-home-audience-icon mkt-home-audience-icon--founder">
+                                <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="h4 mb-3">Admin</h3>
+                            <p class="text-secondary mb-4">
+                                You see every brand, closer, lead, and order in your workspace. Routing, users, and cash — not a seller’s stripped-down book.
+                            </p>
+                            <ul class="mkt-check-list list-unstyled mb-0">
+                                <li><i class="bi bi-check-circle-fill"></i> Full CRM across all your brands</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Assign closers and watch the real pipeline</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Not mixed with any other company on Ledrix</li>
+                            </ul>
+                        </div>
+                    </article>
+                    <article class="col-lg-4">
+                        <div class="mkt-home-audience-card mkt-home-audience-card--agency h-100">
+                            <div class="mkt-home-audience-icon mkt-home-audience-icon--agency">
+                                <i class="bi bi-person-badge" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="h4 mb-3">Seller</h3>
+                            <p class="text-secondary mb-4">
+                                Closers only see assigned leads, orders, and the payment link on that deal. No cherry-picking. No browsing the whole database.
+                            </p>
+                            <ul class="mkt-check-list list-unstyled mb-0">
+                                <li><i class="bi bi-check-circle-fill"></i> Their pipeline — not yours, not the company’s</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Message the client on the order, from the panel</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Mail when a lead is assigned to them</li>
+                            </ul>
+                        </div>
+                    </article>
+                    <article class="col-lg-4">
+                        <div class="mkt-home-audience-card mkt-home-audience-card--teams h-100">
+                            <div class="mkt-home-audience-icon mkt-home-audience-icon--teams">
+                                <i class="bi bi-person-check" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="h4 mb-3">Client</h3>
+                            <p class="text-secondary mb-4">
+                                Buyers log into a client portal — invoices, project progress, briefs, tickets, and a thread with their seller. They never see your other clients.
+                            </p>
+                            <ul class="mkt-check-list list-unstyled mb-0">
+                                <li><i class="bi bi-check-circle-fill"></i> Their orders and invoices only</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Status and task progress on their projects</li>
+                                <li><i class="bi bi-check-circle-fill"></i> No seller panel. No admin tools.</li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+                <p class="text-center text-secondary mt-4 mb-0 fw-semibold">
+                    Three logins. One workspace. Separation without extra tools.
+                </p>
+            </div>
+        </section>
+
+        {{-- Order progress chat --}}
+        <section class="mkt-section mkt-section-white" aria-labelledby="home-chat-heading">
+            <div class="container">
+                <div class="text-center mb-4 mb-lg-5">
+                    <h2 class="mkt-section-title" id="home-chat-heading">They don’t have to ask — they can check</h2>
+                    <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
+                        “Where’s my project?” should not live in email or a 40-person Slack. Clients and sellers talk on the order — a real message thread, not a bot.
+                    </p>
+                </div>
+                <div class="row g-4 justify-content-center">
+                    <article class="col-lg-6">
+                        <div class="mkt-card text-start h-100">
+                            <div class="mkt-card-icon"><i class="bi bi-chat-dots"></i></div>
+                            <h3 class="h5">Client: check the order, then ping the closer</h3>
+                            <p class="mb-3">Open the portal. See invoice status and project progress. If something’s stuck, message the assigned seller on that order — same thread they use.</p>
+                            <ul class="mkt-check-list list-unstyled mb-0">
+                                <li><i class="bi bi-check-circle-fill"></i> Status without calling the office</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Human replies from your closer — not an AI</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Tied to that order, not a shared inbox</li>
+                            </ul>
+                        </div>
+                    </article>
+                    <article class="col-lg-6">
+                        <div class="mkt-card text-start h-100">
+                            <div class="mkt-card-icon"><i class="bi bi-headset"></i></div>
+                            <h3 class="h5">Seller: answer from the panel, not Slack</h3>
+                            <p class="mb-3">Closers open Messages on their assigned orders. Unread client notes sit on that deal. No “can someone ping the client?” in a channel the founder has to police.</p>
+                            <ul class="mkt-check-list list-unstyled mb-0">
+                                <li><i class="bi bi-check-circle-fill"></i> Only orders they’re on</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Same thread the client already used</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Pipeline still in the seller panel — chat doesn’t replace routing</li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        {{-- Email notifications --}}
+        <section class="mkt-section mkt-section-muted" aria-labelledby="home-notify-heading">
+            <div class="container text-center">
+                <h2 class="mkt-section-title" id="home-notify-heading">You’ll know before they have to tell you</h2>
+                <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
+                    Tool fatigue kills closes when reps refresh Slack for “did they pay?” Ledrix mails the right person for the events that actually move cash — a fixed list, not another rules engine to babysit.
+                </p>
+                <div class="mkt-grid-3 mt-4 text-start">
+                    <article class="mkt-card">
+                        <div class="mkt-card-icon"><i class="bi bi-person-plus"></i></div>
+                        <h3 class="h5">Closers</h3>
+                        <p>Email when a lead is assigned to them. Email when payment lands on the deal (assigned seller and project manager). They open the panel — they don’t wait for a DM.</p>
+                    </article>
+                    <article class="mkt-card">
+                        <div class="mkt-card-icon"><i class="bi bi-envelope-check"></i></div>
+                        <h3 class="h5">Clients</h3>
+                        <p>Payment link, payment received, payment failed, brief request, and portal invite. They can still log in and look — mail is the tap on the shoulder, not the only source of truth.</p>
+                    </article>
+                    <article class="mkt-card">
+                        <div class="mkt-card-icon"><i class="bi bi-life-preserver"></i></div>
+                        <h3 class="h5">Your delivery team</h3>
+                        <p>When a client opens a support ticket, the closer, project manager, and admins get mail — plus deadline reminders. Chat stays in the portal; it doesn’t duplicate as email.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         {{-- Sales growth outcomes --}}
         <section class="mkt-section mkt-home-growth" aria-labelledby="home-growth-heading">
             <div class="container text-center">
@@ -355,11 +485,11 @@
         {{-- How it works --}}
         <section class="mkt-section mkt-section-alt" aria-labelledby="home-how-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="home-how-heading">Three steps — from inbound to paid</h2>
+                <h2 class="mkt-section-title" id="home-how-heading">Four steps — from inbound to paid to visible</h2>
                 <p class="mkt-section-lead">
-                    No more HubSpot for tracking, Stripe for links, and Slack for updates. Those three hops become one workspace.
+                    No more HubSpot for tracking, Stripe for links, and Slack for updates. Those hops become one workspace — including the client seeing it land.
                 </p>
-                <div class="mkt-grid-3">
+                <div class="mkt-grid-4">
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">1</span>
                         <h3 class="h5">Lead lands on a closer</h3>
@@ -374,6 +504,11 @@
                         <span class="mkt-step-num">3</span>
                         <h3 class="h5">Payment link while they’re hot</h3>
                         <p>Stripe or PayPal from the lead card the moment they say yes — before buyer’s remorse sets in.</p>
+                    </article>
+                    <article class="mkt-card text-start">
+                        <span class="mkt-step-num">4</span>
+                        <h3 class="h5">Client sees it land</h3>
+                        <p>Portal invite and payment mail go out. They open invoices, project progress, and can message the closer — no “did it go through?” ping.</p>
                     </article>
                 </div>
             </div>

@@ -2,8 +2,8 @@
 
 @section('title', 'FAQ')
 
-@section('seo_title', 'Ledrix CRM FAQ — Trials, Brands, Payments & Seller Panels')
-@section('meta_description', 'Answers for founders and agencies: free trial, multi-brand pipelines, seller panels, payment links, data privacy, and how Ledrix stops dropped leads.')
+@section('seo_title', 'Ledrix CRM FAQ — Trials, Brands, Portals, Payments & Seller Panels')
+@section('meta_description', 'Answers for founders and agencies: free trial, multi-brand pipelines, seller panels, client portal, payment links, notifications, and how Ledrix stops dropped leads.')
 @section('meta_keywords', 'Ledrix FAQ, CRM FAQ, agency CRM questions, free trial CRM, multi-brand CRM, seller panel, payment links CRM')
 
 @push('schema')
@@ -143,8 +143,8 @@
             'sectionId' => 'faq-product',
             'accordionId' => 'mktFaqProduct',
             'title' => 'Product, features & security',
-            'lead' => 'How Ledrix handles brands, sellers, payments, and data isolation.',
-            'faqs' => array_slice(config('seo.faq', []), 4, 4),
+            'lead' => 'How Ledrix handles brands, sellers, payments, portals, and data isolation.',
+            'faqs' => array_slice(config('seo.faq', []), 4, 7),
         ])
 
         @include('front.includes.faq-section', [
@@ -163,7 +163,7 @@
             'accordionId' => 'mktFaqSupport',
             'title' => 'Company & support',
             'lead' => 'Who built Ledrix and how to reach our sales team.',
-            'faqs' => array_slice(config('seo.faq', []), 8, 2),
+            'faqs' => array_slice(config('seo.faq', []), 11, 2),
         ])
 
         {{-- Bottom CTA --}}

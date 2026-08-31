@@ -156,7 +156,7 @@
                     <article class="mkt-card text-start">
                         <div class="mkt-card-icon"><i class="bi bi-person-badge"></i></div>
                         <h3 class="h5">Client portal</h3>
-                        <p>Clients check status themselves instead of DMing your sellers. Less Slack chaos. Better retention.</p>
+                        <p>Clients check invoices, project progress, and message the assigned seller — a human thread, not a bot. Less Slack. Better retention.</p>
                         <span class="mkt-feature-outcome"><i class="bi bi-arrow-up-right"></i> Less support load on closers</span>
                     </article>
                     <article class="mkt-card text-start">
@@ -486,7 +486,7 @@
                     <article class="mkt-card text-start">
                         <div class="mkt-card-icon"><i class="bi bi-person-check"></i></div>
                         <h3 class="h5">Clients</h3>
-                        <p>Self-serve status and tickets so your closers stop answering "where's my project?" all day.</p>
+                        <p>Own portal: invoices, project progress, briefs, tickets, and a message thread with their seller. Closers stop answering “where’s my project?” all day.</p>
                     </article>
                 </div>
             </div>
