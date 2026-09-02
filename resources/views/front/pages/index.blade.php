@@ -309,41 +309,14 @@
                     <article class="col-lg-6">
                         <div class="mkt-card text-start h-100">
                             <div class="mkt-card-icon"><i class="bi bi-headset"></i></div>
-                            <h3 class="h5">Seller: answer from the panel, not Slack</h3>
-                            <p class="mb-3">Closers open Messages on their assigned orders. Unread client notes sit on that deal. No “can someone ping the client?” in a channel the founder has to police.</p>
+                            <h3 class="h5">Seller: check your book, then reply</h3>
+                            <p class="mb-3">Closers open their seller panel and see their pipeline — assigned leads and orders only. If the client writes on that order, they reply there. No admin CRM. No Slack dig.</p>
                             <ul class="mkt-check-list list-unstyled mb-0">
-                                <li><i class="bi bi-check-circle-fill"></i> Only orders they’re on</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Same thread the client already used</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Pipeline still in the seller panel — chat doesn’t replace routing</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Their book — not the company database</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Same human thread the client already used</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Chat sits on the deal. It doesn’t replace routing.</li>
                             </ul>
                         </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        {{-- Email notifications --}}
-        <section class="mkt-section mkt-section-muted" aria-labelledby="home-notify-heading">
-            <div class="container text-center">
-                <h2 class="mkt-section-title" id="home-notify-heading">You’ll know before they have to tell you</h2>
-                <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
-                    Tool fatigue kills closes when reps refresh Slack for “did they pay?” Ledrix mails the right person for the events that actually move cash — a fixed list, not another rules engine to babysit.
-                </p>
-                <div class="mkt-grid-3 mt-4 text-start">
-                    <article class="mkt-card">
-                        <div class="mkt-card-icon"><i class="bi bi-person-plus"></i></div>
-                        <h3 class="h5">Closers</h3>
-                        <p>Email when a lead is assigned to them. Email when payment lands on the deal (assigned seller and project manager). They open the panel — they don’t wait for a DM.</p>
-                    </article>
-                    <article class="mkt-card">
-                        <div class="mkt-card-icon"><i class="bi bi-envelope-check"></i></div>
-                        <h3 class="h5">Clients</h3>
-                        <p>Payment link, payment received, payment failed, brief request, and portal invite. They can still log in and look — mail is the tap on the shoulder, not the only source of truth.</p>
-                    </article>
-                    <article class="mkt-card">
-                        <div class="mkt-card-icon"><i class="bi bi-life-preserver"></i></div>
-                        <h3 class="h5">Your delivery team</h3>
-                        <p>When a client opens a support ticket, the closer, project manager, and admins get mail — plus deadline reminders. Chat stays in the portal; it doesn’t duplicate as email.</p>
                     </article>
                 </div>
             </div>

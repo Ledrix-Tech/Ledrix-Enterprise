@@ -48,6 +48,7 @@
                         <div class="mkt-legal-switch" role="tablist" aria-label="Legal documents">
                             <a href="{{ route('terms.get') }}">Terms of Service</a>
                             <a href="{{ route('privacy.get') }}" class="is-active" aria-current="page">Privacy Policy</a>
+                            <a href="{{ route('security.get') }}">Security</a>
                         </div>
                     </div>
                 </div>
@@ -201,6 +202,7 @@
                                     Privacy questions: <a href="mailto:{{ $email }}">{{ $email }}</a>
                                     · <a href="{{ route('contact-us.get') }}">Contact form</a>
                                     · <a href="{{ route('terms.get') }}">Terms of Service</a>
+                                    · <a href="{{ route('security.get') }}">Security &amp; compliance</a>
                                 </p>
                             </div>
                         </article>
@@ -209,6 +211,10 @@
                             <a href="{{ route('terms.get') }}" class="mkt-legal-next">
                                 <span>Previous</span>
                                 <strong><i class="bi bi-arrow-left"></i> Terms of Service</strong>
+                            </a>
+                            <a href="{{ route('security.get') }}" class="mkt-legal-next">
+                                <span>Next</span>
+                                <strong>Security &amp; compliance <i class="bi bi-arrow-right"></i></strong>
                             </a>
                         </div>
                     </div>

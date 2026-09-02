@@ -88,6 +88,7 @@ return [
         ['path' => '/contact-us', 'priority' => '0.8', 'changefreq' => 'monthly'],
         ['path' => '/terms', 'priority' => '0.4', 'changefreq' => 'yearly'],
         ['path' => '/privacy-policy', 'priority' => '0.4', 'changefreq' => 'yearly'],
+        ['path' => '/security', 'priority' => '0.5', 'changefreq' => 'yearly'],
         ['path' => '/status', 'priority' => '0.6', 'changefreq' => 'daily'],
     ],
 
@@ -152,6 +153,22 @@ return [
         [
             'question' => 'Is my data isolated on Ledrix?',
             'answer' => 'Yes. Every company gets a private workspace. Your brands, leads, orders, and clients stay separate from every other organization on the platform.',
+        ],
+        [
+            'question' => 'Is Ledrix GDPR compliant?',
+            'answer' => 'Ledrix supports GDPR-style requests. Workspaces are tenant-scoped so other companies cannot see your data. Workspace owners can export their CRM data. You can request access, correction, or erasure of personal data we hold by emailing hello@ledrix.co. We process your clients’ data as a processor when you store it in Ledrix. We do not claim a third-party GDPR certification. Full statement: ledrix.co/security.',
+        ],
+        [
+            'question' => 'Can I use my own domain for my client portal?',
+            'answer' => 'Yes, on plans that include custom domains. Agencies reselling to their own clients can white-label the client portal under their own domain, so buyers land on your URL instead of Ledrix. You set the hostname and verify DNS in the product.',
+        ],
+        [
+            'question' => 'Can I send website leads into Ledrix with a script or API?',
+            'answer' => 'Yes. Each brand can embed a lead script on your site, or you can POST leads to the API with a workspace token. The lead still routes to a closer and a brand. API access and lead scoring are plan features.',
+        ],
+        [
+            'question' => 'Does Ledrix support SSO or SCIM?',
+            'answer' => 'OIDC sign-in for CRM admins and SCIM 2.0 admin provisioning exist when we enable them for your workspace. They are not a self-serve setting in the trial. Ask sales if you need them. Details: ledrix.co/security.',
         ],
         [
             'question' => 'Who founded Ledrix?',

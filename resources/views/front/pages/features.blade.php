@@ -18,13 +18,14 @@
         'name' => 'Ledrix CRM Features for Sales Growth',
         'description' => 'Sales CRM capabilities that help teams capture leads, close deals, and scale revenue.',
         'itemListElement' => [
-            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Lead capture & multi-brand routing'],
-            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Seller & admin panels'],
-            ['@type' => 'ListItem', 'position' => 3, 'name' => 'Orders, Stripe & PayPal payments'],
-            ['@type' => 'ListItem', 'position' => 4, 'name' => 'Client portal & retention'],
-            ['@type' => 'ListItem', 'position' => 5, 'name' => 'API, webhooks & integrations'],
-            ['@type' => 'ListItem', 'position' => 6, 'name' => 'Reporting & performance dashboards'],
-            ['@type' => 'ListItem', 'position' => 7, 'name' => 'Private company data — your brands stay yours'],
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Lead & pipeline'],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Payments'],
+            ['@type' => 'ListItem', 'position' => 3, 'name' => 'Multi-brand / multi-LLC'],
+            ['@type' => 'ListItem', 'position' => 4, 'name' => 'Client portal'],
+            ['@type' => 'ListItem', 'position' => 5, 'name' => 'Agency & branding'],
+            ['@type' => 'ListItem', 'position' => 6, 'name' => 'Admin & oversight'],
+            ['@type' => 'ListItem', 'position' => 7, 'name' => 'Integrations'],
+            ['@type' => 'ListItem', 'position' => 8, 'name' => 'Security & compliance'],
         ],
     ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
@@ -35,7 +36,7 @@
 @endpush
 
 @section('main-content')
-    <div class="mkt-page">
+    <div class="mkt-page mkt-page-features">
         {{-- Hero --}}
         <section class="mkt-hero text-center" aria-labelledby="features-hero-heading">
             <div class="container">
@@ -129,51 +130,22 @@
             </div>
         </section>
 
-        {{-- Core capabilities --}}
-        <section class="mkt-section mkt-section-alt" id="capabilities" aria-labelledby="features-core-heading">
+        {{-- Category jump --}}
+        <nav class="mkt-section mkt-section-alt mkt-features-toc" id="capabilities" aria-label="Feature categories">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="features-core-heading">What Ledrix fixes — module by module</h2>
-                <p class="mkt-section-lead">Each piece solves a real sales leak. Turn on what you need now. <a href="{{ route('pricing.get') }}">Compare plans</a>.</p>
-                <div class="mkt-grid-3">
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-funnel"></i></div>
-                        <h3 class="h5">Lead routing that claims ownership</h3>
-                        <p>No more “who’s on this?” Every inbound lead gets a closer, a brand, and a trail — so nothing dies unclaimed.</p>
-                        <span class="mkt-feature-outcome"><i class="bi bi-arrow-up-right"></i> Fewer dropped leads</span>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-people"></i></div>
-                        <h3 class="h5">Seller panel for closers</h3>
-                        <p>Reps only see what they need to close. Admins see everything. No distraction, no cherry-picking the best leads.</p>
-                        <span class="mkt-feature-outcome"><i class="bi bi-arrow-up-right"></i> More dial time, less noise</span>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-credit-card"></i></div>
-                        <h3 class="h5">Payment links from the deal</h3>
-                        <p>Send Stripe or PayPal while the buyer is still hot — not hours later in a separate billing tool after Zoom ends.</p>
-                        <span class="mkt-feature-outcome"><i class="bi bi-arrow-up-right"></i> Faster cash, fewer cold feet</span>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-person-badge"></i></div>
-                        <h3 class="h5">Client portal</h3>
-                        <p>Clients check invoices, project progress, and message the assigned seller — a human thread, not a bot. Less Slack. Better retention.</p>
-                        <span class="mkt-feature-outcome"><i class="bi bi-arrow-up-right"></i> Less support load on closers</span>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-plug"></i></div>
-                        <h3 class="h5">Website &amp; stack intake</h3>
-                        <p>Pull leads from your site, forms, and tools automatically — so inbound doesn’t sit in someone’s inbox overnight.</p>
-                        <span class="mkt-feature-outcome"><i class="bi bi-arrow-up-right"></i> Leads land while they’re hot</span>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-shield-check"></i></div>
-                        <h3 class="h5">Your data stays yours</h3>
-                        <p>Your brands, sellers, and clients stay private to your company. No mixing with another org on the platform.</p>
-                        <span class="mkt-feature-outcome"><i class="bi bi-arrow-up-right"></i> Clean, private pipelines</span>
-                    </article>
+                <p class="mkt-features-toc-kicker">Jump to a category</p>
+                <div class="mkt-features-toc-list">
+                    <a href="#lead-pipeline">Lead &amp; pipeline</a>
+                    <a href="#payments">Payments</a>
+                    <a href="#multi-brand">Multi-brand / multi-LLC</a>
+                    <a href="#client-portal">Client portal</a>
+                    <a href="#agency-branding">Agency &amp; branding</a>
+                    <a href="#admin-oversight">Admin &amp; oversight</a>
+                    <a href="#integrations">Integrations</a>
+                    <a href="#security-compliance">Security</a>
                 </div>
             </div>
-        </section>
+        </nav>
 
         {{-- Mid-page CTA --}}
         <section class="mkt-features-mid-cta" aria-labelledby="features-mid-cta-heading">
@@ -224,203 +196,371 @@
             </div>
         </section>
 
-        {{-- Deep dive --}}
-        <section class="mkt-section mkt-features-deep" aria-labelledby="features-deep-heading">
+        {{-- Lead & pipeline --}}
+        <section class="mkt-feat-cat" id="lead-pipeline" aria-labelledby="cat-lead-heading">
             <div class="container">
-                <div class="mkt-features-deep-header text-center">
-                    <span class="mkt-features-deep-kicker">How Ledrix plugs each leak</span>
-                    <h2 class="mkt-section-title" id="features-deep-heading">From inbound lead to paid — without tool-hopping</h2>
+                <div class="mkt-feat-cat__shell">
+                    <div class="mkt-feat-cat__intro">
+                        <span class="mkt-cat-kicker">Lead &amp; pipeline</span>
+                        <h2 class="mkt-section-title" id="cat-lead-heading">Every lead gets a closer — not a shared pile</h2>
+                        <p class="mkt-section-lead">Routing, ownership, and a seller panel that only shows their book.</p>
+                    </div>
+                    <div class="mkt-feat-list">
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-funnel"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Brand-aware routing</h3>
+                                <p>Website and form leads land on a specific closer and brand while they’re still hot. Notes and history stay on the lead.</p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-person-badge"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Seller panel</h3>
+                                <p>Closers see assigned leads, follow-ups, and the payment link on that deal. They can’t cherry-pick someone else’s book.</p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-journal-check"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Clear ownership</h3>
+                                <p>No “I thought you had it.” Activity sits on the opportunity — not in someone’s head or a group chat.</p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-code-slash"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Site script &amp; API</h3>
+                                <p>Drop a lead script on your site or POST to the lead API. The lead still lands on a closer and a brand — not an inbox.</p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-filter-circle"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Lead scoring</h3>
+                                <p>On eligible plans, intake can score a lead as real vs junk before a closer wastes a dial. It is a classifier — not a bot that writes emails.</p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-arrow-repeat"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Renewals</h3>
+                                <p>When a client is already on the books, open a renewal from the order instead of starting a new pile in a sheet.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{-- Payments --}}
+        <section class="mkt-feat-cat mkt-feat-cat--cards" id="payments" aria-labelledby="cat-pay-heading">
+            <div class="container">
+                <div class="mkt-feat-cards-head">
+                    <span class="mkt-cat-kicker">Payments</span>
+                    <h2 class="mkt-section-title" id="cat-pay-heading">Payment link in seconds after “yes”</h2>
+                    <p class="mkt-section-lead">Stripe or PayPal from the lead card — before the buyer goes cold.</p>
+                </div>
+                <div class="mkt-feat-cards">
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-credit-card"></i></span>
+                        <h3>Links from the deal</h3>
+                        <p>Generate Stripe or PayPal inside the CRM. No hop to a separate billing tab mid-close.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span>
+                        <h3>Order tracking</h3>
+                        <p>Quote to paid stays on the order. Closers and clients can see whether it landed.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-layers"></i></span>
+                        <h3>Milestone billing</h3>
+                        <p>Staged cash when a project needs more than one invoice. On eligible plans.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+                        <h3>Invoice from the order</h3>
+                        <p>Generate the invoice on the deal you’re already in. On eligible plans.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-shield-exclamation"></i></span>
+                        <h3>Disputes &amp; refunds</h3>
+                        <p>Stripe and PayPal refund and dispute events can land back on the payment — so chargebacks aren’t a surprise Slack thread. On eligible plans.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-plugin"></i></span>
+                        <h3>Payment webhooks</h3>
+                        <p>Paid and failed updates hit the CRM from Stripe or PayPal. Closers don’t refresh another dashboard to ask “did it land?”</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        {{-- Multi-brand — most detail --}}
+        <section class="mkt-section mkt-section-white mkt-features-deep" id="multi-brand" aria-labelledby="cat-brand-heading">
+            <div class="container">
+                <div class="mkt-cat-head text-center">
+                    <span class="mkt-cat-kicker">Multi-brand / multi-LLC</span>
+                    <h2 class="mkt-section-title" id="cat-brand-heading">Unlimited brands. One login. No mixed data.</h2>
                     <p class="mkt-section-lead mx-auto">
-                        Closers stop jumping HubSpot → Stripe → Slack. Founders stop guessing who owns which lead. Here's what that looks like in Ledrix.
+                        This is the reason agencies stop stacking CRM seats. Every LLC or brand stays in its own pipeline. You still run one workspace.
                     </p>
                 </div>
-
-                <div class="mkt-features-deep-stack">
-                    {{-- 01 Pipeline --}}
-                    <article class="mkt-feature-panel">
-                        <div class="row g-0 align-items-stretch">
-                            <div class="col-lg-6 mkt-feature-panel__body">
-                                <div class="mkt-feature-panel__inner">
-                                    <div class="mkt-feature-panel__meta">
-                                        <span class="mkt-feature-panel__num">01</span>
-                                        <span class="mkt-feature-tag">Lead ownership</span>
-                                    </div>
-                                    <h3>Every lead gets a closer — instantly</h3>
-                                    <p>Stop the shared spreadsheet pile. Website and form leads land on a specific seller and brand while they're still hot — with notes and history attached.</p>
-                                    <ul class="mkt-feature-panel__list">
-                                        <li><i class="bi bi-check2"></i> Brand-aware routing so pipelines don't mix</li>
-                                        <li><i class="bi bi-check2"></i> Clear assignment — no "I thought you had it"</li>
-                                        <li><i class="bi bi-check2"></i> Pull leads from your site and tools automatically</li>
-                                        <li><i class="bi bi-check2"></i> Full activity trail on every opportunity</li>
-                                    </ul>
-                                    <div class="mkt-feature-panel__outcome">
-                                        <i class="bi bi-graph-up-arrow"></i>
-                                        <span><strong>Pain solved</strong> — Dropped / unclaimed leads</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mkt-feature-panel__media-col">
-                                <div class="mkt-feature-panel__frame">
-                                    <div class="mkt-feature-panel__frame-bar">
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--red"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--yellow"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--green"></span>
-                                        <span class="mkt-feature-panel__frame-title">Ledrix — Lead pipeline</span>
-                                    </div>
-                                    <img src="{{ asset('front-assets/imgs/lead-m.jpg') }}" alt="Ledrix CRM lead management dashboard — assign sellers and track pipeline for sales growth" class="mkt-feature-panel__img" loading="lazy" width="600" height="400">
+                <article class="mkt-feature-panel">
+                    <div class="row g-0 align-items-stretch">
+                        <div class="col-lg-6 mkt-feature-panel__body">
+                            <div class="mkt-feature-panel__inner">
+                                <h3>Stop paying for two CRMs to keep brands apart</h3>
+                                <p>
+                                    Web leads stay with the web brand. Marketing leads stay with marketing. Closers don’t trip over another LLC’s book.
+                                    Admins see every brand in <em>this</em> company — not every tenant on Ledrix.
+                                </p>
+                                <ul class="mkt-feature-panel__list">
+                                    <li><i class="bi bi-check2"></i> Separate brand pipelines under one account</li>
+                                    <li><i class="bi bi-check2"></i> Routing that respects the brand the lead came from</li>
+                                    <li><i class="bi bi-check2"></i> One bill instead of stacking seats per brand</li>
+                                    <li><i class="bi bi-check2"></i> Sellers stay on their assignments — they don’t browse the whole shop</li>
+                                    <li><i class="bi bi-check2"></i> Your workspace stays private from every other company on the platform</li>
+                                </ul>
+                                <div class="mkt-feature-panel__outcome">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                    <span><strong>Pain solved</strong> — Dual CRM bills &amp; mixed brands</span>
                                 </div>
                             </div>
                         </div>
-                    </article>
-
-                    {{-- 02 Performance --}}
-                    <article class="mkt-feature-panel mkt-feature-panel--reverse">
-                        <div class="row g-0 align-items-stretch flex-lg-row-reverse">
-                            <div class="col-lg-6 mkt-feature-panel__body">
-                                <div class="mkt-feature-panel__inner">
-                                    <div class="mkt-feature-panel__meta">
-                                        <span class="mkt-feature-panel__num">02</span>
-                                        <span class="mkt-feature-tag">Seller panel</span>
-                                    </div>
-                                    <h3>Closers only see what they need to close</h3>
-                                    <p>Are reps distracted by the whole company database — or worse, cherry-picking the best leads? The seller panel is stripped down to their assignments and follow-ups.</p>
-                                    <ul class="mkt-feature-panel__list">
-                                        <li><i class="bi bi-check2"></i> Focused closer workspace — no admin clutter</li>
-                                        <li><i class="bi bi-check2"></i> Ownership and follow-ups that don't live in someone's head</li>
-                                        <li><i class="bi bi-check2"></i> Leaderboard &amp; performance visibility for managers</li>
-                                        <li><i class="bi bi-check2"></i> Less busywork, more dial time</li>
-                                    </ul>
-                                    <div class="mkt-feature-panel__outcome">
-                                        <i class="bi bi-graph-up-arrow"></i>
-                                        <span><strong>Pain solved</strong> — Cherry-picking &amp; distraction</span>
-                                    </div>
+                        <div class="col-lg-6 mkt-feature-panel__media-col">
+                            <div class="mkt-feature-panel__frame">
+                                <div class="mkt-feature-panel__frame-bar">
+                                    <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--red"></span>
+                                    <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--yellow"></span>
+                                    <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--green"></span>
+                                    <span class="mkt-feature-panel__frame-title">Ledrix — Brands</span>
                                 </div>
-                            </div>
-                            <div class="col-lg-6 mkt-feature-panel__media-col">
-                                <div class="mkt-feature-panel__frame">
-                                    <div class="mkt-feature-panel__frame-bar">
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--red"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--yellow"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--green"></span>
-                                        <span class="mkt-feature-panel__frame-title">Ledrix — Seller workspace</span>
-                                    </div>
-                                    <img src="{{ asset('front-assets/imgs/automation.jpg') }}" alt="Ledrix seller workflow automation — leaderboard and performance tracking for sales teams" class="mkt-feature-panel__img" loading="lazy" width="600" height="400">
-                                </div>
+                                <img src="{{ asset('front-assets/imgs/integerate.jpg') }}" alt="Ledrix CRM multi-brand pipelines under one login" class="mkt-feature-panel__img" loading="lazy" width="600" height="400">
                             </div>
                         </div>
-                    </article>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-                    {{-- 03 Revenue --}}
-                    <article class="mkt-feature-panel">
-                        <div class="row g-0 align-items-stretch">
-                            <div class="col-lg-6 mkt-feature-panel__body">
-                                <div class="mkt-feature-panel__inner">
-                                    <div class="mkt-feature-panel__meta">
-                                        <span class="mkt-feature-panel__num">03</span>
-                                        <span class="mkt-feature-tag">Payments</span>
-                                    </div>
-                                    <h3>Payment link in seconds after "yes"</h3>
-                                    <p>How many deals die between Zoom "yes" and a manual invoice hours later? Generate Stripe or PayPal from the lead card before buyer's remorse sets in.</p>
-                                    <ul class="mkt-feature-panel__list">
-                                        <li><i class="bi bi-check2"></i> Stripe &amp; PayPal from inside the deal</li>
-                                        <li><i class="bi bi-check2"></i> Milestone billing when projects need staged cash</li>
-                                        <li><i class="bi bi-check2"></i> Order status from quote to paid</li>
-                                        <li><i class="bi bi-check2"></i> No hopping to a separate billing tool mid-close</li>
-                                    </ul>
-                                    <div class="mkt-feature-panel__outcome">
-                                        <i class="bi bi-graph-up-arrow"></i>
-                                        <span><strong>Pain solved</strong> — Slow invoices &amp; cold buyers</span>
-                                    </div>
-                                </div>
+        {{-- Client portal --}}
+        <section class="mkt-feat-cat mkt-feat-cat--tint" id="client-portal" aria-labelledby="cat-client-heading">
+            <div class="container">
+                <div class="mkt-feat-cat__shell">
+                    <div class="mkt-feat-cat__intro">
+                        <span class="mkt-cat-kicker">Client portal</span>
+                        <h2 class="mkt-section-title" id="cat-client-heading">Clients log in. They don’t email “where is it?”</h2>
+                        <p class="mkt-section-lead">Their orders, invoices, tickets, and progress — not your pipeline.</p>
+                    </div>
+                    <div class="mkt-feat-list mkt-feat-list--stack">
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Orders &amp; invoices</h3>
+                                <p>Clients see their own invoices and payment history. They don’t see other buyers.</p>
                             </div>
-                            <div class="col-lg-6 mkt-feature-panel__media-col">
-                                <div class="mkt-feature-panel__frame">
-                                    <div class="mkt-feature-panel__frame-bar">
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--red"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--yellow"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--green"></span>
-                                        <span class="mkt-feature-panel__frame-title">Ledrix — Payments &amp; orders</span>
-                                    </div>
-                                    <img src="{{ asset('front-assets/imgs/chatt.jpg') }}" alt="Stripe and PayPal payment links in Ledrix CRM for faster revenue collection" class="mkt-feature-panel__img" loading="lazy" width="600" height="400">
-                                </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-kanban"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Progress status</h3>
+                                <p>When your team opens a project, they can check status and tasks in the portal. They can also message the assigned seller — a human thread, not a bot.</p>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-life-preserver"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Tickets</h3>
+                                <p>Clients open support tickets from the portal. Your closer, project manager, and admins get the mail — plus deadline reminders. Chat stays on the order; it doesn’t duplicate as email.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                    {{-- 04 Integrations --}}
-                    <article class="mkt-feature-panel mkt-feature-panel--reverse">
-                        <div class="row g-0 align-items-stretch flex-lg-row-reverse">
-                            <div class="col-lg-6 mkt-feature-panel__body">
-                                <div class="mkt-feature-panel__inner">
-                                    <div class="mkt-feature-panel__meta">
-                                        <span class="mkt-feature-panel__num">04</span>
-                                        <span class="mkt-feature-tag">Multi-brand</span>
-                                    </div>
-                                    <h3>Unlimited brands. One login. No mixed data.</h3>
-                                    <p>Still paying for two CRM accounts to keep your web brand's leads away from your marketing brand's? Run every brand under one roof — pipelines stay clean.</p>
-                                    <ul class="mkt-feature-panel__list">
-                                        <li><i class="bi bi-check2"></i> Separate brand pipelines, shared reporting</li>
-                                        <li><i class="bi bi-check2"></i> Connect your site and tools for auto intake</li>
-                                        <li><i class="bi bi-check2"></i> Custom domain &amp; white-label on higher plans</li>
-                                        <li><i class="bi bi-check2"></i> One bill instead of stacking CRM seats</li>
-                                    </ul>
-                                    <div class="mkt-feature-panel__outcome">
-                                        <i class="bi bi-graph-up-arrow"></i>
-                                        <span><strong>Pain solved</strong> — Dual CRM bills &amp; mixed brands</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mkt-feature-panel__media-col">
-                                <div class="mkt-feature-panel__frame">
-                                    <div class="mkt-feature-panel__frame-bar">
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--red"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--yellow"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--green"></span>
-                                        <span class="mkt-feature-panel__frame-title">Ledrix — API &amp; integrations</span>
-                                    </div>
-                                    <img src="{{ asset('front-assets/imgs/integerate.jpg') }}" alt="Ledrix CRM API and webhook integrations for automated lead intake and sales workflows" class="mkt-feature-panel__img" loading="lazy" width="600" height="400">
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    {{-- 05 Insights --}}
-                    <article class="mkt-feature-panel">
-                        <div class="row g-0 align-items-stretch">
-                            <div class="col-lg-6 mkt-feature-panel__body">
-                                <div class="mkt-feature-panel__inner">
-                                    <div class="mkt-feature-panel__meta">
-                                        <span class="mkt-feature-panel__num">05</span>
-                                        <span class="mkt-feature-tag">Visibility</span>
-                                    </div>
-                                    <h3>Founders see the real pipeline — not guesswork</h3>
-                                    <p>Stop flying blind on who's closing, what's stuck, and which brand is leaking. Dashboards show leads, orders, and seller performance in one place.</p>
-                                    <ul class="mkt-feature-panel__list">
-                                        <li><i class="bi bi-check2"></i> Live view of leads, orders &amp; cash collected</li>
-                                        <li><i class="bi bi-check2"></i> Seller performance without chasing Slack updates</li>
-                                        <li><i class="bi bi-check2"></i> Client portal cuts "where's my project?" pings</li>
-                                        <li><i class="bi bi-check2"></i> Decisions on data — not gut feel</li>
-                                    </ul>
-                                    <div class="mkt-feature-panel__outcome">
-                                        <i class="bi bi-graph-up-arrow"></i>
-                                        <span><strong>Pain solved</strong> — Blind pipeline &amp; tool fatigue</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mkt-feature-panel__media-col">
-                                <div class="mkt-feature-panel__frame">
-                                    <div class="mkt-feature-panel__frame-bar">
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--red"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--yellow"></span>
-                                        <span class="mkt-feature-panel__frame-dot mkt-feature-panel__frame-dot--green"></span>
-                                        <span class="mkt-feature-panel__frame-title">Ledrix — Analytics dashboard</span>
-                                    </div>
-                                    <img src="{{ asset('front-assets/imgs/report.jpg') }}" alt="Ledrix CRM admin reporting dashboard — seller performance and sales pipeline analytics" class="mkt-feature-panel__img" loading="lazy" width="600" height="400">
-                                </div>
-                            </div>
+        {{-- Agency & branding --}}
+        <section class="mkt-feat-cat" id="agency-branding" aria-labelledby="cat-agency-heading">
+            <div class="container">
+                <div class="mkt-feat-spotlight mkt-feat-spotlight--flip">
+                    <div class="mkt-feat-spotlight__intro">
+                        <span class="mkt-cat-kicker">Agency &amp; branding</span>
+                        <h2 class="mkt-section-title" id="cat-agency-heading">Your brand on the door — when the plan includes it</h2>
+                        <p class="mkt-section-lead">For agencies reselling to their own clients. Not a homepage pitch. One fact:</p>
+                    </div>
+                    <article class="mkt-feat-spotlight__body">
+                        <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-globe2"></i></span>
+                        <div class="mkt-feat-item__body">
+                            <h3>Custom domain</h3>
+                            <p>White-label the client portal under the agency’s own domain so buyers land on your URL, not Ledrix. Available on plans that include custom domains. You set the hostname and verify DNS in the product. Eligible plans can also drop Ledrix branding (logo) on the portal.</p>
                         </div>
                     </article>
                 </div>
+            </div>
+        </section>
+
+        {{-- Admin & oversight --}}
+        <section class="mkt-feat-cat mkt-feat-cat--tint mkt-feat-cat--cards" id="admin-oversight" aria-labelledby="cat-admin-heading">
+            <div class="container">
+                <div class="mkt-feat-cards-head">
+                    <span class="mkt-cat-kicker">Admin &amp; oversight</span>
+                    <h2 class="mkt-section-title" id="cat-admin-heading">You see the workspace. Closers see their book.</h2>
+                    <p class="mkt-section-lead">Stats and controls stay here — not on the homepage. Room to grow without enterprise bloat.</p>
+                </div>
+                <div class="mkt-feat-cards">
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-bar-chart"></i></span>
+                        <h3>Pipeline stats</h3>
+                        <p>Leads, orders, cash collected, and closer performance for the brands in your workspace.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-sliders"></i></span>
+                        <h3>Controls</h3>
+                        <p>Brands, users, routing, and payment accounts. Finance logins can be limited to payouts — they don’t run the full CRM.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-trophy"></i></span>
+                        <h3>Seller visibility</h3>
+                        <p>Leaderboard, performance views, and bonus tracking on eligible plans. Closers still don’t get the admin database.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-person-plus"></i></span>
+                        <h3>Team seats</h3>
+                        <p>Invite admins and finance from the workspace. Sellers and clients are created by your team — trial signup is the org owner.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
+                        <h3>2FA &amp; audit log</h3>
+                        <p>Optional two-factor on admin and seller logins. Org owners get a workspace audit log. Details on the <a href="{{ route('security.get') }}">Security page</a>.</p>
+                    </article>
+                    <article class="mkt-feat-card">
+                        <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-credit-card-2-front"></i></span>
+                        <h3>Your Ledrix bill</h3>
+                        <p>Self-serve plan change and Stripe customer portal for the workspace subscription. That’s how you pay Ledrix — not how your buyers pay you.</p>
+                    </article>
+                </div>
+
+                <div class="mkt-rbac-board">
+                    <div class="mkt-rbac-board__head">
+                        <span class="mkt-cat-kicker">Roles</span>
+                        <h3>Who sees what</h3>
+                    </div>
+                    <div class="mkt-rbac-cols">
+                        <article class="mkt-rbac-col mkt-rbac-col--admin">
+                            <header class="mkt-rbac-col__head">
+                                <span class="mkt-rbac-col__icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
+                                <h4>Admin</h4>
+                            </header>
+                            <div class="mkt-rbac-col__block">
+                                <p class="mkt-rbac-col__label mkt-rbac-col__label--yes">Sees</p>
+                                <ul>
+                                    <li>All brands, leads, sellers, orders, and reports in this workspace</li>
+                                </ul>
+                            </div>
+                            <div class="mkt-rbac-col__block">
+                                <p class="mkt-rbac-col__label mkt-rbac-col__label--no">Does not see</p>
+                                <ul>
+                                    <li>Other companies on Ledrix</li>
+                                </ul>
+                            </div>
+                        </article>
+                        <article class="mkt-rbac-col mkt-rbac-col--seller">
+                            <header class="mkt-rbac-col__head">
+                                <span class="mkt-rbac-col__icon" aria-hidden="true"><i class="bi bi-person-badge"></i></span>
+                                <h4>Seller</h4>
+                            </header>
+                            <div class="mkt-rbac-col__block">
+                                <p class="mkt-rbac-col__label mkt-rbac-col__label--yes">Sees</p>
+                                <ul>
+                                    <li>Assigned leads, their orders, their clients, order chat, payment links on their deals</li>
+                                </ul>
+                            </div>
+                            <div class="mkt-rbac-col__block">
+                                <p class="mkt-rbac-col__label mkt-rbac-col__label--no">Does not see</p>
+                                <ul>
+                                    <li>Other closers’ books, admin settings, payout reports, other companies</li>
+                                </ul>
+                            </div>
+                        </article>
+                        <article class="mkt-rbac-col mkt-rbac-col--client">
+                            <header class="mkt-rbac-col__head">
+                                <span class="mkt-rbac-col__icon" aria-hidden="true"><i class="bi bi-person-check"></i></span>
+                                <h4>Client</h4>
+                            </header>
+                            <div class="mkt-rbac-col__block">
+                                <p class="mkt-rbac-col__label mkt-rbac-col__label--yes">Sees</p>
+                                <ul>
+                                    <li>Own orders, invoices, projects, briefs, tickets, messages with their seller</li>
+                                </ul>
+                            </div>
+                            <div class="mkt-rbac-col__block">
+                                <p class="mkt-rbac-col__label mkt-rbac-col__label--no">Does not see</p>
+                                <ul>
+                                    <li>Your pipeline, other clients, the seller panel, admin tools</li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
+                    <p class="mkt-rbac-board__note">Some teams also use a project-manager or finance login. Those stay narrower than admin — not a second full CRM.</p>
+                </div>
+            </div>
+        </section>
+
+        {{-- Integrations --}}
+        <section class="mkt-feat-cat mkt-feat-cat--wide" id="integrations" aria-labelledby="cat-int-heading">
+            <div class="container">
+                <div class="mkt-feat-cat__shell">
+                    <div class="mkt-feat-cat__intro">
+                        <span class="mkt-cat-kicker">Integrations</span>
+                        <h2 class="mkt-section-title" id="cat-int-heading">Your site and tools can push. Closers still own the lead.</h2>
+                        <p class="mkt-section-lead">The pieces agencies check before they rule you out — not a homepage pitch.</p>
+                    </div>
+                    <div class="mkt-feat-list mkt-feat-list--stack">
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-window"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>Lead script</h3>
+                                <p>Embed a brand script on your site. Form fields map into Ledrix. The lead still routes to a closer.</p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-key"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>API tokens</h3>
+                                <p>Workspace tokens for the public lead API and <code>/api/v1</code> (company, usage, invoices, optional lead classify). On plans that include API access.</p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-broadcast"></i></span>
+                            <div class="mkt-feat-item__body">
+                                <h3>SSO &amp; SCIM</h3>
+                                <p>OIDC sign-in and SCIM admin provisioning exist when we turn them on for you. Not a self-serve Okta panel in the trial. <a href="{{ route('security.get') }}">How that works</a>.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{-- Security link-out --}}
+        <section class="mkt-feat-cat mkt-feat-cat--tint" id="security-compliance" aria-labelledby="cat-sec-heading">
+            <div class="container">
+                <a href="{{ route('security.get') }}" class="mkt-feat-security">
+                    <div class="mkt-feat-security__copy">
+                        <span class="mkt-cat-kicker">Security &amp; compliance</span>
+                        <h2 class="mkt-section-title" id="cat-sec-heading">Isolation and GDPR live on their own page</h2>
+                        <p class="mkt-section-lead">We don’t headline compliance here. If you need the facts, they’re written plainly next door.</p>
+                    </div>
+                    <span class="mkt-feat-security__cta">
+                        <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                        <span>
+                            <strong>Security &amp; compliance</strong>
+                            <em>Tenant isolation, GDPR requests, what we do not claim</em>
+                        </span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </span>
+                </a>
             </div>
         </section>
 
@@ -463,31 +603,6 @@
                     @else
                         <a href="{{ route('pricing.get') }}" class="btn btn-lg btn-light fw-bold px-4">See plans — no card</a>
                     @endif
-                </div>
-            </div>
-        </section>
-
-        {{-- Teams --}}
-        <section class="mkt-section mkt-section-alt" aria-labelledby="features-roles-heading">
-            <div class="container text-center">
-                <h2 class="mkt-section-title" id="features-roles-heading">Built for founders, closers, and clients</h2>
-                <p class="mkt-section-lead">Each role gets the view that stops their specific leak — not one cluttered screen for everyone.</p>
-                <div class="mkt-grid-3 mt-4">
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-person-workspace"></i></div>
-                        <h3 class="h5">Sellers &amp; closers</h3>
-                        <p>Assigned leads, follow-ups, and payment links only. No admin noise. No cherry-picking other reps' books.</p>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-shield-lock"></i></div>
-                        <h3 class="h5">Founders &amp; admins</h3>
-                        <p>Full control of brands, routing, users, orders, and cash — see who's closing and what's stuck.</p>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-person-check"></i></div>
-                        <h3 class="h5">Clients</h3>
-                        <p>Own portal: invoices, project progress, briefs, tickets, and a message thread with their seller. Closers stop answering “where’s my project?” all day.</p>
-                    </article>
                 </div>
             </div>
         </section>

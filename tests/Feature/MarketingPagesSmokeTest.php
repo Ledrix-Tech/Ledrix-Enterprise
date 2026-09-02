@@ -58,6 +58,7 @@ class MarketingPagesSmokeTest extends TestCase
             'faq'      => ['faq.get'],
             'terms'    => ['terms.get'],
             'privacy'  => ['privacy.get'],
+            'security' => ['security.get'],
         ];
     }
 
@@ -65,5 +66,49 @@ class MarketingPagesSmokeTest extends TestCase
     public function test_marketing_page_loads_without_error(string $routeName): void
     {
         $this->get(route($routeName))->assertOk();
+    }
+
+    public function test_homepage_keeps_role_and_status_sections_off_compliance(): void
+    {
+        $this->get(route('index.get'))
+            ->assertOk()
+            ->assertSee('Every role gets its own view', false)
+            ->assertSee('They don’t have to ask — they can check', false)
+            ->assertDontSee('You’ll know before they have to tell you', false)
+            ->assertDontSee('Is Ledrix GDPR compliant', false)
+            ->assertDontSee('custom domain', false);
+    }
+
+    public function test_features_page_uses_categories_and_rbac_table(): void
+    {
+        $this->get(route('features.get'))
+            ->assertOk()
+            ->assertSee('Multi-brand / multi-LLC', false)
+            ->assertSee('Agency &amp; branding', false)
+            ->assertSee('White-label the client portal', false)
+            ->assertSee('Who sees what', false)
+            ->assertSee('payout reports', false)
+            ->assertSee('Integrations', false)
+            ->assertSee('API tokens', false)
+            ->assertSee('Disputes &amp; refunds', false)
+            ->assertSee(route('security.get', [], false), false);
+    }
+
+    public function test_security_page_is_factual_and_linked_from_faq(): void
+    {
+        $this->get(route('security.get'))
+            ->assertOk()
+            ->assertSee('Workspace isolation', false)
+            ->assertSee('SSO and SCIM', false)
+            ->assertSee('We do not claim one', false)
+            ->assertDontSee('SOC 2 certified', false);
+
+        $this->get(route('faq.get'))
+            ->assertOk()
+            ->assertSee('Is Ledrix GDPR compliant?', false)
+            ->assertSee('Can I use my own domain for my client portal?', false)
+            ->assertSee('Can I send website leads into Ledrix with a script or API?', false)
+            ->assertSee('Does Ledrix support SSO or SCIM?', false)
+            ->assertSee(route('security.get', [], false), false);
     }
 }

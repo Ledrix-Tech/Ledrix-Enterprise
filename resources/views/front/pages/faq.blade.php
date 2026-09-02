@@ -66,7 +66,7 @@
                                     ['icon' => 'bi-rocket-takeoff', 'title' => 'Getting started', 'desc' => 'Trials, signup & onboarding', 'href' => '#faq-getting-started'],
                                     ['icon' => 'bi-kanban', 'title' => 'Product & CRM', 'desc' => 'Features, brands & payments', 'href' => '#faq-product'],
                                     ['icon' => 'bi-receipt', 'title' => 'Pricing & billing', 'desc' => 'Plans, trials & subscriptions', 'href' => '#faq-billing'],
-                                    ['icon' => 'bi-chat-left-text', 'title' => 'Sales & support', 'desc' => 'Demos, enterprise & contact', 'href' => '#faq-support'],
+                                    ['icon' => 'bi-chat-left-text', 'title' => 'Sales & support', 'desc' => 'Demos & contact', 'href' => '#faq-support'],
                                 ] as $topic)
                                     <div class="col-6 col-lg-3">
                                         <a href="{{ $topic['href'] }}" class="mkt-faq-topic-card">
@@ -144,8 +144,16 @@
             'accordionId' => 'mktFaqProduct',
             'title' => 'Product, features & security',
             'lead' => 'How Ledrix handles brands, sellers, payments, portals, and data isolation.',
-            'faqs' => array_slice(config('seo.faq', []), 4, 7),
+            'faqs' => array_slice(config('seo.faq', []), 4, 11),
         ])
+
+        <p class="text-center mb-0 pb-4">
+            <a href="{{ route('security.get') }}">Security &amp; compliance</a>
+            <span class="text-secondary"> · </span>
+            <a href="{{ route('features.get') }}#agency-branding">Custom domains</a>
+            <span class="text-secondary"> · </span>
+            <a href="{{ route('features.get') }}#integrations">API &amp; SSO</a>
+        </p>
 
         @include('front.includes.faq-section', [
             'enterprise' => true,
@@ -163,7 +171,7 @@
             'accordionId' => 'mktFaqSupport',
             'title' => 'Company & support',
             'lead' => 'Who built Ledrix and how to reach our sales team.',
-            'faqs' => array_slice(config('seo.faq', []), 11, 2),
+            'faqs' => array_slice(config('seo.faq', []), 15, 2),
         ])
 
         {{-- Bottom CTA --}}

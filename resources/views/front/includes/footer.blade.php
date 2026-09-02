@@ -26,6 +26,7 @@
                 <a href="{{ route('about.get') }}#founder" class="text-white d-block mb-1 text-decoration-none">{{ config('seo.founder.name') }} — Founder</a>
                 <a href="{{ route('terms.get') }}" class="text-white d-block mb-1 text-decoration-none">Terms of Service</a>
                 <a href="{{ route('privacy.get') }}" class="text-white d-block mb-1 text-decoration-none">Privacy Policy</a>
+                <a href="{{ route('security.get') }}" class="text-white d-block mb-1 text-decoration-none">Security &amp; Compliance</a>
                 <a href="{{ route('sitemap') }}" class="text-white d-block mb-1 text-decoration-none">Sitemap</a>
                 <span class="d-block mt-3 small opacity-75">&copy; {{ date('Y') }} Ledrix CRM. All rights reserved.</span>
             </div>

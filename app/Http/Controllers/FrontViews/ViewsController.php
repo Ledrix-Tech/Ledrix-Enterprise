@@ -118,4 +118,9 @@ class ViewsController extends Controller
     {
         return view('front.pages.privacy-policy');
     }
+
+    public function showSecurityPage()
+    {
+        return view('front.pages.security');
+    }
 }

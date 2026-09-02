@@ -24,6 +24,7 @@ Route::get('/about', [FrontViewsController::class, 'showAboutPage'])->name('abou
 Route::get('/faq', [FrontViewsController::class, 'showFaqPage'])->name('faq.get');
 Route::get('/terms', [FrontViewsController::class, 'showTermsPage'])->name('terms.get');
 Route::get('/privacy-policy', [FrontViewsController::class, 'showPrivacyPage'])->name('privacy.get');
+Route::get('/security', [FrontViewsController::class, 'showSecurityPage'])->name('security.get');
 Route::get('/status', [\App\Http\Controllers\FrontViews\StatusPageController::class, 'show'])->name('status.get');
 Route::post('/status/subscribe', [\App\Http\Controllers\FrontViews\StatusPageController::class, 'subscribe'])
     ->middleware('throttle:10,1')
