@@ -14,6 +14,16 @@
         <a href="{{ route('admin.import.index') }}" class="btn btn-sm btn-outline-secondary">Back</a>
     </div>
 
+    @if (session('import_limit'))
+        <div class="alert alert-warning">
+            <p class="mb-1 fw-semibold">{{ session('import_limit')['headline'] }}</p>
+            <p class="mb-1">{{ session('import_limit')['workaround'] }}</p>
+            <p class="mb-0">
+                <a href="{{ session('import_limit')['upgrade_url'] }}">{{ session('import_limit')['upgrade'] }}</a>
+            </p>
+        </div>
+    @endif
+
     <div class="crm-card">
         <div class="crm-card-body">
             <form method="POST" action="{{ route('admin.import.map.save', $batch) }}">

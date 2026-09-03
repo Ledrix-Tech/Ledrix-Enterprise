@@ -50,6 +50,7 @@ class AdminSaasDashboardTest extends TestCase
             ->assertOk()
             ->assertSee('Free trial active', false)
             ->assertSee('Plan usage', false)
+            ->assertSee('Imports this month', false)
             ->assertSee('SaaS dashboard notice', false)
             ->assertSee($tenant->plan->name, false);
     }
@@ -183,6 +184,15 @@ class AdminSaasDashboardTest extends TestCase
             });
         }
 
+        if (! Schema::connection('central')->hasColumn('package_pricings', 'import_max_uploads_per_month')) {
+            Schema::connection('central')->table('package_pricings', function (Blueprint $table) {
+                $table->integer('import_max_rows_per_upload')->default(150);
+                $table->integer('import_max_uploads_per_month')->default(1);
+                $table->boolean('import_multi_brand_allowed')->default(false);
+                $table->boolean('import_reimport_allowed')->default(false);
+            });
+        }
+
         if (! Schema::connection('central')->hasTable('tenant_memberships')) {
             Schema::connection('central')->create('tenant_memberships', function (Blueprint $table) {
                 $table->id();
@@ -217,6 +227,7 @@ class AdminSaasDashboardTest extends TestCase
                 $table->unsignedInteger('total_account_keys')->default(0);
                 $table->unsignedInteger('total_projects')->default(0);
                 $table->unsignedInteger('leads_this_month')->default(0);
+                $table->unsignedInteger('imports_this_month')->default(0);
                 $table->timestamp('month_reset_at')->nullable();
                 $table->unsignedInteger('storage_used_mb')->default(0);
                 $table->timestamp('last_synced_at')->nullable();

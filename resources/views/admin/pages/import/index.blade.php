@@ -18,8 +18,34 @@
         </div>
     </div>
 
+    @php $quota = $importQuota ?? []; @endphp
+
+    @if (session('import_limit'))
+        <div class="alert alert-warning">
+            <p class="mb-1 fw-semibold">{{ session('import_limit')['headline'] }}</p>
+            <p class="mb-1">{{ session('import_limit')['workaround'] }}</p>
+            <p class="mb-0">
+                <a href="{{ session('import_limit')['upgrade_url'] }}">{{ session('import_limit')['upgrade'] }}</a>
+            </p>
+        </div>
+    @endif
+
     <div class="crm-card mb-4">
         <div class="crm-card-body">
+            @if (! empty($quota))
+                <p class="small text-muted mb-2">
+                    Imports this cycle:
+                    <strong>{{ (int) ($quota['uploads_used'] ?? 0) }}</strong>@if (($quota['uploads_max'] ?? null) !== null)/{{ (int) $quota['uploads_max'] }}@else (unlimited)@endif
+                    @if (! empty($quota['rows_max']))
+                        · up to {{ number_format((int) $quota['rows_max']) }} rows per file
+                    @else
+                        · unlimited rows per file
+                    @endif
+                    @if (! empty($quota['reset_on']))
+                        · resets {{ $quota['reset_on'] }}
+                    @endif
+                </p>
+            @endif
             <p class="text-muted mb-3">
                 Excel users: <strong>File → Save As → CSV UTF-8</strong>. The sample file covers contacts-only, invoiced-but-unpaid, and cash/check rows. Leave cells blank when that data does not exist — empty cells are not filled in with fake IDs.
             </p>
@@ -48,11 +74,16 @@
                                 @endforeach
                             </select>
                             <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" name="multi_brand" value="1" id="multiBrand" @checked(old('multi_brand'))>
+                                <input class="form-check-input" type="checkbox" name="multi_brand" value="1" id="multiBrand"
+                                    @checked(old('multi_brand'))
+                                    @disabled(empty($quota['multi_brand']))>
                                 <label class="form-check-label" for="multiBrand">
                                     Sheet spans multiple brands (requires a brand_name column)
                                 </label>
                             </div>
+                            @if (empty($quota['multi_brand']))
+                                <small class="text-muted">Your plan is single-brand. Split the sheet by brand, or upgrade for multi-brand imports.</small>
+                            @endif
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Assign to seller</label>

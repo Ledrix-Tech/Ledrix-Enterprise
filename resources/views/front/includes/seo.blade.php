@@ -18,7 +18,7 @@
 
     $ogImagePath = trim($__env->yieldContent('og_image')) ?: config('seo.og_image');
     $ogImage = str_starts_with($ogImagePath, 'http') ? $ogImagePath : asset($ogImagePath);
-    $ogImageAlt = trim($__env->yieldContent('og_image_alt')) ?: ($siteName . ' — multi-tenant sales CRM software');
+    $ogImageAlt = trim($__env->yieldContent('og_image_alt')) ?: ($siteName . ' — sales CRM for closers, agencies, and founders');
 
     $org = config('seo.organization');
     $orgUrl = rtrim((string) (config('seo.site_url') ?: ($org['url'] ?? null) ?: config('app.url')), '/');
@@ -67,14 +67,27 @@
             '@type' => 'SoftwareApplication',
             'name' => 'Ledrix CRM',
             'applicationCategory' => 'BusinessApplication',
+            'applicationSubCategory' => 'Sales CRM',
             'operatingSystem' => 'Web',
             'url' => $orgUrl,
             'description' => config('seo.default_description'),
+            'featureList' => [
+                'Seller panel for closers',
+                'Instant lead routing and ownership',
+                'Stripe and PayPal payment links from the lead card',
+                'Multi-brand pipelines under one login',
+                'Client portal with order chat',
+                'Historical sales sheet import',
+            ],
+            'audience' => [
+                '@type' => 'Audience',
+                'audienceType' => 'Sales closers, agency owners, and founders',
+            ],
             'offers' => [
                 '@type' => 'Offer',
                 'price' => '0',
                 'priceCurrency' => 'USD',
-                'description' => 'Free trial available',
+                'description' => 'Free trial — no credit card',
             ],
             'publisher' => ['@id' => $orgUrl . '#organization'],
         ];

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\ImportPlanLimitException;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\ImportBatch;
 use App\Models\Seller;
 use App\Services\Admin\HistoricalSalesImportService;
+use App\Services\Tenant\HistoricalImportLimitService;
 use App\Support\PortalAuthorization;
 use App\Support\TenantContext;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +20,7 @@ class AdminImportController extends Controller
 {
     public function __construct(
         private HistoricalSalesImportService $imports,
+        private HistoricalImportLimitService $importLimits,
     ) {}
 
     public function index()
@@ -30,10 +33,11 @@ class AdminImportController extends Controller
             ->paginate(20);
 
         return view('admin.pages.import.index', [
-            'batches' => $batches,
-            'brands'  => Brand::query()->orderBy('brand_name')->get(['id', 'brand_name']),
-            'sellers' => Seller::query()->orderBy('name')->get(['id', 'name', 'brand_id']),
-            'targets' => HistoricalSalesImportService::TARGETS,
+            'batches'     => $batches,
+            'brands'      => Brand::query()->orderBy('brand_name')->get(['id', 'brand_name']),
+            'sellers'     => Seller::query()->orderBy('name')->get(['id', 'name', 'brand_id']),
+            'targets'     => HistoricalSalesImportService::TARGETS,
+            'importQuota' => $this->importLimits->usageForUi(),
         ]);
     }
 
@@ -87,9 +91,16 @@ class AdminImportController extends Controller
             return back()->with('error', 'Upload a CSV file. In Excel, use File → Save As → CSV (UTF-8).')->withInput();
         }
 
+        try {
+            $this->importLimits->assertCanUpload($tenantId, $file, $multiBrand);
+        } catch (ImportPlanLimitException $e) {
+            return back()->with('import_limit', $e->toFlash())->withInput();
+        }
+
         $batch = ImportBatch::query()->create([
             'tenant_id'            => $tenantId,
             'admin_id'             => $admin->id,
+            'plan_id_at_import'    => $this->importLimits->currentPlanId($tenantId),
             'brand_id'             => $multiBrand ? null : $validated['brand_id'],
             'seller_id'            => $validated['seller_id'],
             'multi_brand'          => $multiBrand,
@@ -135,6 +146,15 @@ class AdminImportController extends Controller
         ]);
 
         $mapping = $validated['mapping'];
+
+        try {
+            $this->importLimits->assertCanMap((int) $batch->tenant_id, (bool) $batch->multi_brand, $mapping);
+        } catch (ImportPlanLimitException $e) {
+            return redirect()
+                ->route('admin.import.map', $batch)
+                ->with('import_limit', $e->toFlash())
+                ->withInput();
+        }
 
         if ($batch->multi_brand && ! in_array('brand_name', $mapping, true)) {
             return redirect()

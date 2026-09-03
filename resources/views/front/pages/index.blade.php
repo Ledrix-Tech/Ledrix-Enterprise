@@ -2,9 +2,9 @@
 
 @section('title', 'Home')
 
-@section('seo_title', 'Ledrix CRM — Stop Dropped Leads. Close Faster. Collect Payments.')
-@section('meta_description', 'Ledrix CRM helps founders and agency owners stop dropping leads, keep brand pipelines separate, give closers a focused seller panel, and send payment links the moment a deal closes — without juggling HubSpot, Stripe, and spreadsheets.')
-@section('meta_keywords', 'Ledrix CRM, sales CRM for agencies, CRM for founders, stop dropped leads, multi-brand CRM, seller panel CRM, payment links CRM, agency sales pipeline, closers CRM')
+@section('seo_title', 'Ledrix CRM — Sales CRM for Closers Who Get Paid Faster')
+@section('meta_description', 'Sales CRM for closers: own every lead, work your seller panel, and send Stripe or PayPal from the lead card — on the call. Try Ledrix free. No card.')
+@section('meta_keywords', 'sales CRM for closers, closer CRM, seller panel CRM, payment links CRM, Stripe CRM, PayPal payment link, lead routing CRM, multi-brand CRM, agency sales CRM, Ledrix CRM, stop dropped leads')
 
 @push('head')
     @php
@@ -48,8 +48,8 @@
         '@type' => 'WebPage',
         '@id' => route('index.get') . '#webpage',
         'url' => route('index.get'),
-        'name' => 'Ledrix CRM — Stop Dropped Leads. Close Faster.',
-        'description' => 'Sales CRM for founders and agencies: route leads to closers, keep brands separate, send payment links from the lead card, and stop deals falling between tools.',
+        'name' => 'Ledrix CRM — Sales CRM for Closers Who Get Paid Faster',
+        'description' => 'Sales CRM for closers: own every inbound lead, work a focused seller panel, send Stripe or PayPal payment links from the lead card, and keep agency brands separate under one login.',
 
         'isPartOf' => ['@id' => $orgUrl . '#website'],
         'about' => ['@type' => 'SoftwareApplication', 'name' => 'Ledrix CRM'],
@@ -85,7 +85,7 @@
             '@'.'context' => 'https://schema.org',
             '@type' => 'Product',
             'name' => 'Ledrix CRM',
-            'description' => 'Sales CRM for founders and agency owners — stop dropped leads, keep brands separate, and collect payments without tool-hopping.',
+            'description' => 'Sales CRM for closers, founders, and agencies — focused seller panel, instant lead ownership, payment links from the lead card, and multi-brand pipelines.',
 
             'brand' => ['@type' => 'Brand', 'name' => 'Ledrix'],
             'offers' => [
@@ -107,6 +107,21 @@
         </script>
     @endif
     @include('front.includes.schema-faq', ['faqs' => array_slice(config('seo.faq', []), 0, 5)])
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@'.'context' => 'https://schema.org',
+        '@type' => 'HowTo',
+        'name' => 'How closers take a lead to paid in Ledrix CRM',
+        'description' => 'Four steps from inbound lead to payment link and client visibility in Ledrix, the sales CRM for closers.',
+        'totalTime' => 'PT5M',
+        'step' => [
+            ['@type' => 'HowToStep', 'position' => 1, 'name' => 'Lead lands on a closer', 'text' => 'Website, API, or form intake routes the lead to the right brand and seller instantly.'],
+            ['@type' => 'HowToStep', 'position' => 2, 'name' => 'Closer works the seller panel', 'text' => 'Assignments, follow-ups, and notes stay on the deal in a focused seller panel.'],
+            ['@type' => 'HowToStep', 'position' => 3, 'name' => 'Send Stripe or PayPal on the call', 'text' => 'Generate a payment link from the lead card the moment the buyer says yes.'],
+            ['@type' => 'HowToStep', 'position' => 4, 'name' => 'Buyer sees it land', 'text' => 'Portal invite and payment mail go out so the client can check invoices and message the closer.'],
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+    </script>
 @endpush
 
 @push('styles')
@@ -133,21 +148,21 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 mkt-hero-inner">
-                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> Built for founders who hate dropped leads</span>
-                <h1 id="home-hero-heading">Your sales team is dropping leads. Ledrix makes sure that stops.</h1>
+                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> Built for closers who refuse to lose a yes</span>
+                <h1 id="home-hero-heading">Close the deal. Send the payment. Get paid — before they go cold.</h1>
                 <p class="mkt-hero-lead">
-                    When a lead hits your site, it should land on a closer — not sit in a shared sheet waiting for someone to claim it.
-                    Ledrix routes every lead, keeps your brands separate, gives reps a focused seller panel, and lets them send a payment link in seconds after “yes.”
+                    Ledrix is the sales CRM closers actually want to open. Every inbound lead lands on you — not a shared spreadsheet.
+                    Your seller panel shows only your book. The second they say yes, you send Stripe or PayPal from the lead card. Still on the call. Still hot.
                 </p>
                 <div class="mkt-hero-actions">
-                    <a href="#home-video" class="btn btn-lg mkt-btn-primary">Watch 60-sec demo</a>
-                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-ghost">See plans — no card needed</a>
+                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">Open my seller panel — free</a>
+                    <a href="#home-video" class="btn btn-lg mkt-btn-ghost">Watch a closer close in 60 sec</a>
                 </div>
                 <div class="mkt-trust-row">
-                    <span><i class="bi bi-play-circle"></i> 60-sec demo first</span>
-                    <span><i class="bi bi-credit-card-2-front"></i> No card for trial</span>
+                    <span><i class="bi bi-credit-card-2-front"></i> No card to start</span>
+                    <span><i class="bi bi-lightning-charge"></i> Payment link on the call</span>
+                    <span><i class="bi bi-person-badge"></i> Your book only — no noise</span>
                     <span><i class="bi bi-buildings"></i> Multiple brands, one login</span>
-                    <span><i class="bi bi-person-badge"></i> Closers only see their pipeline</span>
                 </div>
                     </div>
                 </div>
@@ -158,12 +173,29 @@
         <section class="mkt-section mkt-section-white mkt-home-audience" aria-labelledby="home-audience-heading">
             <div class="container">
                 <div class="text-center mb-4 mb-lg-5">
-                    <h2 class="mkt-section-title" id="home-audience-heading">Leads claimed. Brands unmixed. Payment links before the buyer goes cold.</h2>
+                    <h2 class="mkt-section-title" id="home-audience-heading">Your book. Your close. Their payment — before they go cold.</h2>
                     <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
-                        Ledrix is built for founders, agency owners, and closers who lose money to dropped follow-ups, mixed pipelines, and slow invoices — not another contact spreadsheet.
+                        Ledrix is the sales CRM built around how closers actually sell: own the lead, work the follow-up, send the payment link, and keep the buyer in one thread — not five tabs.
                     </p>
                 </div>
                 <div class="row g-4">
+                    <article class="col-lg-4">
+                        <div class="mkt-home-audience-card mkt-home-audience-card--teams h-100">
+                            <div class="mkt-home-audience-icon mkt-home-audience-icon--teams">
+                                <i class="bi bi-person-badge" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="h4 mb-3">For closers</h3>
+                            <p class="text-secondary mb-4">
+                                Stop hunting HubSpot, Stripe, and Slack just to collect. Open one seller panel: your leads, your follow-ups, and a payment link you can send while they’re still on Zoom.
+                            </p>
+                            <ul class="mkt-check-list list-unstyled mb-0">
+                                <li><i class="bi bi-check-circle-fill"></i> Your assigned book — nobody else’s</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Stripe or PayPal from the lead card, on the call</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Follow-ups on the deal, not in your head</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Reply to the client on the order — no Slack dig</li>
+                            </ul>
+                        </div>
+                    </article>
                     <article class="col-lg-4">
                         <div class="mkt-home-audience-card h-100">
                             <div class="mkt-home-audience-icon mkt-home-audience-icon--founder">
@@ -171,10 +203,10 @@
                             </div>
                             <h3 class="h4 mb-3">For founders</h3>
                             <p class="text-secondary mb-4">
-                                Stop losing deals in the gap between “yes” on a call and a manual invoice hours later. Your closers should send a payment link from the lead card in seconds.
+                                Every inbound lead gets an owner in seconds. Your closers stay in a focused panel. You see the real pipeline — not a spreadsheet that went cold overnight.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
-                                <li><i class="bi bi-check-circle-fill"></i> Leads route to a closer — not a shared spreadsheet</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Leads route to a closer — not a shared sheet</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Seller panel: only what they need to close now</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Payment links from the deal — no tool-hopping</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Live workspace in minutes — no card to start</li>
@@ -188,30 +220,13 @@
                             </div>
                             <h3 class="h4 mb-3">For agency owners</h3>
                             <p class="text-secondary mb-4">
-                                Still paying for two CRM accounts just to keep your web brand’s leads away from your marketing brand’s? Run unlimited brands under one login — without mixing data.
+                                Still paying for two CRM accounts to keep web leads away from marketing leads? Run unlimited brands under one login — without mixing data.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
                                 <li><i class="bi bi-check-circle-fill"></i> Separate brand pipelines, one account</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Smart routing so the right closer gets the lead</li>
+                                <li><i class="bi bi-check-circle-fill"></i> The right closer gets the right brand’s lead</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Admins see everything; reps see only their book</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Client updates without Slack archaeology</li>
-                            </ul>
-                        </div>
-                    </article>
-                    <article class="col-lg-4">
-                        <div class="mkt-home-audience-card mkt-home-audience-card--teams h-100">
-                            <div class="mkt-home-audience-icon mkt-home-audience-icon--teams">
-                                <i class="bi bi-people-fill" aria-hidden="true"></i>
-                            </div>
-                            <h3 class="h4 mb-3">For sales teams</h3>
-                            <p class="text-secondary mb-4">
-                                Are closers cherry-picking leads or browsing the whole company database? Give them a stripped-down seller panel — they only see what they need to close right now.
-                            </p>
-                            <ul class="mkt-check-list list-unstyled mb-0">
-                                <li><i class="bi bi-check-circle-fill"></i> Clear ownership — no more “who’s on this?”</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Follow-ups that don’t live in someone’s head</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Less admin busywork, more dial time</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Leadership sees the real pipeline — not guesswork</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Import historical sales from a sheet when you switch</li>
                             </ul>
                         </div>
                     </article>
@@ -252,12 +267,12 @@
                             </div>
                             <h3 class="h4 mb-3">Seller</h3>
                             <p class="text-secondary mb-4">
-                                Closers only see assigned leads, orders, and the payment link on that deal. No cherry-picking. No browsing the whole database.
+                                Closers open a focused seller panel: assigned leads, orders, and the payment link on that deal. No bloated CRM. No cherry-picking. No browsing the company database.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
                                 <li><i class="bi bi-check-circle-fill"></i> Their pipeline — not yours, not the company’s</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Message the client on the order, from the panel</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Mail when a lead is assigned to them</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Send Stripe or PayPal without leaving the deal</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Mail when a lead is assigned — then they own it</li>
                             </ul>
                         </div>
                     </article>
@@ -325,32 +340,32 @@
         {{-- Sales growth outcomes --}}
         <section class="mkt-section mkt-home-growth" aria-labelledby="home-growth-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="home-growth-heading">What changes when your team runs on Ledrix</h2>
-                <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
-                    Every inbound lead gets an owner. Every brand stays clean. Every closer stays focused. Every “yes” becomes a payment link in seconds.
-                </p>
-                <div class="mkt-home-growth-grid mt-4 mt-lg-5">
+                    <h2 class="mkt-section-title" id="home-growth-heading">The four things closers feel on day one</h2>
+                    <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
+                    Every inbound lead gets an owner. Every closer stays in their book. Every “yes” becomes a payment link in seconds. Every brand stays clean.
+                    </p>
+                    <div class="mkt-home-growth-grid mt-4 mt-lg-5">
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-funnel" aria-hidden="true"></i>
-                        <h3>Leads stop sitting idle</h3>
-                        <p>Website leads route to a specific closer instantly — not a shared sheet waiting for someone to claim them.</p>
-                    </article>
-                    <article class="mkt-home-growth-item">
-                        <i class="bi bi-buildings" aria-hidden="true"></i>
-                        <h3>Brands stay separate</h3>
-                        <p>Run every agency brand under one login. No second CRM bill. No mixing design leads with marketing leads.</p>
-                    </article>
-                    <article class="mkt-home-growth-item">
-                        <i class="bi bi-cash-stack" aria-hidden="true"></i>
-                        <h3>Payment links in 5 seconds</h3>
-                        <p>Client says yes on Zoom — your rep sends Stripe or PayPal from the lead card before they get cold feet.</p>
+                        <h3>You own the lead instantly</h3>
+                        <p>Website and form leads route to a named closer — not a shared sheet waiting for someone to claim them.</p>
                     </article>
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-person-badge" aria-hidden="true"></i>
-                        <h3>Closers stay focused</h3>
-                        <p>Seller panels show only their assignments. No cherry-picking. No browsing the whole company database.</p>
+                        <h3>Your seller panel is your book</h3>
+                        <p>Assigned leads, follow-ups, and the payment link. No cherry-picking. No browsing the company database.</p>
                     </article>
-                </div>
+                    <article class="mkt-home-growth-item">
+                        <i class="bi bi-cash-stack" aria-hidden="true"></i>
+                        <h3>Payment link while they’re hot</h3>
+                        <p>They say yes on Zoom — you send Stripe or PayPal from the lead card before they get cold feet.</p>
+                    </article>
+                    <article class="mkt-home-growth-item">
+                        <i class="bi bi-buildings" aria-hidden="true"></i>
+                        <h3>Brands stay unmixed</h3>
+                        <p>Run every agency brand under one login. No second CRM bill. No mixing design leads with marketing leads.</p>
+                    </article>
+                    </div>
             </div>
         </section>
 
@@ -360,7 +375,7 @@
                 <div class="row align-items-center g-4 g-lg-5">
                     <div class="col-lg-7">
                         <span class="mkt-home-story-kicker">The Ledrix story</span>
-                        <h2 class="mkt-section-title text-start" id="home-story-heading">Built because sales teams deserved better than spreadsheets</h2>
+                        <h2 class="mkt-section-title text-start" id="home-story-heading">Built because closers deserved better than spreadsheets</h2>
                         <div class="mkt-about-story-prose text-start">
                             @if (! empty($founderStory['origin']))
                                 <p>{{ $founderStory['origin'] }}</p>
@@ -369,7 +384,7 @@
                                 <p>{{ $founderStory['founding'] }}</p>
                             @endif
                             <p class="mb-0">
-                                Today, Ledrix is the practical sales operating system for teams that want predictable revenue growth — pipeline discipline, modern payments, and room to scale without enterprise bloat.
+                                Today, Ledrix is the sales CRM closers finish deals in — pipeline discipline, payment links on the call, and room to scale without enterprise bloat.
                                 <a href="{{ route('about.get') }}">Read the full founder story</a> or explore <a href="{{ route('features.get') }}">CRM features</a>.
                             </p>
                         </div>
@@ -397,16 +412,16 @@
         {{-- 60-second video --}}
         <section class="mkt-video-section mkt-home-video" id="home-video" aria-labelledby="home-video-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title mb-2" id="home-video-heading">See the multi-brand routing — in 60 seconds</h2>
+                <h2 class="mkt-section-title mb-2" id="home-video-heading">Watch a closer take a lead to paid — in 60 seconds</h2>
                 <p class="text-muted mb-4 mx-auto" style="max-width: 680px;">
-                    Watch how a lead hits the CRM, lands on the right closer, and how payment links go out from the same screen — before you create an account.
+                    See the lead land on a closer, the seller panel open, and a payment link go out from the same screen — before you create an account.
                 </p>
                 @if ($homeVideoExists && $homeVideoSrc)
                     <div class="mkt-video-block" data-mkt-video>
                         <div class="mkt-video-wrapper" id="mktVideoWrapper">
                             <img class="mkt-video-thumb"
                                 src="{{ $homeVideoPoster ?? asset(config('seo.og_image')) }}"
-                                alt="Ledrix CRM product demo — sales pipeline, seller panel, and payment links"
+                                alt="Ledrix CRM demo for sales closers — seller panel, lead routing, and payment links from the lead card"
                                 width="960"
                                 height="540"
                                 loading="lazy">
@@ -458,30 +473,30 @@
         {{-- How it works --}}
         <section class="mkt-section mkt-section-alt" aria-labelledby="home-how-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="home-how-heading">Four steps — from inbound to paid to visible</h2>
+                <h2 class="mkt-section-title" id="home-how-heading">Four steps — from inbound lead to paid deal</h2>
                 <p class="mkt-section-lead">
-                    No more HubSpot for tracking, Stripe for links, and Slack for updates. Those hops become one workspace — including the client seeing it land.
+                    No more HubSpot for tracking, Stripe for links, and Slack for updates. Closers work one screen — and the buyer sees it land.
                 </p>
                 <div class="mkt-grid-4">
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">1</span>
-                        <h3 class="h5">Lead lands on a closer</h3>
-                        <p>Website, API, or form intake. The right brand and seller get it — nothing sits unworked in a shared pile.</p>
+                        <h3 class="h5">Lead lands on you</h3>
+                        <p>Website, API, or form. The right brand and closer get it instantly — nothing sits unworked in a shared pile.</p>
                     </article>
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">2</span>
-                        <h3 class="h5">Closer works their panel</h3>
-                        <p>Assignments, follow-ups, and notes in one place. They can’t cherry-pick or get lost in the company database.</p>
+                        <h3 class="h5">You work your seller panel</h3>
+                        <p>Assignments, follow-ups, and notes in one place. You can’t get lost in the company database — and nobody steals your book.</p>
                     </article>
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">3</span>
-                        <h3 class="h5">Payment link while they’re hot</h3>
+                        <h3 class="h5">Send the payment on the call</h3>
                         <p>Stripe or PayPal from the lead card the moment they say yes — before buyer’s remorse sets in.</p>
                     </article>
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">4</span>
-                        <h3 class="h5">Client sees it land</h3>
-                        <p>Portal invite and payment mail go out. They open invoices, project progress, and can message the closer — no “did it go through?” ping.</p>
+                        <h3 class="h5">Buyer sees it land</h3>
+                        <p>Portal invite and payment mail go out. They open invoices, project progress, and can message you — no “did it go through?” ping.</p>
                     </article>
                 </div>
             </div>
@@ -492,12 +507,12 @@
         <section class="mkt-section mkt-home-pricing" aria-labelledby="home-pricing-heading">
             <div class="container">
                 <div class="text-center mb-4 mb-lg-5">
-                    <h2 class="mkt-section-title" id="home-pricing-heading">Pick a plan after you’ve seen the demo</h2>
+                    <h2 class="mkt-section-title" id="home-pricing-heading">Try the seller panel first. Pick a plan after.</h2>
                     <p class="mkt-section-lead mx-auto" style="max-width: 680px;">
                         @if ($minPrice !== null)
                             Plans from ${{ number_format($minPrice, $minPrice == floor($minPrice) ? 0 : 2) }}/month.
                         @endif
-                        Watch the 60-second video first. Then open a live workspace — no credit card — and see if lead routing fits how your agency sells.
+                        Open a live workspace — no credit card — and send a payment link from a real lead card. Watch the 60-second demo if you want the tour first.
                         <a href="{{ route('pricing.get') }}">Compare all plans</a>.
                     </p>
                 </div>
@@ -542,23 +557,23 @@
         {{-- Use cases --}}
         <section class="mkt-section mkt-section-muted" aria-labelledby="home-usecases-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="home-usecases-heading">If this is your week, Ledrix fixes it</h2>
-                <p class="mkt-section-lead">Three leaks that kill agency revenue — and how Ledrix plugs each one.</p>
+                <h2 class="mkt-section-title" id="home-usecases-heading">If this is your week, Ledrix pays you faster</h2>
+                <p class="mkt-section-lead">Three leaks that steal closer commission — and how Ledrix plugs each one.</p>
                 <div class="mkt-grid-3">
                     <article class="mkt-card text-start">
                         <div class="mkt-card-icon"><i class="bi bi-funnel"></i></div>
                         <h3 class="h5">Leads die in the spreadsheet</h3>
-                        <p>Inbound sits unclaimed while closers argue over who owns it. Ledrix assigns ownership the second the lead arrives.</p>
+                        <p>Inbound sits unclaimed while the team argues over who owns it. Ledrix assigns the closer the second the lead arrives.</p>
+                    </article>
+                    <article class="mkt-card text-start">
+                        <div class="mkt-card-icon"><i class="bi bi-tools"></i></div>
+                        <h3 class="h5">The yes cools while you switch tabs</h3>
+                        <p>HubSpot → Stripe → Slack for every deal. Ledrix puts the lead, the follow-up, and the payment link on one card.</p>
                     </article>
                     <article class="mkt-card text-start">
                         <div class="mkt-card-icon"><i class="bi bi-building"></i></div>
                         <h3 class="h5">Two brands, two CRM bills</h3>
                         <p>Agency owners launch sub-brands then pay twice — or mix pipelines. One login. Separate data. Unlimited brands.</p>
-                    </article>
-                    <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-tools"></i></div>
-                        <h3 class="h5">Tool fatigue kills closes</h3>
-                        <p>Reps jump HubSpot → Stripe → Slack for every deal. Ledrix collapses tracking, payment links, and updates into one screen.</p>
                     </article>
                 </div>
             </div>
@@ -567,18 +582,18 @@
         {{-- Testimonial --}}
         <section class="mkt-testimonial text-center" aria-labelledby="home-testimonial-heading">
             <div class="container">
-                <h2 class="h4 fw-bold mb-4" id="home-testimonial-heading">Sales teams that switched to Ledrix</h2>
+                <h2 class="h4 fw-bold mb-4" id="home-testimonial-heading">What closers say after the first week</h2>
                 <div class="row g-4 justify-content-center">
                     <div class="col-lg-6">
                         <div class="mkt-quote-card h-100">
-                            <blockquote class="mb-0">"We cut manual follow-ups in half and got every seller on the same pipeline within a week. Revenue visibility went from guesswork to clarity."</blockquote>
-                            <footer class="small opacity-75 mt-3">— Agency operations lead</footer>
+                            <blockquote class="mb-0">"I send the payment link before I hang up. We stopped losing deals in the gap between yes and invoice."</blockquote>
+                            <footer class="small opacity-75 mt-3">— Closer, agency sales floor</footer>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="mkt-quote-card h-100">
-                            <blockquote class="mb-0">"Our closers finally had one place for leads, orders, and payment links. We stopped losing deals between tools."</blockquote>
-                            <footer class="small opacity-75 mt-3">— Sales team manager</footer>
+                            <blockquote class="mb-0">"My panel is just my book. No one else’s leads. Follow-ups sit on the deal — I don’t keep a second spreadsheet."</blockquote>
+                            <footer class="small opacity-75 mt-3">— Closer, multi-brand team</footer>
                         </div>
                     </div>
                 </div>
@@ -590,10 +605,10 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 text-center">
-                        <h2 class="mkt-section-title" id="why-ledrix-heading">Ledrix stops the leaks that cost you deals</h2>
+                        <h2 class="mkt-section-title" id="why-ledrix-heading">Ledrix CRM: sales software closers finish deals in</h2>
                         <p class="mkt-section-lead">
-                            Stop dropping leads. Stop mixing brand pipelines. Stop waiting hours for an invoice after a Zoom “yes.”
-                            Stop letting closers cherry-pick while good leads go cold. One workspace — your data stays private, your brands stay separate, your reps stay focused.
+                            Stop dropping leads. Stop waiting hours for an invoice after a Zoom “yes.” Stop mixing brand pipelines.
+                            One sales CRM — your seller panel, payment links, and client thread in the same workspace.
                         </p>
                     </div>
                 </div>
@@ -601,7 +616,7 @@
                     <div class="col-md-4">
                         <article class="mkt-card text-start h-100">
                             <h3 class="h5">Lead routing that claims ownership</h3>
-                            <p class="mb-0 small text-secondary">Every inbound lead gets a closer. No shared pile. No “I thought you had it.” Built for teams that can’t afford ghosted follow-ups.</p>
+                            <p class="mb-0 small text-secondary">Every inbound lead gets a closer. No shared pile. No “I thought you had it.” Built for teams that cannot afford ghosted follow-ups.</p>
                         </article>
                     </div>
                     <div class="col-md-4">
@@ -620,18 +635,22 @@
             </div>
         </section>
 
-        @include('front.includes.faq-section', ['limit' => 5])
+        @include('front.includes.faq-section', [
+            'limit' => 5,
+            'title' => 'Closers ask this before they try Ledrix',
+            'lead' => 'Seller panel, payment links on the call, lead ownership, and whether you need a card to start.',
+        ])
 
         {{-- Trial CTA --}}
         <section class="mkt-cta-band" id="trial" aria-labelledby="home-cta-heading">
             <div class="container text-center">
-                <h2 id="home-cta-heading">Still routing leads through a spreadsheet?</h2>
+                <h2 id="home-cta-heading">Your next yes should already have a payment link.</h2>
                 <p class="mb-4 mx-auto" style="max-width: 600px;">
-                    Watch the 60-second demo, then open a live workspace — no credit card. See multi-brand routing and seller panels with your own eyes.
+                    Open a live seller panel — no credit card. Route a lead, send a Stripe or PayPal link, and see why closers stop going back to spreadsheets.
                 </p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="#home-video" class="btn btn-lg mkt-btn-primary">Watch the demo</a>
-                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-ghost">Open a free workspace</a>
+                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">Open my seller panel — free</a>
+                    <a href="#home-video" class="btn btn-lg mkt-btn-ghost">Watch the 60-sec demo</a>
                 </div>
             </div>
         </section>

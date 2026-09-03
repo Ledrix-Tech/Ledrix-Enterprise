@@ -122,6 +122,7 @@
                         'Clients' => [$usage->total_clients, $limits['clients'] ?? null],
                         'Orders' => [$usage->total_orders, $limits['orders'] ?? null],
                         'Leads (month)' => [$usage->leads_this_month, $limits['leads_monthly'] ?? null],
+                        'Imports this month' => [$usage->imports_this_month ?? 0, $limits['imports_monthly'] ?? null],
                     ] as $label => [$count, $max])
                         @php
                             $unlimited = $max === null || (int) $max === -1;

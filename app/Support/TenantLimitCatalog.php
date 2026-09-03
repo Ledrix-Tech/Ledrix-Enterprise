@@ -59,6 +59,16 @@ final class TenantLimitCatalog
             'group'       => 'Usage',
             'description' => 'File storage allowance in megabytes.',
         ],
+        'import_max_rows_per_upload' => [
+            'label'       => 'Import rows / upload',
+            'group'       => 'Usage',
+            'description' => 'Maximum data rows in one historical sales CSV.',
+        ],
+        'import_max_uploads_per_month' => [
+            'label'       => 'Imports / billing cycle',
+            'group'       => 'Usage',
+            'description' => 'Maximum sheet imports per billing cycle.',
+        ],
     ];
 
     /** @return list<string> */

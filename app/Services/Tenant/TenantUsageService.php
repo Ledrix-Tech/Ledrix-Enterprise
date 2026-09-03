@@ -13,11 +13,13 @@ use App\Models\Order;
 use App\Models\PaymentLink;
 use App\Models\Project;
 use App\Models\Seller;
+use Illuminate\Support\Facades\Schema;
 
 class TenantUsageService
 {
     public function __construct(
         private TenantStorageMeter $storageMeter,
+        private HistoricalImportLimitService $importLimits,
     ) {}
 
     /** @var array<string, string> Plan limit key → snapshot column */
@@ -32,6 +34,7 @@ class TenantUsageService
         'max_projects'        => 'total_projects',
         'max_leads_per_month' => 'leads_this_month',
         'max_storage_mb'      => 'storage_used_mb',
+        'import_max_uploads_per_month' => 'imports_this_month',
     ];
 
     public function countForLimit(string $limitKey, int $tenantId): int
@@ -53,6 +56,7 @@ class TenantUsageService
                 ->where('created_at', '>=', now()->startOfMonth())
                 ->count(),
             'max_storage_mb' => $this->storageMeter->usedMb($tenantId),
+            'import_max_uploads_per_month' => $this->safeImportUploads($tenantId),
             default => 0,
         };
     }
@@ -92,6 +96,9 @@ class TenantUsageService
         $counts = [];
 
         foreach (self::LIMIT_USAGE_MAP as $limitKey => $usageKey) {
+            if ($usageKey === 'imports_this_month' && ! $this->hasImportSnapshotColumn()) {
+                continue;
+            }
             $counts[$usageKey] = $this->countForLimit($limitKey, $tenantId);
         }
 
@@ -110,9 +117,30 @@ class TenantUsageService
         $counts = [];
 
         foreach (self::LIMIT_USAGE_MAP as $limitKey => $usageKey) {
+            if ($usageKey === 'imports_this_month' && ! $this->hasImportSnapshotColumn()) {
+                continue;
+            }
             $counts[$usageKey] = $this->countForLimit($limitKey, $tenantId);
         }
 
         return $counts;
+    }
+
+    private function hasImportSnapshotColumn(): bool
+    {
+        try {
+            return Schema::connection('central')->hasColumn('tenant_usage_snapshots', 'imports_this_month');
+        } catch (\Throwable) {
+            return false;
+        }
+    }
+
+    private function safeImportUploads(int $tenantId): int
+    {
+        try {
+            return $this->importLimits->uploadsThisCycle($tenantId);
+        } catch (\Throwable) {
+            return 0;
+        }
     }
 }

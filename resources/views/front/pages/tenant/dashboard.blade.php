@@ -191,6 +191,7 @@
                                 'Clients' => $usage->total_clients,
                                 'Orders' => $usage->total_orders,
                                 'Leads (month)' => $usage->leads_this_month,
+                                'Imports this month' => $usage->imports_this_month ?? 0,
                             ] as $label => $count)
                                 <div class="col-6 col-md-2">
                                     <div class="border rounded p-3">

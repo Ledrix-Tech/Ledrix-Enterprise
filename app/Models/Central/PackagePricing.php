@@ -19,6 +19,8 @@ class PackagePricing extends Model
         'max_brands', 'max_sellers', 'max_admins', 'max_clients',
         'max_leads_per_month', 'max_orders', 'max_payment_links',
         'max_account_keys', 'max_projects', 'max_storage_mb',
+        'import_max_rows_per_upload', 'import_max_uploads_per_month',
+        'import_multi_brand_allowed', 'import_reimport_allowed',
 
         // Features
         'feature_ppc_module', 'feature_upwork_module',
@@ -43,6 +45,8 @@ class PackagePricing extends Model
         'yearly_price_pkr'  => 'decimal:2',
         'is_popular'    => 'boolean',
         'is_public'     => 'boolean',
+        'import_multi_brand_allowed' => 'boolean',
+        'import_reimport_allowed'    => 'boolean',
 
         // Every feature cast to boolean for direct use
         'feature_ppc_module'          => 'boolean',
@@ -109,6 +113,37 @@ class PackagePricing extends Model
     public function getLimit(string $limitKey): int
     {
         return (int) ($this->$limitKey ?? 0);
+    }
+
+    /** Pricing comparison cell: numbers, not a checkmark. */
+    public function sheetImportComparisonLabel(): string
+    {
+        $rows = $this->import_max_rows_per_upload;
+        $uploads = $this->import_max_uploads_per_month;
+
+        if ($rows === null && $uploads === null) {
+            $slug = strtolower((string) $this->slug);
+            if (str_contains($slug, 'premium') || str_contains($slug, 'agency') || str_contains($slug, 'enterprise')) {
+                return 'Unlimited, multi-brand';
+            }
+            if (str_contains($slug, 'standard') || str_contains($slug, 'growth')) {
+                return '1,000 rows, 5/mo, multi-brand';
+            }
+
+            return '150 rows, 1/mo, single brand';
+        }
+
+        $multi = (bool) $this->import_multi_brand_allowed;
+        $brand = $multi ? 'multi-brand' : 'single brand';
+
+        if ((int) $rows === -1 && (int) $uploads === -1) {
+            return 'Unlimited, '.$brand;
+        }
+
+        $rowText = (int) $rows === -1 ? 'Unlimited rows' : number_format((int) $rows).' rows';
+        $uploadText = (int) $uploads === -1 ? 'unlimited/mo' : (int) $uploads.'/mo';
+
+        return $rowText.', '.$uploadText.', '.$brand;
     }
 
     // ── Price Helpers ──────────────────────────────────────

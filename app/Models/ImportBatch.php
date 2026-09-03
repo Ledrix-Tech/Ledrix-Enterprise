@@ -14,6 +14,7 @@ class ImportBatch extends Model
     protected $fillable = [
         'tenant_id',
         'admin_id',
+        'plan_id_at_import',
         'brand_id',
         'seller_id',
         'multi_brand',

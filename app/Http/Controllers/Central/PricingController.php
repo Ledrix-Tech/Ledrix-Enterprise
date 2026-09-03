@@ -46,6 +46,8 @@ class PricingController extends Controller
             'max_account_keys' => 'required|integer|min:-1',
             'max_projects' => 'required|integer|min:-1',
             'max_storage_mb' => 'required|integer|min:0',
+            'import_max_rows_per_upload' => 'nullable|integer|min:-1',
+            'import_max_uploads_per_month' => 'nullable|integer|min:-1',
             'trial_days' => 'nullable|integer|min:0|max:365',
         ]);
 
@@ -82,6 +84,10 @@ class PricingController extends Controller
                 'max_account_keys' => $request->max_account_keys,
                 'max_projects' => $request->max_projects,
                 'max_storage_mb' => $request->max_storage_mb,
+                'import_max_rows_per_upload' => $request->integer('import_max_rows_per_upload', 150),
+                'import_max_uploads_per_month' => $request->integer('import_max_uploads_per_month', 1),
+                'import_multi_brand_allowed' => $request->boolean('import_multi_brand_allowed'),
+                'import_reimport_allowed' => $request->boolean('import_reimport_allowed'),
 
                 // Features (unchecked checkboxes become false)
                 'feature_ppc_module' => $request->boolean('feature_ppc_module'),
@@ -161,6 +167,8 @@ class PricingController extends Controller
                 'max_account_keys' => 'required|integer|min:-1',
                 'max_projects' => 'required|integer|min:-1',
                 'max_storage_mb' => 'required|integer|min:0',
+                'import_max_rows_per_upload' => 'nullable|integer|min:-1',
+                'import_max_uploads_per_month' => 'nullable|integer|min:-1',
 
                 // Display
                 'trial_days' => 'nullable|integer|min:0|max:365',
@@ -201,6 +209,10 @@ class PricingController extends Controller
                 'max_account_keys' => $request->max_account_keys,
                 'max_projects' => $request->max_projects,
                 'max_storage_mb' => $request->max_storage_mb,
+                'import_max_rows_per_upload' => $request->integer('import_max_rows_per_upload', $package->import_max_rows_per_upload ?? 150),
+                'import_max_uploads_per_month' => $request->integer('import_max_uploads_per_month', $package->import_max_uploads_per_month ?? 1),
+                'import_multi_brand_allowed' => $request->boolean('import_multi_brand_allowed'),
+                'import_reimport_allowed' => $request->boolean('import_reimport_allowed'),
 
                 // Feature Flags
                 'feature_ppc_module' => $request->boolean('feature_ppc_module'),

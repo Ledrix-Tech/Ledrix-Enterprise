@@ -21,6 +21,7 @@ class TenantUsageSnapshot extends Model
         'total_account_keys',
         'total_projects',
         'leads_this_month',
+        'imports_this_month',
         'month_reset_at',
         'storage_used_mb',
         'storage_alert_80_sent_at',
@@ -129,6 +130,7 @@ class TenantUsageSnapshot extends Model
             'max_projects'        => 'total_projects',
             'max_leads_per_month' => 'leads_this_month',
             'max_storage_mb'      => 'storage_used_mb',
+            'import_max_uploads_per_month' => 'imports_this_month',
         ];
 
         return $map[$limitKey] ?? null;

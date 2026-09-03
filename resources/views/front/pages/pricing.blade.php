@@ -2,9 +2,9 @@
 
 @section('title', 'Pricing')
 
-@section('seo_title', 'Ledrix CRM Pricing — Plans for Founders & Agencies (No Card to Start)')
-@section('meta_description', 'Compare Ledrix plans for founders and agencies. Each plan has its own free trial — full CRM for lead routing, seller panels, multi-brand pipelines, and payment links. No credit card required.')
-@section('meta_keywords', 'Ledrix pricing, agency CRM plans, CRM free trial, sales CRM cost, multi-brand CRM pricing')
+@section('seo_title', 'Ledrix CRM Pricing — Plans for Closers & Agencies (No Card)')
+@section('meta_description', 'Compare Ledrix CRM plans for closers and agencies. Free trial with a real seller panel, lead routing, and payment links. No credit card required.')
+@section('meta_keywords', 'Ledrix pricing, sales CRM pricing, closer CRM plans, CRM free trial, seller panel, payment links CRM, multi-brand CRM pricing')
 
 @push('schema')
     @include('front.includes.schema-breadcrumbs', ['items' => [
@@ -262,6 +262,12 @@
                                             @endforeach
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <td class="feature-label">Sheet import</td>
+                                        @foreach ($packages as $package)
+                                            <td><span class="limit-val">{{ $package->sheetImportComparisonLabel() }}</span></td>
+                                        @endforeach
+                                    </tr>
 
                                     <tr class="pricing-compare-group">
                                         <td colspan="{{ $packages->count() + 1 }}">Modules &amp; features</td>

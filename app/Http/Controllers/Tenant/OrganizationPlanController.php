@@ -34,6 +34,7 @@ class OrganizationPlanController extends Controller
             ['label' => 'Clients', 'used' => $usage->total_clients, 'max' => $plan?->max_clients],
             ['label' => 'Orders', 'used' => $usage->total_orders, 'max' => $plan?->max_orders],
             ['label' => 'Leads / month', 'used' => $usage->leads_this_month, 'max' => $plan?->max_leads_per_month],
+            ['label' => 'Imports this month', 'used' => $usage->imports_this_month ?? 0, 'max' => $plan?->import_max_uploads_per_month],
         ];
 
         return $this->organizationView('plan', [

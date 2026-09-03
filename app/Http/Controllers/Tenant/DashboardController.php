@@ -40,6 +40,7 @@ class DashboardController extends Controller
             'clients'       => $plan?->max_clients,
             'leads_monthly' => $plan?->max_leads_per_month,
             'orders'        => $plan?->max_orders,
+            'imports_monthly' => $plan?->import_max_uploads_per_month,
         ];
 
         $announcements = SystemAnnouncement::query()

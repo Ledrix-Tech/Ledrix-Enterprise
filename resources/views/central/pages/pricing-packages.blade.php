@@ -106,6 +106,8 @@
                                     'max_account_keys' => 'Max Account Keys',
                                     'max_projects' => 'Max Projects',
                                     'max_storage_mb' => 'Storage (MB)',
+                                    'import_max_rows_per_upload' => 'Import rows / upload (-1 unlimited)',
+                                    'import_max_uploads_per_month' => 'Imports / billing cycle (-1 unlimited)',
                                 ] as $field => $label)
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label">{{ $label }}</label>
@@ -113,6 +115,22 @@
                                             value="{{ old($field, $package->$field) }}">
                                     </div>
                                 @endforeach
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="import_multi_brand_allowed" value="1"
+                                            id="edit_import_multi_brand_{{ $package->id }}"
+                                            @checked(old('import_multi_brand_allowed', $package->import_multi_brand_allowed))>
+                                        <label class="form-check-label" for="edit_import_multi_brand_{{ $package->id }}">Import: multi-brand sheets</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="import_reimport_allowed" value="1"
+                                            id="edit_import_reimport_{{ $package->id }}"
+                                            @checked(old('import_reimport_allowed', $package->import_reimport_allowed))>
+                                        <label class="form-check-label" for="edit_import_reimport_{{ $package->id }}">Import: re-import in same cycle</label>
+                                    </div>
+                                </div>
                             </div>
 
                             <hr>
@@ -273,12 +291,26 @@
                                 'max_account_keys' => ['Max Account Keys', 1],
                                 'max_projects' => ['Max Projects', 0],
                                 'max_storage_mb' => ['Storage (MB)', 512],
+                                'import_max_rows_per_upload' => ['Import rows / upload', 150],
+                                'import_max_uploads_per_month' => ['Imports / billing cycle', 1],
                             ] as $field => [$label, $default])
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">{{ $label }}</label>
                                     <input type="number" name="{{ $field }}" class="form-control" value="{{ $default }}">
                                 </div>
                             @endforeach
+                            <div class="col-md-4 mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="import_multi_brand_allowed" value="1" id="add_import_multi_brand">
+                                    <label class="form-check-label" for="add_import_multi_brand">Import: multi-brand sheets</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="import_reimport_allowed" value="1" id="add_import_reimport">
+                                    <label class="form-check-label" for="add_import_reimport">Import: re-import in same cycle</label>
+                                </div>
+                            </div>
                         </div>
 
                         <hr>

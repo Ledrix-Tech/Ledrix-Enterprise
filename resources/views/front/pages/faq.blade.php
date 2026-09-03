@@ -2,9 +2,9 @@
 
 @section('title', 'FAQ')
 
-@section('seo_title', 'Ledrix CRM FAQ — Trials, Brands, Portals, Payments & Seller Panels')
-@section('meta_description', 'Answers for founders and agencies: free trial, multi-brand pipelines, seller panels, client portal, payment links, notifications, and how Ledrix stops dropped leads.')
-@section('meta_keywords', 'Ledrix FAQ, CRM FAQ, agency CRM questions, free trial CRM, multi-brand CRM, seller panel, payment links CRM')
+@section('seo_title', 'Ledrix CRM FAQ — Seller Panel, Payment Links, Free Trial')
+@section('meta_description', 'Ledrix CRM FAQ for closers and agencies: seller panel, payment links on the call, lead routing, sheet import, client portal, and a free trial with no card.')
+@section('meta_keywords', 'Ledrix FAQ, sales CRM FAQ, closer CRM, seller panel, payment links CRM, free trial CRM, multi-brand CRM, sheet import')
 
 @push('schema')
     @include('front.includes.schema-breadcrumbs', ['items' => [
@@ -31,10 +31,10 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-10 mkt-faq-hero-inner">
                         <span class="mkt-faq-hero-badge"><i class="bi bi-question-circle-fill"></i> Help center</span>
-                        <h1 id="faq-hero-heading">FAQ — how Ledrix stops dropped leads, mixed brands, and slow invoices</h1>
+                        <h1 id="faq-hero-heading">FAQ — seller panel, payment links, and how closers get paid faster</h1>
                         <p class="mkt-faq-hero-lead">
-                            Straight answers for founders, agency owners, and closers evaluating Ledrix —
-                            trials, multi-brand pipelines, seller panels, payments, and data privacy.
+                            Straight answers for closers, founders, and agency owners evaluating Ledrix —
+                            seller panels, payment links on the call, lead routing, trials, and data privacy.
                         </p>
                         <div class="mkt-faq-hero-actions">
                             <a href="{{ route('index.get') }}#home-video" class="btn btn-lg mkt-btn-primary">Watch 60-sec demo</a>

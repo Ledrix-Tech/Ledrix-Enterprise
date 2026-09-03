@@ -31,6 +31,7 @@
                     'Clients' => ['used' => $usage->total_clients, 'max' => $limits['clients'] ?? null],
                     'Orders' => ['used' => $usage->total_orders, 'max' => $limits['orders'] ?? null],
                     'Leads (mo)' => ['used' => $usage->leads_this_month, 'max' => $limits['leads_monthly'] ?? null],
+                    'Imports this month' => ['used' => $usage->imports_this_month ?? 0, 'max' => $limits['imports_monthly'] ?? null],
                     'Storage' => ['used' => $usage->storage_used_mb, 'max' => $limits['storage_mb'] ?? null],
                 ] as $label => $row)
                     @php

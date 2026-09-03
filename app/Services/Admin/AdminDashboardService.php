@@ -134,6 +134,7 @@ class AdminDashboardService
                     'leads_monthly' => $plan?->max_leads_per_month,
                     'orders'        => $plan?->max_orders,
                     'storage_mb'    => $plan?->max_storage_mb,
+                    'imports_monthly' => $plan?->import_max_uploads_per_month,
                 ],
                 'saasNeedsPayment'     => $this->subscriptionAccess->needsPayment($tenant),
                 'saasExpiresSoon'      => $this->subscriptionAccess->expiresSoon($tenant),

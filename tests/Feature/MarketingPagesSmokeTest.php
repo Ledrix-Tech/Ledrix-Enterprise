@@ -74,9 +74,21 @@ class MarketingPagesSmokeTest extends TestCase
             ->assertOk()
             ->assertSee('Every role gets its own view', false)
             ->assertSee('They don’t have to ask — they can check', false)
+            ->assertSee('For closers', false)
+            ->assertSee('Open my seller panel', false)
+            ->assertSee('sales CRM', false)
             ->assertDontSee('You’ll know before they have to tell you', false)
             ->assertDontSee('Is Ledrix GDPR compliant', false)
             ->assertDontSee('custom domain', false);
+    }
+
+    public function test_pricing_comparison_shows_sheet_import_numbers(): void
+    {
+        $this->get(route('pricing.get'))
+            ->assertOk()
+            ->assertSee('Sheet import', false)
+            ->assertSee('150 rows, 1/mo, single brand', false)
+            ->assertSee('Unlimited, multi-brand', false);
     }
 
     public function test_features_page_uses_categories_and_rbac_table(): void
@@ -91,6 +103,8 @@ class MarketingPagesSmokeTest extends TestCase
             ->assertSee('Integrations', false)
             ->assertSee('API tokens', false)
             ->assertSee('Disputes &amp; refunds', false)
+            ->assertSee('Sheet import', false)
+            ->assertSee('Seller panel for closers', false)
             ->assertSee(route('security.get', [], false), false);
     }
 
