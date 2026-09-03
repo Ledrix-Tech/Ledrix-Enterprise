@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\LeadsController;
 use App\Http\Controllers\Admin\ViewsController;
 
 use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\AdminImportController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminBrandsController;
@@ -73,6 +74,17 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::post('/account-keys', [ViewsController::class, 'accountKeyStore'])->name('admin.account-keys.post');
                 Route::post('/account-keys/{id?}/update', [ViewsController::class, 'accountKeysUpdate'])->name('admin.account-keys-update');
             });
+
+            Route::get('/import', [AdminImportController::class, 'index'])->name('admin.import.index');
+            Route::get('/import/sample.csv', [AdminImportController::class, 'sample'])->name('admin.import.sample');
+            Route::get('/import/guide.pdf', [AdminImportController::class, 'guide'])->name('admin.import.guide');
+            Route::post('/import', [AdminImportController::class, 'store'])->name('admin.import.store');
+            Route::get('/import/{batch}/map', [AdminImportController::class, 'map'])->name('admin.import.map')->whereNumber('batch');
+            Route::post('/import/{batch}/map', [AdminImportController::class, 'saveMap'])->name('admin.import.map.save')->whereNumber('batch');
+            Route::get('/import/{batch}/preview', [AdminImportController::class, 'preview'])->name('admin.import.preview')->whereNumber('batch');
+            Route::post('/import/{batch}/commit', [AdminImportController::class, 'commit'])->name('admin.import.commit')->whereNumber('batch');
+            Route::get('/import/{batch}', [AdminImportController::class, 'show'])->name('admin.import.show')->whereNumber('batch');
+            Route::post('/import/{batch}/rollback', [AdminImportController::class, 'rollback'])->name('admin.import.rollback')->whereNumber('batch');
 
             Route::get('/brands', [AdminBrandsController::class, 'adminBrands'])->name('admin.brands.get');
             Route::post('/brand-post', [AdminBrandsController::class, 'adminBrandPost'])->name('admin.brand.post');

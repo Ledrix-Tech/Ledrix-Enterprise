@@ -87,6 +87,7 @@ class AdminSmokeTest extends TestCase
     public static function adminOnlyRoutes(): array
     {
         return [
+            'import'           => ['admin.import.index'],
             'brands'       => ['admin.brands.get'],
             'sellers'      => ['admin.sellers.get'],
             'projects'     => ['admin.projects.index'],

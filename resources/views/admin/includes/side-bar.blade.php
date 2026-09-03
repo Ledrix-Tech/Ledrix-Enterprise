@@ -100,6 +100,14 @@
                     </a>
                 </li>
                 @if (isAdmin())
+                <li>
+                    <a class="crm-nav-link {{ str_starts_with($route, 'admin.import.') ? 'active' : '' }}"
+                        href="{{ route('admin.import.index') }}">
+                        <i class="bi bi-upload"></i><span>Import sheet</span>
+                    </a>
+                </li>
+                @endif
+                @if (isAdmin())
                     <li>
                         <a class="crm-nav-link {{ in_array($route, ['admin.orders.get', 'admin.renewed-orders.get']) ? 'active' : '' }}"
                             href="{{ route('admin.orders.get') }}">

@@ -41,13 +41,17 @@ class PaymentLink extends Model
         'owner_seller_id',
         'generated_by_id',
         'generated_by_type',
-        'credit_to_seller_id'
+        'credit_to_seller_id',
+        'source',
+        'import_batch_id',
+        'needs_review',
     ];
 
     protected $casts = [
         'unit_amount' => 'integer',
         'expires_at'  => 'datetime',
         'paid_at'     => 'datetime',
+        'needs_review' => 'boolean',
     ];
 
     public function generatedBy()

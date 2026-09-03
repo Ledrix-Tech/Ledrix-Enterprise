@@ -43,7 +43,9 @@ class Order extends Model
         'front_credited_cents',
         'first_paid_at',
         'parent_order_id',
-        'order_type'
+        'order_type',
+        'source',
+        'import_batch_id',
     ];
 
     protected static function booted()

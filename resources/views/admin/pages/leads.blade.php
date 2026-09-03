@@ -12,6 +12,9 @@
         </div>
         <div class="crm-page-actions">
             @if (isAdmin())
+                <a href="{{ route('admin.import.index') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-upload me-1"></i> Import sheet
+                </a>
                 <a href="{{ route('export.csv', ['table' => 'leads', 'columns' => 'id,name,email,phone,domain,message,status,prediction,meta']) }}"
                     class="btn btn-sm btn-crm-teal">
                     <i class="fa fa-file-excel-o me-1"></i> Export CSV

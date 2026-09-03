@@ -29,11 +29,19 @@ class Payment extends Model
         'credited_seller_id',
         'refund_status',
         'refunded_amount',
-        'refund_payload'
+        'refund_payload',
+        'source',
+        'import_batch_id',
+        'paid_at',
+        'needs_review',
     ];
 
     protected $guarded = [];               // or fillable for each field
-    protected $casts = ['payload' => 'array'];
+    protected $casts = [
+        'payload'      => 'array',
+        'paid_at'      => 'datetime',
+        'needs_review' => 'boolean',
+    ];
 
     protected static function booted()
     {

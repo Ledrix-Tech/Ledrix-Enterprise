@@ -30,7 +30,9 @@ class Lead extends Model
         'domain_url',    // normalized host
         'meta',
         'is_finish',          // json: service, utms, referrer, session_id, ip, ua, idem...
-        'auto_replied'
+        'auto_replied',
+        'source',
+        'import_batch_id',
     ];
 
     protected $casts = [
