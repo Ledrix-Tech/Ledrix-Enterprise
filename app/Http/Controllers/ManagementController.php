@@ -11,10 +11,9 @@ use App\Models\ClientTicket;
 use Illuminate\Http\Request;
 use App\Models\LeadAssignment;
 use App\Http\Controllers\Controller;
+use App\Mail\ClientPortalAccessMail;
 use App\Support\PortalAuthorization;
 use App\Services\Tenant\TenantFeatureService;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\SendClientAccountCRMLink;
 
 class ManagementController extends Controller
 {
@@ -183,27 +182,17 @@ class ManagementController extends Controller
         $meta['portal_access'] = true;
         $client->meta = $meta;
         $client->save();
-        // dd($client);
 
-        // Create the login URL (you can change this if needed)
         $loginUrl = route('client.login.get');
-        // Ensure the email is valid
-        if (!filter_var($client->email, FILTER_VALIDATE_EMAIL)) {
-            return back()->with('error', 'Invalid email address.');
-        }
-        // Send the notification with a 5-second delay
-        try {
-            Notification::route('mail', $client->email)
-                ->notify(
-                    (new SendClientAccountCRMLink($client, $plainPassword, $loginUrl))
-                        ->delay(now()->addSeconds(5))
-                );
-        } catch (\Exception $e) {
-            return back()->with('error', 'Failed to send the email. Please try again later.');
+        $emailed = ClientPortalAccessMail::sendTo($client, $plainPassword, $loginUrl, [
+            'client_id' => $client->id,
+        ]);
+
+        if ($emailed) {
+            return back()->with('success', 'Portal access saved and emailed to '.$client->email.'.');
         }
 
-        // Return a success message
-        return back()->with('success', 'Client account password updated successfully.');
+        return back()->with('success', 'Portal access saved. Copy the login details to the client — the email could not be sent.');
     }
 
     public function changePaylinkStatus(Request $request)

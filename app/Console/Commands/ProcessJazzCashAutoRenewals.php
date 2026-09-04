@@ -15,7 +15,7 @@ class ProcessJazzCashAutoRenewals extends Command
 {
     protected $signature = 'tenants:process-jazzcash-renewals';
 
-    protected $description = 'Charge JazzCash recurring tokens for tenants with auto-renew enabled';
+    protected $description = 'Manual JazzCash token renewals only — not scheduled (SaaS billing is Stripe + Meezan)';
 
     public function handle(
         JazzCashService $jazzCash,

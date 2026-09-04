@@ -5,7 +5,7 @@
 @section('content')
     <h2 class="email-heading">Welcome to your CRM portal</h2>
 
-    <p>Hello <strong>{{ $client->name }}</strong>,</p>
+    <p>Hello <strong>{{ $clientName ?? $client->name }}</strong>,</p>
 
     <p>
         Your CRM portal access has been created successfully.
@@ -16,7 +16,7 @@
     <table role="presentation" class="email-info-table" width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
             <td width="100"><strong>Email</strong></td>
-            <td>{{ $client->email }}</td>
+            <td>{{ $clientEmail ?? $client->email }}</td>
         </tr>
         <tr>
             <td><strong>Password</strong></td>

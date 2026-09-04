@@ -422,7 +422,7 @@ powershell -ExecutionPolicy Bypass -File "F:\path\to\ledrix\scripts\schedule-run
 php artisan schedule:list
 ```
 
-You should see `process-queue` every minute plus daily/hourly tasks.
+You should see `process-queue` every 5 minutes plus daily/hourly tasks. JazzCash renewals are not scheduled (SaaS billing is Stripe + Meezan only).
 
 ### Local development (no cron)
 
@@ -671,7 +671,7 @@ Failed jobs are pruned weekly by the scheduler (`queue:prune-failed`).
 | Log | Location |
 |-----|----------|
 | Application | `storage/logs/laravel.log` |
-| Scheduler cron | `storage/logs/scheduler.log` |
+| Scheduler cron | `storage/logs/scheduler.log` (created on the **first successful** `schedule:run` — not in git) |
 
 ### Common issues
 
@@ -760,7 +760,8 @@ curl -I https://ledrix.co
 # Test workspace subdomain (Phase B): curl -I https://{slug}.ledrix.co/admin/login
 # Trigger a test SaaS Stripe checkout (test mode) — confirm invoice email + /tenant-profile/billing invoice View
 # Or: php artisan tinker → send test Mail::raw
-tail -f storage/logs/scheduler.log   # confirm cron hits every minute
+# After a cron tick (or: php artisan schedule:run):
+tail -n 20 storage/logs/scheduler.log   # confirm cron hits every 5 minutes
 ```
 
 When all checks pass, Ledrix is ready for production traffic.

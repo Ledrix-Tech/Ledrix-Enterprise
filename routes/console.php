@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Console\Events\CommandStarting;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schedule;
 
 // Ledrix scheduler — register ONE cron job on the server.
@@ -7,6 +9,24 @@ use Illuminate\Support\Facades\Schedule;
 // cPanel / Namecheap: do not use every-minute; they reject Minute=*
 // Use every 5 minutes: Minute=*/5  Hour=*  Day=*  Month=*  Weekday=*
 // See scripts/cron.example
+
+Event::listen(CommandStarting::class, function (CommandStarting $event) {
+    if (! in_array($event->command, ['schedule:run', 'schedule:work'], true)) {
+        return;
+    }
+
+    $path = storage_path('logs/scheduler.log');
+    $dir = dirname($path);
+    if (! is_dir($dir)) {
+        @mkdir($dir, 0775, true);
+    }
+
+    @file_put_contents(
+        $path,
+        '['.now()->toDateTimeString().'] '.$event->command.PHP_EOL,
+        FILE_APPEND | LOCK_EX
+    );
+});
 
 $queueConnection = config('queue.default', 'database');
 
@@ -36,9 +56,6 @@ Schedule::command('tenants:process-trials')
 
 Schedule::command('tenants:process-subscriptions')
     ->dailyAt('01:30');
-
-Schedule::command('tenants:process-jazzcash-renewals')
-    ->dailyAt('02:00');
 
 Schedule::command('queue:prune-failed', ['--hours' => 168])
     ->weeklyOn(0, '03:30');
