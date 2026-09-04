@@ -8,11 +8,9 @@ use App\Models\Central\PackagePricing;
 use App\Models\Central\TenantLimit;
 use App\Models\Central\TenantMembership;
 use App\Models\Central\TenantPayment;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use RuntimeException;
-use Throwable;
 
 class ActivateTenantSubscriptionService
 {
@@ -191,16 +189,11 @@ class ActivateTenantSubscriptionService
 
     private function sendActivatedEmail($tenant, TenantPayment $payment): void
     {
-        try {
-            Mail::to($tenant->email)->send(
-                new TenantSubscriptionActivatedMail($tenant, $payment, $payment->invoice)
-            );
-        } catch (Throwable $e) {
-            Log::warning('Subscription activated email failed', [
-                'tenant_id'  => $tenant->id,
-                'payment_id' => $payment->id,
-                'message'    => $e->getMessage(),
-            ]);
-        }
+        SafeMail::send(
+            $tenant->email,
+            new TenantSubscriptionActivatedMail($tenant, $payment, $payment->invoice),
+            'subscription activated',
+            ['tenant_id' => $tenant->id, 'payment_id' => $payment->id],
+        );
     }
 }

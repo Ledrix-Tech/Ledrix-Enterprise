@@ -5,8 +5,7 @@ namespace App\Services\Billing;
 use App\Mail\TenantBankTransferReportedMail;
 use App\Models\Central\AuditLog;
 use App\Models\Central\TenantPayment;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
+use App\Support\SafeMail;
 use RuntimeException;
 use Throwable;
 
@@ -68,13 +67,11 @@ class ReportBankTransferPaymentService
             return;
         }
 
-        try {
-            Mail::to($email)->send(new TenantBankTransferReportedMail($payment));
-        } catch (Throwable $e) {
-            Log::warning('Bank transfer reported email failed', [
-                'payment_id' => $payment->id,
-                'message'    => $e->getMessage(),
-            ]);
-        }
+        SafeMail::send(
+            $email,
+            new TenantBankTransferReportedMail($payment),
+            'bank transfer reported',
+            ['payment_id' => $payment->id],
+        );
     }
 }

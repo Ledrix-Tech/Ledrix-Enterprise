@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;      // remove this if you don't wan
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaymentLinkNotification extends Notification implements ShouldQueue
+class PaymentLinkNotification extends Notification
 {
 
     use Queueable;

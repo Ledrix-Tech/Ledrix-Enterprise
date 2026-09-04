@@ -9,8 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LeadCreatedFsNotification extends Notification implements ShouldQueue
-{
+class LeadCreatedFsNotification extends Notification{
     use Queueable;
 
     public function __construct(

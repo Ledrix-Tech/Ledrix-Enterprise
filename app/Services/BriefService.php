@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Jobs\SendBriefLinkJob;
 use App\Models\Order;
 use App\Models\Questionnair;
-use Illuminate\Support\Facades\Log;
+use App\Notifications\SendBriefLinkMail;
+use App\Support\SafeMail;
 use Illuminate\Support\Str;
 
 class BriefService
@@ -43,7 +43,7 @@ class BriefService
 
     public function dispatchBriefEmail(int $orderId): void
     {
-        SendBriefLinkJob::dispatch($orderId);
+        $this->sendBriefLinkIfNeeded($orderId);
     }
 
     public function sendBriefLinkIfNeeded(int $orderId): void
@@ -62,21 +62,12 @@ class BriefService
         $briefUrl  = $this->publicBriefUrl($brief);
         $brandName = $order->brand->brand_name ?? config('app.name');
 
-        try {
-            $order->client->notify(new \App\Notifications\SendBriefLinkMail(
-                $order->client,
-                $order,
-                $brandName,
-                $briefUrl
-            ));
-
-            // $order->brief_sent_at = now();
-            $order->save();
-        } catch (\Throwable $e) {
-            Log::error('Failed to send brief link mail', [
-                'order_id' => $order->id,
-                'error' => $e->getMessage(),
-            ]);
-        }
+        SafeMail::notify(
+            $order->client,
+            new SendBriefLinkMail($order->client, $order, $brandName, $briefUrl),
+            'brief link',
+            ['order_id' => $order->id],
+        );
+        $order->save();
     }
 }

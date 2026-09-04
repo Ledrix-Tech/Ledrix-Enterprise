@@ -8,12 +8,12 @@ use App\Models\Payment;
 use App\Models\PaymentLink;
 use App\Models\Seller;
 use App\Notifications\InitialPaymentNotification;
+use App\Support\SafeMail;
 use App\Support\TenantContext;
 use App\Services\BriefService;
 use App\Services\CommissionDecider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 class PaymentRecordingService
 {
@@ -288,30 +288,21 @@ class PaymentRecordingService
             return;
         }
 
-        Notification::route('mail', $client->email)
-            ->notify(
-                (new InitialPaymentNotification($payment, $order, $client, 'ppc'))
-                    ->delay(now()->addSeconds(3))
-            );
+        $mail = new InitialPaymentNotification($payment, $order, $client, 'ppc');
+        $extra = ['payment_id' => $payment->id, 'order_id' => $order->id];
+
+        SafeMail::notify($client->email, $mail, 'initial payment', $extra);
 
         $creditedSeller = Seller::find($payment->credit_to_seller_id);
         if ($creditedSeller?->email) {
-            Notification::route('mail', $creditedSeller->email)
-                ->notify(
-                    (new InitialPaymentNotification($payment, $order, $client, 'ppc'))
-                        ->delay(now()->addSeconds(6))
-                );
+            SafeMail::notify($creditedSeller->email, $mail, 'initial payment', $extra);
         }
 
         if ((int) $order->owner_seller_id !== (int) $order->front_seller_id) {
             $pm = Seller::find($order->owner_seller_id);
             if ($pm?->email) {
-                Notification::route('mail', $pm->email)
-                    ->notify(
-                        (new InitialPaymentNotification($payment, $order, $client, 'ppc'))
-                            ->delay(now()->addSeconds(9))
-                    );
-                }
+                SafeMail::notify($pm->email, $mail, 'initial payment', $extra);
+            }
         }
     }
 

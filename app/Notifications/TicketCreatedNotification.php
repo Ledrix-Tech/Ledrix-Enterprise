@@ -8,8 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TicketCreatedNotification extends Notification implements ShouldQueue
-{
+class TicketCreatedNotification extends Notification{
     use Queueable;
 
     public function __construct(public ClientTicket $ticket) {}

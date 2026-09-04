@@ -9,8 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RenewalApproval extends Notification implements ShouldQueue
-{
+class RenewalApproval extends Notification{
     use Queueable;
 
     public function __construct(

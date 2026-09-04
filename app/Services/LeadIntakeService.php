@@ -12,11 +12,11 @@ use App\Notifications\LeadCreatedFsNotification;
 use App\Services\Tenant\SubscriptionAccessService;
 use App\Services\Tenant\TenantFeatureService;
 use App\Services\Tenant\TenantLimitService;
+use App\Support\SafeMail;
 use App\Support\TenantContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 class LeadIntakeService
 {
@@ -381,18 +381,13 @@ class LeadIntakeService
                     return;
                 }
 
-                try {
-                    Notification::route('mail', $lead->email)
-                        ->notify(new LeadAutoReplyNotification($lead));
+                SafeMail::notify($lead->email, new LeadAutoReplyNotification($lead), 'lead auto-reply', [
+                    'lead_id' => $lead->id,
+                ]);
 
-                    if ($seller->email) {
-                        Notification::route('mail', $seller->email)
-                            ->notify(new LeadCreatedFsNotification($lead, $seller));
-                    }
-                } catch (\Throwable $e) {
-                    Log::error('Lead notifications failed', [
+                if ($seller->email) {
+                    SafeMail::notify($seller->email, new LeadCreatedFsNotification($lead, $seller), 'lead created fs', [
                         'lead_id' => $lead->id,
-                        'error'   => $e->getMessage(),
                     ]);
                 }
             });

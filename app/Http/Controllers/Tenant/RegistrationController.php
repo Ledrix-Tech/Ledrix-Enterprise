@@ -9,7 +9,6 @@ use App\Models\Central\TenantEmailVerification;
 use App\Services\Tenant\RegisterTenantService;
 use App\Services\Tenant\VerifyTenantEmailService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\TenantVerifyEmail;
 
 class RegistrationController extends Controller
@@ -106,9 +105,14 @@ class RegistrationController extends Controller
 
         $verifyUrl = route('tenant.verify-email', ['token' => $verification->token]);
 
-        try {
-            Mail::to($tenant->email)->send(new TenantVerifyEmail($tenant, $verifyUrl, $tenant->plan));
-        } catch (\Throwable) {
+        $sent = \App\Support\SafeMail::send(
+            $tenant->email,
+            new TenantVerifyEmail($tenant, $verifyUrl, $tenant->plan),
+            'tenant verify email resend',
+            ['tenant_id' => $tenant->id],
+        );
+
+        if (! $sent) {
             return back()->with('error', 'Unable to send verification email. Please try again later.');
         }
 

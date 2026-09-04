@@ -4,10 +4,8 @@ namespace App\Services\Tenant;
 
 use App\Mail\TenantDunningMail;
 use App\Models\Central\TenantMembership;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\Schema;
-use Throwable;
 
 class TenantDunningService
 {
@@ -82,23 +80,24 @@ class TenantDunningService
             return false;
         }
 
-        try {
-            Mail::to($tenant->email)->send(
-                new TenantDunningMail($tenant, $membership, $stepDays)
-            );
-            $membership->forceFill([$column => now()])->save();
-
-            return true;
-        } catch (Throwable $e) {
-            Log::warning('Dunning email failed', [
+        $sent = SafeMail::send(
+            $tenant->email,
+            new TenantDunningMail($tenant, $membership, $stepDays),
+            'dunning email',
+            [
                 'tenant_id'     => $tenant->id,
                 'membership_id' => $membership->id,
                 'step_days'     => $stepDays,
-                'message'       => $e->getMessage(),
-            ]);
+            ],
+        );
 
+        if (! $sent) {
             return false;
         }
+
+        $membership->forceFill([$column => now()])->save();
+
+        return true;
     }
 
     /** @return list<int> */

@@ -94,11 +94,17 @@ class AuthController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        // Send email
-        Mail::send('emails.upwork-password', ['token' => $token], function ($message) use ($request) {
-            $message->to($request->email);
-            $message->subject('Reset Your Password');
-        });
+        $sent = \App\Support\SafeMail::sendView(
+            $request->email,
+            'emails.upwork-password',
+            ['token' => $token],
+            'Reset Your Password',
+            'upwork password reset',
+        );
+
+        if (! $sent) {
+            return back()->with('error', 'Password reset saved, but the email could not be sent. Try again or contact support.');
+        }
 
         return back()->with('success', 'Password reset code sent! Please check your email.');
     }

@@ -108,9 +108,12 @@ class UpworkStripePayment implements UpworkPaymentGateway
 
         if ($client?->email) {
             DB::afterCommit(function () use ($client, $payment, $order) {
-                Notification::route('mail', $client->email)
-                    ->notify((new \App\Notifications\InitialPaymentNotification($payment, $order, $client, 'upwork'))
-                        ->delay(now()->addSeconds(3)));
+                \App\Support\SafeMail::notify(
+                    $client->email,
+                    new \App\Notifications\InitialPaymentNotification($payment, $order, $client, 'upwork'),
+                    'upwork initial payment',
+                    ['order_id' => $order->id],
+                );
             });
         }
     }
@@ -184,9 +187,12 @@ class UpworkStripePayment implements UpworkPaymentGateway
 
         if ($client?->email) {
             DB::afterCommit(function () use ($client, $payment, $order) {
-                Notification::route('mail', $client->email)
-                    ->notify((new \App\Notifications\InitialPaymentNotification($payment, $order, $client, 'upwork'))
-                        ->delay(now()->addSeconds(3)));
+                \App\Support\SafeMail::notify(
+                    $client->email,
+                    new \App\Notifications\InitialPaymentNotification($payment, $order, $client, 'upwork'),
+                    'upwork initial payment',
+                    ['order_id' => $order->id],
+                );
             });
         }
 

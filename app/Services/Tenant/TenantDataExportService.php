@@ -5,9 +5,8 @@ namespace App\Services\Tenant;
 use App\Mail\TenantDataExportReadyMail;
 use App\Models\Central\Tenant;
 use App\Models\Central\TenantDataExportRequest;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
@@ -151,15 +150,12 @@ class TenantDataExportService
             return;
         }
 
-        try {
-            Mail::to($tenant->email)->send(new TenantDataExportReadyMail($tenant, $export));
-        } catch (Throwable $e) {
-            Log::warning('Workspace export ready email failed', [
-                'tenant_id' => $tenant->id,
-                'export_id' => $export->id,
-                'error'     => $e->getMessage(),
-            ]);
-        }
+        SafeMail::send(
+            $tenant->email,
+            new TenantDataExportReadyMail($tenant, $export),
+            'workspace export ready',
+            ['tenant_id' => $tenant->id, 'export_id' => $export->id],
+        );
     }
 
     private function dumpTable(string $connection, string $table, int $tenantId, string $dir): ?int

@@ -13,7 +13,7 @@ use App\Services\SellerPerformance;
 use App\Services\Tenant\TenantLimitService;
 use App\Http\Controllers\Controller;
 use App\Support\PortalAuthorization;
-use Illuminate\Support\Facades\Notification;
+use App\Support\SafeMail;
 use App\Notifications\LeadAssignedPmNotification;
 
 class AdminSellerController extends Controller
@@ -477,11 +477,12 @@ class AdminSellerController extends Controller
          * 🔥 Notify PM ONLY if the assigned seller is a project manager
          */
         if ($pm->is_seller === 'project_manager' && $pm->email) {
-            Notification::route('mail', $pm->email)
-                ->notify(
-                    (new LeadAssignedPmNotification($lead, $pm, $assignerSellerModel))
-                        ->delay(now()->addSeconds(5))
-                );
+            SafeMail::notify(
+                $pm->email,
+                new LeadAssignedPmNotification($lead, $pm, $assignerSellerModel),
+                'lead assigned pm',
+                ['lead_id' => $lead->id, 'seller_id' => $pm->id],
+            );
         }
 
         return redirect()

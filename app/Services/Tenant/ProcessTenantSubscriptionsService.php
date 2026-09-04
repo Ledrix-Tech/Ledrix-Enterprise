@@ -2,11 +2,10 @@
 
 namespace App\Services\Tenant;
 
+use App\Mail\TenantSubscriptionExpiredMail;
 use App\Mail\TenantSubscriptionRenewalReminderMail;
 use App\Models\Central\TenantMembership;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Throwable;
+use App\Support\SafeMail;
 
 class ProcessTenantSubscriptionsService
 {
@@ -52,20 +51,20 @@ class ProcessTenantSubscriptionsService
 
             $daysLeft = $membership->daysUntilExpiry();
 
-            try {
-                Mail::to($tenant->email)->send(
-                    new TenantSubscriptionRenewalReminderMail($tenant, $membership, $daysLeft)
-                );
-
-                $membership->update([$sentAtColumn => now()]);
-                $count++;
-            } catch (Throwable $e) {
-                Log::warning('Subscription renewal reminder email failed', [
+            $sent = SafeMail::send(
+                $tenant->email,
+                new TenantSubscriptionRenewalReminderMail($tenant, $membership, $daysLeft),
+                'subscription renewal reminder',
+                [
                     'tenant_id'     => $tenant->id,
                     'membership_id' => $membership->id,
                     'days_before'   => $daysBefore,
-                    'message'       => $e->getMessage(),
-                ]);
+                ],
+            );
+
+            if ($sent) {
+                $membership->update([$sentAtColumn => now()]);
+                $count++;
             }
         }
 
@@ -104,6 +103,16 @@ class ProcessTenantSubscriptionsService
 
         foreach ($memberships as $membership) {
             $membership->update(['status' => 'expired']);
+            $membership->loadMissing('tenant.plan');
+            $tenant = $membership->tenant;
+            if ($tenant) {
+                SafeMail::send(
+                    $tenant->email,
+                    new TenantSubscriptionExpiredMail($tenant, $membership),
+                    'subscription expired',
+                    ['tenant_id' => $tenant->id, 'membership_id' => $membership->id],
+                );
+            }
             $count++;
         }
 

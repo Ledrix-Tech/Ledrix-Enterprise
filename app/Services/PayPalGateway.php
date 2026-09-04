@@ -712,13 +712,17 @@ class PayPalGateway implements PaymentGateway
             ?? $event['summary']
             ?? 'Your PayPal payment could not be completed.';
 
-        Notification::route('mail', $link->order->client->email)
-            ->notify(new PaymentFailedNotification(
+        \App\Support\SafeMail::notify(
+            $link->order->client->email,
+            new PaymentFailedNotification(
                 order: $link->order,
                 provider: 'paypal',
                 reason: $reason,
                 retryUrl: $link->last_issued_url,
-            ));
+            ),
+            'paypal payment failed',
+            ['link_id' => $link->id],
+        );
     }
 
     private function notifyCaptureFailed(PaymentLink $link, string $reason): void
@@ -729,13 +733,17 @@ class PayPalGateway implements PaymentGateway
             return;
         }
 
-        Notification::route('mail', $email)
-            ->notify(new PaymentFailedNotification(
+        \App\Support\SafeMail::notify(
+            $email,
+            new PaymentFailedNotification(
                 order: $link->order,
                 provider: 'paypal',
                 reason: $reason,
                 retryUrl: $link->last_issued_url,
-            ));
+            ),
+            'paypal payment failed',
+            ['link_id' => $link->id],
+        );
     }
 
     private function isAlreadyCapturedError(\Throwable $e): bool

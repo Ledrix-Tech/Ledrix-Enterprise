@@ -79,12 +79,20 @@ class PredictClientChurn extends Command
                 $admins = Admin::where('role', 'admin')->get();
 
                 if ($frontSeller && $frontSeller->email) {
-                    $frontSeller->notify(new RiskyClientNotification($risky));
+                    \App\Support\SafeMail::notify(
+                        $frontSeller,
+                        new RiskyClientNotification($risky),
+                        'risky client',
+                        ['client_id' => $client->id],
+                    );
                 }
 
-                if ($admins->isNotEmpty()) {
-                    Notification::send($admins, new RiskyClientNotification($risky));
-                }
+                \App\Support\SafeMail::notify(
+                    $admins,
+                    new RiskyClientNotification($risky),
+                    'risky client',
+                    ['client_id' => $client->id],
+                );
             }
         }
 

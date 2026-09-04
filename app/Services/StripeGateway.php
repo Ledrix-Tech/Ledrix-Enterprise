@@ -300,13 +300,17 @@ class StripeGateway implements PaymentGateway
                 return;
             }
 
-            Notification::route('mail', $order->client->email)
-                ->notify(new PaymentFailedNotification(
+            \App\Support\SafeMail::notify(
+                $order->client->email,
+                new PaymentFailedNotification(
                     order: $order,
                     provider: 'stripe',
                     reason: $pi->last_payment_error->message ?? 'Your card was declined.',
                     retryUrl: $order->latestPaymentLink?->last_issued_url,
-                ));
+                ),
+                'stripe payment failed',
+                ['order_id' => $order->id],
+            );
         } catch (\Throwable $e) {
             Log::warning('Stripe payment_intent.payment_failed handler error', [
                 'pi_id' => $pi->id ?? null,
@@ -347,13 +351,17 @@ class StripeGateway implements PaymentGateway
                 return;
             }
 
-            Notification::route('mail', $email)
-                ->notify(new PaymentFailedNotification(
+            \App\Support\SafeMail::notify(
+                $email,
+                new PaymentFailedNotification(
                     order: $link->order,
                     provider: 'stripe',
                     reason: $reason,
                     retryUrl: $link->last_issued_url,
-                ));
+                ),
+                'stripe payment failed',
+                ['link_id' => $link->id],
+            );
         } catch (\Throwable $e) {
             Log::warning('Stripe failure notification error', [
                 'link_id' => $link->id,

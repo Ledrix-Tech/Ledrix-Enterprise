@@ -180,15 +180,19 @@ class WebhookController extends Controller
         if ($request->query('canceled') == 1 && $order?->client?->email) {
             $provider = $link->provider ?: 'unknown';
 
-            Notification::route('mail', $order->client->email)
-                ->notify(new PaymentFailedNotification(
+            \App\Support\SafeMail::notify(
+                $order->client->email,
+                new PaymentFailedNotification(
                     order: $order,
                     provider: $provider,
                     reason: $provider === 'paypal'
                         ? 'You cancelled the PayPal payment.'
                         : 'You cancelled the checkout before completing payment.',
                     retryUrl: $link->last_issued_url,
-                ));
+                ),
+                'checkout cancelled',
+                ['order_id' => $order->id],
+            );
         }
 
         return view('paid-cancel', [

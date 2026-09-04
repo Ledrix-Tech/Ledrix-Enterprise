@@ -5,10 +5,8 @@ namespace App\Services\Platform;
 use App\Mail\StatusIncidentMail;
 use App\Models\Central\PlatformStatusIncident;
 use App\Models\Central\PlatformStatusSubscriber;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\Schema;
-use Throwable;
 
 class StatusIncidentNotifier
 {
@@ -25,17 +23,13 @@ class StatusIncidentNotifier
         $sent = 0;
 
         foreach ($subscribers as $subscriber) {
-            try {
-                Mail::to($subscriber->email)->send(
-                    new StatusIncidentMail($incident, $subscriber, $event)
-                );
+            if (SafeMail::send(
+                $subscriber->email,
+                new StatusIncidentMail($incident, $subscriber, $event),
+                'status incident',
+                ['incident_id' => $incident->id],
+            )) {
                 $sent++;
-            } catch (Throwable $e) {
-                Log::warning('Status incident email failed', [
-                    'email'       => $subscriber->email,
-                    'incident_id' => $incident->id,
-                    'error'       => $e->getMessage(),
-                ]);
             }
         }
 

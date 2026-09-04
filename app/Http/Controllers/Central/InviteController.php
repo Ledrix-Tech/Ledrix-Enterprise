@@ -7,12 +7,12 @@ use App\Mail\SuperAdminInviteMail;
 use App\Models\Central\AuditLog;
 use App\Models\Central\SuperAdmin;
 use App\Models\Central\SuperAdminInvite;
+use App\Support\SafeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
@@ -48,18 +48,15 @@ class InviteController extends Controller
 
         $acceptUrl = route('super-admin.invite.accept', ['token' => $invite->token]);
 
-        try {
-            Mail::to($validated['email'])->send(
-                new SuperAdminInviteMail($invite->token, $validated['name'], $validated['role'])
-            );
-            $mailNote = 'Invite email sent.';
-        } catch (Throwable $e) {
-            Log::warning('Super admin invite mail failed', [
-                'email' => $validated['email'],
-                'error' => $e->getMessage(),
-            ]);
-            $mailNote = 'Invite created (email failed). Share this link: ' . $acceptUrl;
-        }
+        $sent = SafeMail::send(
+            $validated['email'],
+            new SuperAdminInviteMail($invite->token, $validated['name'], $validated['role']),
+            'super admin invite',
+            ['email' => $validated['email']],
+        );
+        $mailNote = $sent
+            ? 'Invite email sent.'
+            : 'Invite created (email failed). Share this link: '.$acceptUrl;
 
         AuditLog::record(
             'super_admin.invited',

@@ -188,10 +188,13 @@ class SellerAuthController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        Mail::send('emails.seller-password', ['token' => $token], function ($message) use ($request) {
-            $message->to($request->email);
-            $message->subject('Reset Your Password');
-        });
+        \App\Support\SafeMail::sendView(
+            $request->email,
+            'emails.seller-password',
+            ['token' => $token],
+            'Reset Your Password',
+            'seller password reset',
+        );
 
         return back()->with('success', 'If that email exists in our system, a reset link has been sent.');
     }

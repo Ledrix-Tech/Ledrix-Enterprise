@@ -9,8 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LeadAssignedPmNotification extends Notification implements ShouldQueue
-{
+class LeadAssignedPmNotification extends Notification{
     use Queueable;
 
     public function __construct(

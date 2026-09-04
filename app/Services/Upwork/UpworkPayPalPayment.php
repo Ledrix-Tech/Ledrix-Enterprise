@@ -137,13 +137,17 @@ class UpworkPayPalPayment implements UpworkPaymentGateway
                 ]);
                 // >>> SEND FAILURE NOTIFICATION <<<
                 $order = $link->order;
-                Notification::route('mail', $order->client->email)
-                    ->notify(new PaymentFailedNotification(
+                \App\Support\SafeMail::notify(
+                    $order->client?->email,
+                    new PaymentFailedNotification(
                         order: $order,
                         provider: 'paypal',
                         reason: 'Your PayPal payment was declined or could not be processed.',
                         retryUrl: $link->last_issued_url
-                    ));
+                    ),
+                    'upwork paypal failed',
+                    ['order_id' => $order->id ?? null],
+                );
                 return;
             }
         }
@@ -462,24 +466,25 @@ class UpworkPayPalPayment implements UpworkPaymentGateway
 
         // 1) Client notification
         if ($order->client && $order->client->email) {
-            Notification::route('mail', $order->client->email)
-                ->notify(
-                    (new InitialPaymentNotification($payment, $order, $order->client))
-                        ->delay(now()->addSeconds(3))
-                );
+            \App\Support\SafeMail::notify(
+                $order->client->email,
+                new InitialPaymentNotification($payment, $order, $order->client),
+                'upwork initial payment',
+                ['order_id' => $order->id],
+            );
         }
 
-        // 2) Notify BOTH up_admin and admin roles
         $admins = Admin::whereIn('role', ['up_admin', 'admin'])
             ->whereNotNull('email')
             ->get(['id', 'email', 'role']);
 
-        foreach ($admins as $i => $admin) {
-            Notification::route('mail', $admin->email)
-                ->notify(
-                    (new InitialPaymentNotification($payment, $order, $order->client))
-                        ->delay(now()->addSeconds(6 + ($i * 2))) // Delay with increasing time
-                );
+        foreach ($admins as $admin) {
+            \App\Support\SafeMail::notify(
+                $admin->email,
+                new InitialPaymentNotification($payment, $order, $order->client),
+                'upwork initial payment admin',
+                ['order_id' => $order->id],
+            );
         }
     }
 }

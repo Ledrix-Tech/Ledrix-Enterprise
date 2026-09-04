@@ -1,7 +1,7 @@
 # Ledrix SaaS — Remaining Features
 
 Product backlog for gaps across **Super Admin**, **Admin (org)**, **Seller**, and **Client**.  
-Ops deploy steps: [`PRODUCTION.md`](PRODUCTION.md).
+Ops deploy steps: [`PRODUCTION.md`](PRODUCTION.md). VPS email + server checklist: [`VPS.md`](VPS.md).
 
 **Status key**
 
@@ -41,7 +41,8 @@ Payoneer SaaS billing (international = Stripe, Pakistan = Meezan). Leftover Payo
 
 | ID | Feature | Priority | Status | Notes |
 |----|---------|----------|--------|-------|
-| F-27-ops | Custom domain SSL/vhost/CDN | ops | manual | App routing is shipped; production hostnames still need VPS/Cloudflare SSL termination. |
+| F-27-ops | Custom domain SSL/vhost/CDN | ops | manual | App routing is shipped; production hostnames still need VPS/Cloudflare SSL termination. See [`VPS.md`](VPS.md). |
+| VPS-mail | ESP + SPF/DKIM + Supervisor worker | ops | manual | Shared hosting sends mail sync via SafeMail. On VPS follow [`VPS.md`](VPS.md) §1–2. |
 | F-28-migrate | Migrate existing tenants to dedicated DBs | soon | backlog | New tenants auto-provision when `TENANT_DB_ISOLATION=true`. Existing shared-DB tenants need `php artisan tenants:provision-db {id}` + data migration tooling. |
 
 ---

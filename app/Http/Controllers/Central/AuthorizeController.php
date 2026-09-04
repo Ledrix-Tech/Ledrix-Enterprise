@@ -134,17 +134,15 @@ class AuthorizeController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        try {
-            Mail::send('emails.super-admin-password', ['token' => $plainToken], function ($message) use ($request) {
-                $message->to($request->email);
-                $message->subject('Reset Your Password');
-            });
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('Super admin password reset mail failed', [
-                'email' => $request->email,
-                'error' => $e->getMessage(),
-            ]);
+        $sent = \App\Support\SafeMail::sendView(
+            $request->email,
+            'emails.super-admin-password',
+            ['token' => $plainToken],
+            'Reset Your Password',
+            'super admin password reset',
+        );
 
+        if (! $sent) {
             return back()->with('error', 'Unable to send reset email right now. Please try again later.');
         }
 

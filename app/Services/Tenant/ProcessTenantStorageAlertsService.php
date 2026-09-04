@@ -5,8 +5,8 @@ namespace App\Services\Tenant;
 use App\Mail\TenantStorageAlertMail;
 use App\Models\Central\Tenant;
 use App\Models\Central\TenantUsageSnapshot;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class ProcessTenantStorageAlertsService
@@ -149,7 +149,16 @@ class ProcessTenantStorageAlertsService
             return;
         }
 
-        Mail::to($to)->send(new TenantStorageAlertMail($tenant, $usedMb, $limitMb, $thresholdPercent));
+        $sent = SafeMail::send(
+            $to,
+            new TenantStorageAlertMail($tenant, $usedMb, $limitMb, $thresholdPercent),
+            'storage alert',
+            ['tenant_id' => $tenant->id, 'threshold' => $thresholdPercent],
+        );
+
+        if (! $sent) {
+            return;
+        }
 
         $column = $thresholdPercent >= 100
             ? 'storage_alert_100_sent_at'

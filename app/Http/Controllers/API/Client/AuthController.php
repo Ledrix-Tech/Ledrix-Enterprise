@@ -130,10 +130,18 @@ class AuthController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        Mail::send('emails.client-password', ['token' => $token], function ($message) use ($client) {
-            $message->to($client->email);
-            $message->subject('Reset Your Password!');
-        });
+        $sent = \App\Support\SafeMail::sendView(
+            $client->email,
+            'emails.client-password',
+            ['token' => $token],
+            'Reset Your Password!',
+            'client password reset',
+            ['client_id' => $client->id],
+        );
+
+        if (! $sent) {
+            return back()->with('error', 'Password reset saved, but the email could not be sent. Try again or contact support.');
+        }
 
         return back()->with('success', 'Password reset code sent! Please check your email.');
     }

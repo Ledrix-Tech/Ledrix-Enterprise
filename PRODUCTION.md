@@ -136,7 +136,8 @@ Move here when you need **wildcard workspace URLs**, **custom-domain HTTPS**, **
 - [ ] Clone app, `composer install --no-dev`, document root `public/`
 - [ ] Migrate both DBs (§3)
 - [ ] Cron every minute (§4)
-- [ ] Optional: Supervisor for `queue:work` (§11) if high mail volume
+- [ ] Email + Supervisor + DNS auth: follow **[`VPS.md`](VPS.md)** (ESP, SPF/DKIM/DMARC, cron every minute)
+- [ ] Supervisor for `queue:work` (§11) — required once job volume grows
 
 ### Phase B checklist — domains
 
@@ -744,6 +745,7 @@ For most Ledrix installs, **cron + scheduler alone is enough**.
 | `routes/console.php` | All scheduled tasks |
 | `.env.example` | Environment template |
 | `docs/Ledrix-Platform-Handling-Guide.pdf` | SA runbook: domains, DB isolation, SSO, SCIM, billing |
+| `VPS.md` | VPS email notifications + server best-practice checklist |
 | `FEATURE.md` | Remaining product backlog |
 | `tests/TESTING.md` | How to run automated tests (payment flow) |
 

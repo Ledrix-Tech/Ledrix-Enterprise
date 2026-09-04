@@ -8,8 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LeadAutoReplyNotification extends Notification implements ShouldQueue
-{
+class LeadAutoReplyNotification extends Notification{
     use Queueable;
 
     public function __construct(public Lead $lead) {}

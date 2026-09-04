@@ -9,12 +9,10 @@ use App\Models\Central\Tenant;
 use App\Models\Central\TenantInvoice;
 use App\Models\Central\TenantPayment;
 use App\Services\Tenant\SubscriptionAccessService;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use RuntimeException;
-use Throwable;
 
 class CreateSubscriptionInvoiceService
 {
@@ -284,14 +282,12 @@ class CreateSubscriptionInvoiceService
 
     public function sendDueEmail(Tenant $tenant, TenantPayment $payment, TenantInvoice $invoice): void
     {
-        try {
-            Mail::to($tenant->email)->send(new TenantSubscriptionDueMail($tenant, $payment, $invoice));
-        } catch (Throwable $e) {
-            Log::warning('Subscription due email failed', [
-                'tenant_id' => $tenant->id,
-                'message'   => $e->getMessage(),
-            ]);
-        }
+        SafeMail::send(
+            $tenant->email,
+            new TenantSubscriptionDueMail($tenant, $payment, $invoice),
+            'subscription due',
+            ['tenant_id' => $tenant->id, 'payment_id' => $payment->id],
+        );
     }
 
     private function hasUnappliedReferralRewards(Tenant $tenant, string $currency): bool

@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Lead;
-use Illuminate\Support\Facades\Mail;
 
 class AutoReplyPendingLeads extends Command
 {
@@ -21,14 +20,21 @@ class AutoReplyPendingLeads extends Command
             ->get();
 
         foreach ($leads as $lead) {
-            Mail::send('emails.lead-follow-up', ['lead' => $lead], function ($message) use ($lead) {
-                $message->to($lead->email)
-                    ->subject('We’re still here to help you!');
-            });
-            $this->info("Auto replied to lead ID: {$lead->id}");
-            // 🔹 Add small delay (Mailtrap free plan allows ~1 mail/sec)
-            sleep(1);
+            $sent = \App\Support\SafeMail::sendView(
+                $lead->email,
+                'emails.lead-follow-up',
+                ['lead' => $lead],
+                'We’re still here to help you!',
+                'lead follow-up',
+                ['lead_id' => $lead->id],
+            );
+
+            if (! $sent) {
+                continue;
+            }
+
             $lead->update(['auto_replied' => true]);
+            $this->info("Auto replied to lead ID: {$lead->id}");
         }
 
         $this->info('Auto-reply process complete.');

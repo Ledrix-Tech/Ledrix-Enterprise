@@ -229,10 +229,13 @@ class AdminAuthController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        Mail::send('emails.admin-password', ['token' => $token], function ($message) use ($request) {
-            $message->to($request->email);
-            $message->subject('Reset Your Password');
-        });
+        \App\Support\SafeMail::sendView(
+            $request->email,
+            'emails.admin-password',
+            ['token' => $token],
+            'Reset Your Password',
+            'admin password reset',
+        );
 
         return back()->with('success', 'If that email exists in our system, a reset link has been sent.');
     }

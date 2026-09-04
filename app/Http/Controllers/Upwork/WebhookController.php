@@ -170,15 +170,17 @@ class WebhookController extends Controller
                 ? 'You cancelled the Stripe checkout.'
                 : 'You cancelled the PayPal payment.';
 
-            Notification::route('mail', $order->client->email)
-                ->notify(
-                    (new PaymentFailedNotification(
-                        $order,
-                        $provider,
-                        $reason,
-                        $link->last_issued_url
-                    ))->delay(now()->addSeconds(3))
-                );
+            \App\Support\SafeMail::notify(
+                $order->client->email,
+                new PaymentFailedNotification(
+                    $order,
+                    $provider,
+                    $reason,
+                    $link->last_issued_url
+                ),
+                'upwork checkout cancelled',
+                ['order_id' => $order->id],
+            );
 
             return view('paid-cancel', compact('link', 'order'));
         }

@@ -132,6 +132,54 @@ class ProcessTenantSubscriptionsRemindersTest extends TestCase
         $this->assertNotNull($membership->fresh()->dunning_notice_0_sent_at);
     }
 
+    public function test_expiring_past_due_membership_emails_tenant(): void
+    {
+        Mail::fake();
+        config(['subscription.past_due_grace_days' => 7]);
+
+        $plan = PackagePricing::query()->create([
+            'name'          => 'Agency',
+            'slug'          => 'agency-exp-'.uniqid(),
+            'monthly_price' => 99,
+            'yearly_price'  => 990,
+            'currency'      => 'USD',
+            'trial_days'    => 0,
+            'is_popular'    => false,
+            'is_public'     => true,
+            'sort_order'    => 1,
+            'status'        => 'active',
+        ]);
+
+        $tenant = Tenant::query()->create([
+            'plan_id'  => $plan->id,
+            'name'     => 'Expired Co',
+            'slug'     => 'expired-'.uniqid(),
+            'email'    => 'expired-'.uniqid().'@example.com',
+            'password' => Hash::make('password'),
+            'status'   => 'active',
+        ]);
+
+        TenantMembership::query()->create([
+            'tenant_id'     => $tenant->id,
+            'plan_id'       => $plan->id,
+            'billing_cycle' => 'monthly',
+            'amount'        => 99,
+            'currency'      => 'USD',
+            'api_key'       => 'key_exp_'.uniqid(),
+            'start_date'    => now()->subMonths(2)->toDateString(),
+            'end_date'      => now()->subDays(10)->toDateString(),
+            'status'        => 'past_due',
+            'renewed_by'    => 'tenant',
+        ]);
+
+        $stats = app(ProcessTenantSubscriptionsService::class)->run();
+
+        $this->assertSame(1, $stats['expired']);
+        Mail::assertSent(\App\Mail\TenantSubscriptionExpiredMail::class, function ($mail) use ($tenant) {
+            return $mail->hasTo($tenant->email);
+        });
+    }
+
     private function ensureReminderColumns(): void
     {
         if (! Schema::connection('central')->hasTable('tenant_memberships')) {

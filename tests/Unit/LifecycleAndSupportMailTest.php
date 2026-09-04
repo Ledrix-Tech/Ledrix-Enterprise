@@ -10,6 +10,8 @@ use App\Models\Central\PlatformSupportTicket;
 use App\Models\Central\Tenant;
 use App\Models\Central\TenantInvoice;
 use App\Models\Central\TenantPayment;
+use App\Models\ClientTicket;
+use App\Notifications\TicketCreatedNotification;
 use App\Services\Billing\RefundTenantPaymentService;
 use App\Services\Billing\VoidTenantInvoiceService;
 use App\Support\SafeMail;
@@ -19,6 +21,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Schema;
 use Tests\Support\UsesSqliteCentral;
 use Tests\TestCase;
@@ -177,6 +180,29 @@ class LifecycleAndSupportMailTest extends TestCase
         }
 
         $this->addToAssertionCount(1);
+    }
+
+    public function test_safe_mail_notify_sends_immediately_and_swallows_failures(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $ok = SafeMail::notify('ops@example.com', new TicketCreatedNotification(
+            new ClientTicket(['id' => 1])
+        ), 'notify test');
+
+        $this->assertTrue($ok);
+        Notification::assertSentOnDemand(\App\Notifications\TicketCreatedNotification::class);
+
+        try {
+            $skipped = SafeMail::notify('not-an-email', new TicketCreatedNotification(
+                new ClientTicket(['id' => 2])
+            ), 'notify skip');
+        } catch (\Throwable $e) {
+            $this->fail('SafeMail::notify must not throw: '.$e->getMessage());
+        }
+
+        $this->assertFalse($skipped);
     }
 
     private function makeTenant(string $slug): Tenant

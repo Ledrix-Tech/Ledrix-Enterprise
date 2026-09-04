@@ -4,13 +4,12 @@ namespace App\Services;
 
 use App\Models\Admin;
 use App\Models\ClientTicket;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\TicketCreatedNotification;
 use App\Notifications\TicketDeadlineNotification;
+use App\Support\SafeMail;
 
 class ProjectNotify
 {
-    /** Notify when ticket is created */
     public static function created(ClientTicket $ticket): void
     {
         $order  = $ticket->order;
@@ -18,31 +17,46 @@ class ProjectNotify
         $pm     = $order->ownerSeller;
         $admins = Admin::where('role', 'admin')->get();
 
-        // FS
         if ($fs) {
-            $fs->notify(new TicketCreatedNotification($ticket));
+            SafeMail::notify($fs, new TicketCreatedNotification($ticket), 'ticket created', [
+                'ticket_id' => $ticket->id,
+            ]);
         }
 
-        // PM
         if ($pm && $pm->id !== ($fs->id ?? null)) {
-            $pm->notify(new TicketCreatedNotification($ticket));
+            SafeMail::notify($pm, new TicketCreatedNotification($ticket), 'ticket created', [
+                'ticket_id' => $ticket->id,
+            ]);
         }
 
-        // Admins
-        Notification::send($admins, new TicketCreatedNotification($ticket));
+        SafeMail::notify($admins, new TicketCreatedNotification($ticket), 'ticket created', [
+            'ticket_id' => $ticket->id,
+        ]);
     }
 
-
-    /** Deadline reminders */
     public static function deadline(ClientTicket $ticket, string $when): void
     {
         $fs = $ticket->order->frontSeller;
         $pm = $ticket->order->ownerSeller;
         $admins = Admin::where('role', 'admin')->get();
 
-        if ($fs) $fs->notify(new TicketDeadlineNotification($ticket, $when));
-        if ($pm) $pm->notify(new TicketDeadlineNotification($ticket, $when));
+        if ($fs) {
+            SafeMail::notify($fs, new TicketDeadlineNotification($ticket, $when), 'ticket deadline', [
+                'ticket_id' => $ticket->id,
+                'when'      => $when,
+            ]);
+        }
 
-        Notification::send($admins, new TicketDeadlineNotification($ticket, $when));
+        if ($pm) {
+            SafeMail::notify($pm, new TicketDeadlineNotification($ticket, $when), 'ticket deadline', [
+                'ticket_id' => $ticket->id,
+                'when'      => $when,
+            ]);
+        }
+
+        SafeMail::notify($admins, new TicketDeadlineNotification($ticket, $when), 'ticket deadline', [
+            'ticket_id' => $ticket->id,
+            'when'      => $when,
+        ]);
     }
 }

@@ -3,9 +3,6 @@
 namespace App\Support;
 
 use App\Mail\PlatformOpsAlertMail;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Throwable;
 
 class PlatformOpsNotifier
 {
@@ -21,13 +18,11 @@ class PlatformOpsNotifier
             return;
         }
 
-        try {
-            Mail::to($to)->send(new PlatformOpsAlertMail($type, $headline, $context));
-        } catch (Throwable $e) {
-            Log::warning('Platform ops alert mail failed', [
-                'type'  => $type,
-                'error' => $e->getMessage(),
-            ]);
-        }
+        SafeMail::send(
+            $to,
+            new PlatformOpsAlertMail($type, $headline, $context),
+            'platform ops alert',
+            ['type' => $type],
+        );
     }
 }

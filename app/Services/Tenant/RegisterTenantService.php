@@ -12,10 +12,10 @@ use App\Models\Central\TenantEmailVerification;
 use App\Models\Central\TenantMembership;
 use App\Models\Central\TenantUsageSnapshot;
 use App\Support\MarketingAttribution;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Throwable;
@@ -198,13 +198,11 @@ class RegisterTenantService
     {
         $verifyUrl = route('tenant.verify-email', ['token' => $verification->token]);
 
-        try {
-            Mail::to($tenant->email)->send(new TenantVerifyEmail($tenant, $verifyUrl, $tenant->plan));
-        } catch (Throwable $e) {
-            Log::warning('Tenant verification email failed to send', [
-                'tenant_id' => $tenant->id,
-                'message'   => $e->getMessage(),
-            ]);
-        }
+        SafeMail::send(
+            $tenant->email,
+            new TenantVerifyEmail($tenant, $verifyUrl, $tenant->plan),
+            'tenant verify email',
+            ['tenant_id' => $tenant->id],
+        );
     }
 }
