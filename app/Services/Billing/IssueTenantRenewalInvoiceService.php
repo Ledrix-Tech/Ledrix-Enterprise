@@ -40,12 +40,8 @@ class IssueTenantRenewalInvoiceService
         if ($isPk) {
             if ($this->platformBilling->isReady('meezan')) {
                 $gateway = 'bank_transfer';
-            } elseif ($this->platformBilling->isReady('jazzcash')) {
-                $gateway = 'jazzcash';
-            } elseif ($this->platformBilling->isReady('payfast')) {
-                $gateway = 'payfast';
             } else {
-                throw new RuntimeException('No PKR payment method is enabled. Enable Meezan (or JazzCash/PayFast) in Payment Accounts.');
+                throw new RuntimeException('No PKR payment method is enabled. Enable Meezan in Payment Accounts.');
             }
         } else {
             if (! $this->platformBilling->isReady('stripe')) {

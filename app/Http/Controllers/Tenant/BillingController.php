@@ -70,7 +70,7 @@ class BillingController extends Controller
             ? TenantPayment::query()
                 ->with('invoice')
                 ->where('tenant_id', $tenant->id)
-                ->whereIn('gateway', ['stripe', 'payfast', 'jazzcash'])
+                ->whereIn('gateway', ['stripe'])
                 ->where('status', 'pending')
                 ->latest()
                 ->first()
@@ -84,15 +84,11 @@ class BillingController extends Controller
 
         // Only Super Admin–enabled providers (enabled + credentials) are offered to tenants.
         $stripeConfigured = $platformBilling->isReady('stripe');
-        $payfastConfigured = $platformBilling->isReady('payfast');
-        $jazzcashConfigured = $platformBilling->isReady('jazzcash');
         $meezanConfigured = $platformBilling->isReady('meezan');
 
         $stripeReady = $stripeConfigured && ! $isPakistanBuyer;
-        $payfastReady = $payfastConfigured && $isPakistanBuyer;
-        $jazzcashReady = $jazzcashConfigured && $isPakistanBuyer;
         $bankTransferReady = $meezanConfigured && $isPakistanBuyer;
-        $hasPaymentOptions = $stripeReady || $payfastReady || $bankTransferReady || $jazzcashReady;
+        $hasPaymentOptions = $stripeReady || $bankTransferReady;
         $cancelAtPeriodEnd = $membership
             && $membership->status === 'active'
             && $membership->cancelled_at !== null;
@@ -132,12 +128,8 @@ class BillingController extends Controller
             'stripeReady',
             'stripeConfigured',
             'stripePortalReady',
-            'payfastReady',
-            'jazzcashReady',
-            'jazzcashConfigured',
             'bankTransferReady',
             'meezanConfigured',
-            'payfastConfigured',
             'hasPaymentOptions',
             'needsPayment',
             'canPayNow',

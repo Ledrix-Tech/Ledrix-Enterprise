@@ -6,7 +6,7 @@
     <div class="sa-page-header">
         <div>
             <h1>Subscription Payments</h1>
-            <p>Confirm pending Meezan transfers after verifying your statement. Automated Stripe / PayFast payments are listed below for reference.</p>
+            <p>Confirm pending Meezan transfers after verifying your statement. Automated Stripe payments are listed below for reference.</p>
         </div>
     </div>
 
@@ -128,7 +128,7 @@
 
     <div class="sa-card">
         <div class="sa-card-header">
-            <h4 class="mb-0">Recent automated payments (Stripe / PayFast)</h4>
+            <h4 class="mb-0">Recent automated payments (Stripe)</h4>
         </div>
         <div class="sa-card-body p-0">
             <div class="sa-table-wrap">
@@ -178,7 +178,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">No recent Stripe / PayFast payments.</td>
+                                <td colspan="8" class="text-center text-muted py-4">No recent Stripe payments.</td>
                             </tr>
                         @endforelse
                     </tbody>

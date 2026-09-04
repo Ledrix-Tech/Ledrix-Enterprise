@@ -21,7 +21,7 @@ class SubscriptionPaymentController extends Controller
             ->paginate(20);
 
         $automatedPayments = TenantPayment::with(['tenant:id,name,email,slug', 'plan:id,name', 'invoice'])
-            ->whereIn('gateway', ['stripe', 'payfast'])
+            ->whereIn('gateway', ['stripe'])
             ->orderByDesc('updated_at')
             ->limit(20)
             ->get();

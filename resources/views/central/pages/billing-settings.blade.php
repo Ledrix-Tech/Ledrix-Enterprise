@@ -6,7 +6,7 @@
     <div class="sa-page-header">
         <div>
             <h1>Subscription Payment Accounts</h1>
-            <p>Enable or disable PayFast, Stripe, and Meezan for tenant subscription billing. Edit keys here — whichever providers are ON appear on the tenant billing page.</p>
+            <p>Enable or disable Stripe (USD internationals) and Meezan (PKR) for tenant subscription billing. Edit keys here — whichever providers are ON appear on the tenant billing page.</p>
         </div>
     </div>
 

@@ -72,7 +72,7 @@
                                     <label class="form-label">Monthly Price (PKR)</label>
                                     <input type="number" step="0.01" name="monthly_price_pkr" class="form-control"
                                         value="{{ old('monthly_price_pkr', $package->monthly_price_pkr) }}">
-                                    <div class="form-text">Meezan / PayFast (Pakistan)</div>
+                                    <div class="form-text">Meezan (Pakistan PKR)</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Yearly Price (PKR)</label>

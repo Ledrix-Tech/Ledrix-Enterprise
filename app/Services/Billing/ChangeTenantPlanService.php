@@ -161,12 +161,6 @@ class ChangeTenantPlanService
             if ($this->platformBilling->isReady('meezan')) {
                 return 'bank_transfer';
             }
-            if ($this->platformBilling->isReady('jazzcash')) {
-                return 'jazzcash';
-            }
-            if ($this->platformBilling->isReady('payfast')) {
-                return 'payfast';
-            }
             throw new RuntimeException('No PKR gateway is enabled for upgrades.');
         }
 
