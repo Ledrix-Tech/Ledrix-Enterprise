@@ -2,20 +2,11 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-/*
-|--------------------------------------------------------------------------
-| Ledrix scheduler — register ONE cron job on the server.
-|
-| VPS / crontab (every minute):
-|   * * * * * cd /path/to/ledrix && php artisan schedule:run >> .../scheduler.log 2>&1
-|
-| cPanel / Namecheap shared hosting often REJECTS every-minute cron
-| ("You did not format the date and time settings correctly").
-| Use every 5 minutes instead — Minute=*/5 Hour=* Day=* Month=* Weekday=*
-|
-| See scripts/cron.example
-|--------------------------------------------------------------------------
-*/
+// Ledrix scheduler — register ONE cron job on the server.
+// VPS crontab (every minute): * * * * * ... artisan schedule:run
+// cPanel / Namecheap: do not use every-minute; they reject Minute=*
+// Use every 5 minutes: Minute=*/5  Hour=*  Day=*  Month=*  Weekday=*
+// See scripts/cron.example
 
 $queueConnection = config('queue.default', 'database');
 
