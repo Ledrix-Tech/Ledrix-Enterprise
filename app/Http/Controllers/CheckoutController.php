@@ -8,7 +8,6 @@ use App\Models\Lead;
 use App\Models\Order;
 use App\Models\PaymentLink;
 use App\Models\Seller;
-use App\Notifications\PaymentLinkNotification;
 use App\Services\PaymentGatewayFactory;
 use App\Services\PaymentLinkService;
 use App\Services\Tenant\TenantFeatureService;
@@ -19,7 +18,6 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 
 class CheckoutController extends Controller
@@ -269,7 +267,10 @@ class CheckoutController extends Controller
         }
 
         try {
-            [$link, $url] = DB::transaction(function () use ($links, $brand, $lead, $seller, $actor, $data, $orderType, $baseOrderId) {
+            $emailSent = false;
+            $emailTo = null;
+
+            [$link, $url] = DB::transaction(function () use ($links, $brand, $lead, $seller, $actor, $data, $orderType, $baseOrderId, &$emailSent, &$emailTo) {
 
                 $link = $links->createInstallmentLink(
                     brand: $brand,
@@ -299,29 +300,21 @@ class CheckoutController extends Controller
                     'generated_by_type'      => $actor instanceof \App\Models\Admin ? 'admin' : 'seller',
                 ]);
 
-                // ✅ Only run side effects AFTER COMMIT
-                DB::afterCommit(function () use ($lead, $link, $url) {
-                    if (! $lead->email) {
-                        return;
-                    }
-
-                    try {
-                        Notification::route('mail', $lead->email)
-                            ->notify(new PaymentLinkNotification($link->load(['brand', 'lead']), $url, 'ppc'));
-                    } catch (\Throwable $e) {
-                        Log::error('Payment link email failed after commit', [
-                            'lead_id' => $lead->id,
-                            'link_id' => $link->id,
-                            'error'   => $e->getMessage(),
-                        ]);
-                    }
+                DB::afterCommit(function () use ($links, $link, $url, &$emailSent, &$emailTo) {
+                    $link->loadMissing(['lead', 'client']);
+                    $emailTo = trim((string) ($link->lead?->email ?: $link->client?->email ?: ''));
+                    $emailSent = $links->emailClient($link, $url);
                 });
 
                 return [$link, $url];
             });
 
+            $success = $emailSent && $emailTo
+                ? 'Payment link created and emailed to '.$emailTo.'.'
+                : 'Payment link created. Copy the URL below — the client email could not be sent.';
+
             return back()
-                ->with('success', 'Payment link created.')
+                ->with('success', $success)
                 ->with('payment_link_url', $url);
         } catch (\Throwable $e) {
             Log::error('Error creating payment link', [

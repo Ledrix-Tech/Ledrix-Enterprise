@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Models\{Brand, Lead, Client, LeadAssignment, Order, PaymentLink};
+use App\Mail\PaymentLinkCreated;
 use App\Services\Tenant\TenantLimitService;
 use App\Services\Tenant\TenantFeatureService;
 use App\Support\TenantContext;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class PaymentLinkService
@@ -153,6 +155,38 @@ class PaymentLinkService
                 // 'meta' => $meta,
             ]);
         });
+    }
+
+    /**
+     * Email the buyer immediately (not queued). Queued notifications were sitting
+     * in `jobs` on production when the scheduler/queue worker did not drain.
+     */
+    public function emailClient(PaymentLink $link, string $url): bool
+    {
+        $link->loadMissing(['brand', 'lead', 'client']);
+
+        $to = trim((string) ($link->lead?->email ?: $link->client?->email ?: ''));
+        if ($to === '') {
+            Log::warning('Payment link email skipped: no client email', [
+                'link_id' => $link->id,
+                'lead_id' => $link->lead_id,
+            ]);
+
+            return false;
+        }
+
+        $amount = number_format(((int) $link->unit_amount) / 100, 2).' '.$link->currency;
+
+        return PaymentLinkCreated::sendTo(
+            $to,
+            $url,
+            $link->lead?->name ?: ($link->client?->name ?: 'Customer'),
+            $link->brand?->brand_name ?: (string) config('app.name', 'Ledrix'),
+            (string) $link->service_name,
+            $amount,
+            $link->expires_at,
+            ['link_id' => $link->id, 'lead_id' => $link->lead_id],
+        );
     }
 
     // ----------------------------

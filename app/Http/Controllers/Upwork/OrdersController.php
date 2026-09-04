@@ -6,14 +6,13 @@ use App\Exceptions\BusinessRuleException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GenerateUpworkFirstLinkRequest;
 use App\Http\Requests\GenerateUpworkInstallmentLinkRequest;
+use App\Mail\PaymentLinkCreated;
 use App\Models\Brand;
 use App\Models\Upwork\UpworkOrder;
-use App\Notifications\PaymentLinkNotification;
 use App\Services\Upwork\UpworkLinkGenerator;
 use App\Support\ModuleType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 use Throwable;
 
 class OrdersController extends Controller
@@ -107,23 +106,19 @@ class OrdersController extends Controller
                 'last_issued_expires_at' => $link->expires_at,
             ]);
 
+            $link->loadMissing(['brand', 'client']);
             $clientEmail = $link->client?->email ?? strtolower(trim($data['client_email']));
-
-            try {
-                Notification::route('mail', $clientEmail)
-                    ->notify(
-                        (new PaymentLinkNotification($link, $url, ModuleType::UPWORK))
-                            ->delay(now()->addSeconds(5))
-                    );
-            } catch (Throwable $mailError) {
-                Log::warning('Upwork payment link created but notification failed', [
-                    'module' => ModuleType::UPWORK,
-                    'link_id' => $link->id,
-                    'order_id' => $link->order_id,
-                    'client_email' => $clientEmail,
-                    'message' => $mailError->getMessage(),
-                ]);
-            }
+            $amount = number_format(((int) $link->unit_amount) / 100, 2).' '.$link->currency;
+            PaymentLinkCreated::sendTo(
+                $clientEmail,
+                $url,
+                $link->client?->name ?? 'Customer',
+                $link->brand?->brand_name ?? (string) config('app.name', 'Ledrix'),
+                (string) $link->service_name,
+                $amount,
+                $link->expires_at,
+                ['module' => ModuleType::UPWORK, 'link_id' => $link->id],
+            );
 
             return back()
                 ->with('success', 'Payment link created successfully.')
@@ -191,6 +186,19 @@ class OrdersController extends Controller
                 'last_issued_at'         => now(),
                 'last_issued_expires_at' => $link->expires_at,
             ]);
+
+            $link->loadMissing(['brand', 'client']);
+            $amount = number_format(((int) $link->unit_amount) / 100, 2).' '.$link->currency;
+            PaymentLinkCreated::sendTo(
+                $link->client?->email,
+                $url,
+                $link->client?->name ?? 'Customer',
+                $link->brand?->brand_name ?? (string) config('app.name', 'Ledrix'),
+                (string) $link->service_name,
+                $amount,
+                $link->expires_at,
+                ['module' => ModuleType::UPWORK, 'link_id' => $link->id, 'order_id' => $order->id],
+            );
 
             return back()
                 ->with('success', 'Installment link created successfully.')

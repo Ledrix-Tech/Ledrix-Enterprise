@@ -69,7 +69,7 @@ Use this for **first production** on cPanel / shared PHP hosting. Keeps ops simp
 - [ ] `.env`: **`TENANT_DB_ISOLATION=false`** (leave default)
 - [ ] `.env`: `SESSION_DRIVER=database`, `QUEUE_CONNECTION=database`
 - [ ] Run migrations (§3) via SSH or host “Run PHP script” once
-- [ ] Register **cron every 1 minute**: `php artisan schedule:run`
+- [ ] Register **cPanel cron every 5 minutes** (`Minute=*/5`): `php artisan schedule:run` (§4)
 - [ ] Super Admin → Payment Accounts (Stripe + Meezan)
 - [ ] Stripe platform webhook → `{APP_URL}/api/webhooks/platform/stripe`
 - [ ] Publish pricing packages + trial days
@@ -374,21 +374,39 @@ Confirm both DBs are reachable. Confirm `jobs` and `failed_jobs` tables exist wh
 
 Ledrix uses **one cron entry** for everything: queued mail, notifications, lead auto-reply, ticket checks, tenant trials, etc.
 
-### Linux (recommended)
+**You do not need a separate `queue:work` cron.**
+
+### cPanel / Namecheap (shared hosting)
+
+Do **not** set Minute to `*` (every minute). Namecheap rejects it with:
+
+> You did not format the date and time settings correctly.
+
+Fill **five separate fields** (never put `* * * * *` in Command):
+
+| Field | Value |
+|-------|--------|
+| Minute | `*/5` |
+| Hour | `*` |
+| Day | `*` |
+| Month | `*` |
+| Weekday | `*` |
+
+Command (one line):
 
 ```bash
-crontab -e
+cd /home/devxeeba/public_html/ledrix && /usr/local/bin/php artisan schedule:run >> /home/devxeeba/public_html/ledrix/storage/logs/scheduler.log 2>&1
 ```
 
-Add (replace path):
+The scheduler then drains the queue for ~4.5 minutes each 5-minute tick.
+
+### Linux VPS (every minute is allowed)
 
 ```cron
 * * * * * cd /path/to/ledrix && php artisan schedule:run >> /path/to/ledrix/storage/logs/scheduler.log 2>&1
 ```
 
 See also: `scripts/cron.example`
-
-**You do not need a separate `queue:work` cron.** The scheduler drains the queue every minute (`routes/console.php`).
 
 ### Windows (XAMPP / local server)
 

@@ -2,73 +2,64 @@
 
 namespace App\Mail;
 
-use App\Models\PaymentLink;
-use Illuminate\Bus\Queueable;
+use App\Support\SafeMail;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 
 class PaymentLinkCreated extends Mailable
 {
-    use Queueable, SerializesModels;
+    public function __construct(
+        public string $url,
+        public string $recipient,
+        public string $brandName,
+        public string $service,
+        public string $amount,
+        public mixed $expiresAt = null,
+    ) {}
 
-    /**
-     * Create a new message instance.
-     */
-    use Queueable, SerializesModels;
-
-    public PaymentLink $link;
-    public string $url;
-
-    public function __construct(PaymentLink $link, string $url)
-    {
-        $this->link = $link;
-        $this->url  = $url;
-    }
-
-    public function build()
-    {
-        $amount = number_format($this->link->unit_amount / 100, 2) . ' ' . $this->link->currency;
-
-        return $this->subject('Your secure payment link')
-            ->view('emails.payment_link_created', [
-                'brandName' => $this->link->brand->brand_name ?? config('app.name', 'Ledrix'),
-                'service'   => $this->link->service_name,
-                'amount'    => $amount,
-                'url'       => $this->url,
-                'expiresAt' => $this->link->expires_at,
-                'recipient' => $this->link->lead->name ?? 'Valued Customer',
-            ]);
-    }
-
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Link Created',
+            subject: 'Your Secure Payment Link',
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.payment_link_created',
+            view: 'emails.payment_link_created',
+            with: [
+                'url'        => $this->url,
+                'recipient'  => $this->recipient,
+                'brandName'  => $this->brandName,
+                'service'    => $this->service,
+                'amount'     => $this->amount,
+                'expiresAt'  => $this->expiresAt,
+            ],
         );
     }
 
     /**
-     * Get the attachments for the message.
+     * Send immediately. Do not queue — production payment-link mail was stuck in jobs.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @param  array<string, mixed>  $logExtra
      */
-    public function attachments(): array
-    {
-        return [];
+    public static function sendTo(
+        ?string $to,
+        string $url,
+        string $recipient,
+        string $brandName,
+        string $service,
+        string $amount,
+        mixed $expiresAt = null,
+        array $logExtra = [],
+    ): bool {
+        return SafeMail::send(
+            $to,
+            new self($url, $recipient, $brandName, $service, $amount, $expiresAt),
+            'payment_link_email',
+            $logExtra,
+        );
     }
 }
