@@ -70,13 +70,15 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \App\Http\Middleware\ResolveTenantFromHost::class,
+            // Tenant DB must switch BEFORE route-model binding or /import/{batch} 404s
+            // (batch lives on ledrix_tenant_X, binding would query ledrix_primary).
+            \App\Http\Middleware\SetTenantContext::class,
+            \App\Http\Middleware\SwitchTenantDatabaseConnection::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCSRFToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CheckSectionMaintenance::class,
             \App\Http\Middleware\EnforceCustomDomainPanelAccess::class,
-            \App\Http\Middleware\SetTenantContext::class,
-            \App\Http\Middleware\SwitchTenantDatabaseConnection::class,
             \App\Http\Middleware\CaptureMarketingAttribution::class,
         ]);
 

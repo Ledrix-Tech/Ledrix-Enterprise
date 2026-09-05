@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Support\TenantContext;
+use App\Support\TenantDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -16,6 +17,7 @@ abstract class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         TenantContext::clear();
+        TenantDatabase::deactivate();
         parent::tearDown();
     }
 }

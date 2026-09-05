@@ -8,6 +8,8 @@ use App\Models\Central\Tenant;
 use App\Models\Central\TenantUsageSnapshot;
 use App\Services\Tenant\TenantLimitService;
 use App\Services\Tenant\TenantUsageService;
+use App\Support\TenantContext;
+use App\Support\TenantDatabase;
 
 class ProvisionTenantAdminService
 {
@@ -21,45 +23,49 @@ class ProvisionTenantAdminService
      */
     public function provision(Tenant $tenant): Admin
     {
-        $exists = Admin::withoutGlobalScopes()
-            ->where('tenant_id', $tenant->id)
-            ->where('email', $tenant->email)
-            ->exists();
+        TenantContext::set((int) $tenant->id);
 
-        if (! $exists) {
-            $this->limits->assertCanCreateAdmin((int) $tenant->id);
-        }
+        return TenantDatabase::using($tenant, function () use ($tenant) {
+            $exists = Admin::withoutGlobalScopes()
+                ->where('tenant_id', $tenant->id)
+                ->where('email', $tenant->email)
+                ->exists();
 
-        $admin = Admin::withoutGlobalScopes()->updateOrCreate(
-            [
-                'tenant_id' => $tenant->id,
-                'email'     => $tenant->email,
-            ],
-            [
-                'name'     => $tenant->name,
-                'password' => $tenant->password,
-                'role'     => 'admin',
-            ]
-        );
+            if (! $exists) {
+                $this->limits->assertCanCreateAdmin((int) $tenant->id);
+            }
 
-        $this->syncAdminUsageCount($tenant);
+            $admin = Admin::withoutGlobalScopes()->updateOrCreate(
+                [
+                    'tenant_id' => $tenant->id,
+                    'email'     => $tenant->email,
+                ],
+                [
+                    'name'     => $tenant->name,
+                    'password' => $tenant->password,
+                    'role'     => 'admin',
+                ]
+            );
 
-        app(TenantUsageService::class)->syncSnapshot((int) $tenant->id);
+            $this->syncAdminUsageCount($tenant);
 
-        AuditLog::record(
-            action: 'tenant.admin_provisioned',
-            tenantId: $tenant->id,
-            actorType: 'tenant',
-            actorId: $tenant->id,
-            actorName: $tenant->name,
-            context: [
-                'subject_type' => 'admin',
-                'subject_id'   => $admin->id,
-                'description'  => 'CRM admin account provisioned for tenant workspace.',
-            ]
-        );
+            app(TenantUsageService::class)->syncSnapshot((int) $tenant->id);
 
-        return $admin;
+            AuditLog::record(
+                action: 'tenant.admin_provisioned',
+                tenantId: $tenant->id,
+                actorType: 'tenant',
+                actorId: $tenant->id,
+                actorName: $tenant->name,
+                context: [
+                    'subject_type' => 'admin',
+                    'subject_id'   => $admin->id,
+                    'description'  => 'CRM admin account provisioned for tenant workspace.',
+                ]
+            );
+
+            return $admin;
+        });
     }
 
     public function canAccessCrm(Tenant $tenant): bool

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Tenant;
 
 use App\Rules\E164Phone;
 use App\Rules\NotDisposableEmail;
+use App\Support\Countries;
 use App\Support\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -17,6 +18,10 @@ class RegisterTenantRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
+        if ($this->filled('country')) {
+            $this->merge(['country' => strtoupper(trim((string) $this->input('country')))]);
+        }
+
         $country = $this->input('country');
 
         foreach (['phone', 'billing_phone'] as $field) {
@@ -57,7 +62,7 @@ class RegisterTenantRequest extends FormRequest
             'phone'           => ['required', 'string', 'max:20', new E164Phone(required: true)],
             'address'         => ['nullable', 'string', 'max:500'],
             'website'         => ['nullable', 'url', 'max:255'],
-            'country'         => ['required', 'string', 'max:5'],
+            'country'         => ['required', 'string', 'size:2', Rule::in(Countries::codes())],
             'billing_name'    => ['required', 'string', 'max:255'],
             'billing_email'   => [
                 'required',
@@ -80,6 +85,8 @@ class RegisterTenantRequest extends FormRequest
             'email.email'     => 'Please enter a valid work email with a real domain.',
             'billing_email.email' => 'Please enter a valid billing email with a real domain.',
             'phone.required'  => 'Phone number with country code is required.',
+            'country.in'      => 'Please select a valid country.',
+            'country.required'=> 'Please select your country.',
         ];
     }
 }

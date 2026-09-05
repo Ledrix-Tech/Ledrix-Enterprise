@@ -114,8 +114,10 @@ class MarketingPagesSmokeTest extends TestCase
             ->assertOk()
             ->assertSee('Workspace isolation', false)
             ->assertSee('SSO and SCIM', false)
-            ->assertSee('We do not claim one', false)
-            ->assertDontSee('SOC 2 certified', false);
+            ->assertSee('GDPR path', false)
+            ->assertSee('Formal compliance path', false)
+            ->assertDontSee('SOC 2 certified', false)
+            ->assertDontSee('We do not claim', false);
 
         $this->get(route('faq.get'))
             ->assertOk()

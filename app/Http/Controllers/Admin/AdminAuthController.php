@@ -9,6 +9,7 @@ use App\Models\Seller;
 use App\Services\Tenant\ProvisionTenantAdminService;
 use App\Services\Tenant\SubscriptionAccessService;
 use App\Support\TenantContext;
+use App\Support\TenantDatabase;
 use App\Support\TenantHostResolver;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -53,6 +54,10 @@ class AdminAuthController extends Controller
         session()->forget('tenant_id');
 
         $admin = $this->resolveAdminForLogin($credentials['email'], $credentials['password']);
+
+        if (! $admin) {
+            $admin = $this->resolveIsolatedTenantAdmin($credentials['email'], $credentials['password']);
+        }
 
         if ($admin) {
             RateLimiter::clear($throttleKey);
@@ -176,6 +181,27 @@ class AdminAuthController extends Controller
         }
 
         return app(ProvisionTenantAdminService::class)->provision($tenant);
+    }
+
+    /**
+     * Isolated tenants store CRM admins on ledrix_tenant_{id}, not ledrix_primary.
+     */
+    protected function resolveIsolatedTenantAdmin(string $email, string $password): ?Admin
+    {
+        if (! config('tenancy.db_isolation_enabled')) {
+            return null;
+        }
+
+        $tenant = Tenant::on('central')->where('email', $email)->first();
+        if (! $tenant || ! filled($tenant->crm_database) || ! Hash::check($password, $tenant->password)) {
+            return null;
+        }
+
+        TenantContext::set((int) $tenant->id);
+
+        return TenantDatabase::using($tenant, function () use ($tenant) {
+            return app(ProvisionTenantAdminService::class)->provision($tenant);
+        });
     }
 
     public function adminForgotPost(Request $request)

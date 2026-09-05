@@ -79,7 +79,7 @@
         <p><strong>Audience:</strong> Platform owners and Super Admins who operate tenants, billing, security, and support.</p>
         <p style="margin:0"><strong>Scope:</strong> Features already shipped for central/platform handling. Each feature lists
             <strong>Why</strong> (purpose), <strong>When</strong> (typical trigger), and <strong>How</strong> (where to click / what to configure).
-            CRM day-to-day lead/order work is out of scope unless it is platform-gated.</p>
+            CRM day-to-day lead/order work is in <code>docs/Ledrix-Tenant-Portals-Guide.pdf</code>.</p>
     </div>
 
     <h2>1. Where to work</h2>
@@ -386,11 +386,190 @@
         </tr>
     </table>
 
+    <h2>10. Enterprise feature list (platform)</h2>
+    <p>
+        Ledrix is sold as an agency / closer workspace. The items below are the <strong>enterprise-style capabilities already in Super Admin</strong>
+        so operators can enable them per plan or per tenant. They do not change the public security page:
+        Ledrix does <strong>not</strong> claim SOC 2, ISO 27001, HIPAA, or a dedicated physical server for every customer.
+    </p>
+    <p>
+        Companion document for day-to-day CRM: <code>docs/Ledrix-Tenant-Portals-Guide.pdf</code> (Admin, Seller, Client).
+    </p>
+
+    <h3>10.1 What Super Admin can turn on today</h3>
+    <table>
+        <tr>
+            <th>Capability</th>
+            <th>What it does</th>
+            <th>How Super Admin uses it</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td><strong>OIDC SSO</strong></td>
+            <td>IdP login (Okta, Microsoft Entra, etc.) for Super Admin and CRM Admin.</td>
+            <td>Super Admin → SSO: issuer, client ID/secret, redirect URI. Users click “Sign in with SSO”.</td>
+            <td>Shipped (staff-configured, not self-serve Okta screen)</td>
+        </tr>
+        <tr>
+            <td><strong>SCIM 2.0</strong></td>
+            <td>IdP can create/update CRM admin accounts at <code>/api/scim/v2/Users</code>.</td>
+            <td>Set <code>SCIM_ENABLED=true</code> and <code>SCIM_BEARER_TOKEN</code>. Give the token to the customer’s IT.</td>
+            <td>Shipped (env + API; no tenant self-serve portal)</td>
+        </tr>
+        <tr>
+            <td><strong>Forced owner 2FA</strong></td>
+            <td>Platform owner must enable TOTP in production.</td>
+            <td>Security env / settings. Owner is redirected to 2FA setup after login.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>SA roles &amp; invites</strong></td>
+            <td>Owner / Admin / Support with least-privilege for platform staff.</td>
+            <td>Super Admin → Team. Support is mostly read + tickets.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Impersonation</strong></td>
+            <td>Support enters a tenant CRM as admin without a password.</td>
+            <td>Tenant detail → Impersonate. Stop when done. Actions are audited.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Custom domain (BYOD)</strong></td>
+            <td>Agency CRM on <code>crm.theirbrand.com</code> in addition to <code>{slug}.ledrix.co</code>.</td>
+            <td>Enable <code>feature_custom_domain</code> on the plan or override on Tenant detail. Verify DNS. SSL is VPS/Cloudflare (F-27-ops).</td>
+            <td>App routing shipped; HTTPS on custom host is ops</td>
+        </tr>
+        <tr>
+            <td><strong>White label</strong></td>
+            <td>Replace Ledrix logo in CRM chrome with the agency brand.</td>
+            <td>Plan flag <code>white_label</code>. Tenant Organization → Domain &amp; brand.</td>
+            <td>Shipped (logo); hostname pairs with custom domain</td>
+        </tr>
+        <tr>
+            <td><strong>DB-per-tenant isolation</strong></td>
+            <td>Optional dedicated MySQL database for one agency’s CRM rows.</td>
+            <td><code>TENANT_DB_ISOLATION=true</code> on a VPS that can <code>CREATE DATABASE</code>. Then <code>php artisan tenants:provision-db {id}</code>. Keep <code>SESSION_CONNECTION=primary</code>.</td>
+            <td>Opt-in. New signups only unless F-28-migrate runs. Default production = shared primary</td>
+        </tr>
+        <tr>
+            <td><strong>Workspace audit log</strong></td>
+            <td>Tenant-visible trail of sensitive org actions; SA sees platform audit.</td>
+            <td>Super Admin → Audit Logs. Tenant: Organization → Audit log.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>GDPR export</strong></td>
+            <td>ZIP of workspace CSVs for the customer.</td>
+            <td>Tenant requests export; SA Data Exports approve/reject, or generate from Tenant detail.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>GDPR erasure</strong></td>
+            <td>Destructive removal of tenant personal/business data.</td>
+            <td>Tenant detail → Erasure. Export first. Confirm legal basis.</td>
+            <td>Shipped (shared-DB path; isolated DB still uses primary in some jobs)</td>
+        </tr>
+        <tr>
+            <td><strong>Per-tenant backup / restore</strong></td>
+            <td>ZIP backup of one workspace; restore with dry-run.</td>
+            <td>Tenant detail → Backup / Restore. High-risk; communicate downtime.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Management API + tokens</strong></td>
+            <td>Bearer access to company, membership, invoices, usage.</td>
+            <td>Plan flag <code>api_access</code>. Tenant Organization → API tokens. Revoke leaks immediately.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Outbound webhooks</strong></td>
+            <td>HMAC-signed events (invoice paid, membership, etc.) to the tenant’s URL.</td>
+            <td>Requires API access on the plan. Organization → Webhooks.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Public status page</strong></td>
+            <td>Component health and incidents at <code>/status</code>; email subscribers.</td>
+            <td>Super Admin → Status Page. Pair with maintenance announcements.</td>
+            <td>Shipped (informational SLA page, not a contractual credit SLA)</td>
+        </tr>
+        <tr>
+            <td><strong>Maintenance broadcast</strong></td>
+            <td>Pause Admin/Seller CRM with a 503 page during a window.</td>
+            <td>Announcements → type maintenance → “Block Admin &amp; Seller CRM”.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Multi-currency + FX</strong></td>
+            <td>USD list prices; tenants pay PKR, AED, EUR, GBP; MRR/ARR in one base.</td>
+            <td>Super Admin → FX Rates. Tenant currency from country or preference.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Stripe Customer Portal</strong></td>
+            <td>Tenant updates card and sees Stripe invoices without a ticket.</td>
+            <td>Enable in Stripe Dashboard. Tenant Billing → Manage in Stripe.</td>
+            <td>Shipped (after first Stripe Checkout)</td>
+        </tr>
+        <tr>
+            <td><strong>Dunning + past-due grace</strong></td>
+            <td>Failed card does not lock CRM for the grace window; ladder emails 0/3/7d.</td>
+            <td><code>SUBSCRIPTION_PAST_DUE_GRACE_DAYS</code>. Watch Webhook Events.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Plan limits &amp; feature overrides</strong></td>
+            <td>Seats, storage, modules per package; one-off flags for a deal.</td>
+            <td>Pricing Packages for the default. Tenant detail → overrides when closing a larger contract.</td>
+            <td>Shipped</td>
+        </tr>
+        <tr>
+            <td><strong>Suspend / offboard / restore</strong></td>
+            <td>Stop CRM access without deleting history.</td>
+            <td>Tenant detail: Suspend, Activate, Offboard, Restore.</td>
+            <td>Shipped</td>
+        </tr>
+    </table>
+
+    <h3>10.2 Not claimed — do not sell these as live</h3>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Why it is not “enterprise ready”</th>
+        </tr>
+        <tr>
+            <td>SOC 2 / ISO 27001 / HIPAA</td>
+            <td>No third-party audit is published. Security page states this on purpose.</td>
+        </tr>
+        <tr>
+            <td>Signed DPA / contractual SLA with credits</td>
+            <td>Ask sales; do not assume from <code>/status</code>.</td>
+        </tr>
+        <tr>
+            <td>Self-serve Okta / Entra admin screen</td>
+            <td>SSO and SCIM are turned on by Ledrix staff, not by the tenant IT admin.</td>
+        </tr>
+        <tr>
+            <td>Dedicated physical server for every customer</td>
+            <td>Default is shared <code>ledrix_primary</code> with <code>tenant_id</code> scoping. Dedicated DB is opt-in on VPS.</td>
+        </tr>
+        <tr>
+            <td>Automatic SSL for every custom domain</td>
+            <td>App accepts the host after DNS verify. Certificate/vhost is still VPS or Cloudflare.</td>
+        </tr>
+        <tr>
+            <td>Copy existing shared CRM into a new tenant DB</td>
+            <td>F-28-migrate is backlog. <code>tenants:provision-db</code> creates an empty database for existing tenants.</td>
+        </tr>
+    </table>
+
     <h2>11. Enterprise &amp; plan-gated CRM features (shipped)</h2>
     <p>
         These modules are controlled per pricing package and via Super Admin feature overrides on each tenant.
         Platform domain: <strong>ledrix.co</strong> (production <code>APP_URL</code> / <code>SEO_SITE_URL</code>).
-        Enable on a plan in Pricing Packages, or override on Tenant detail when closing an enterprise deal.
+        Enable on a plan in Pricing Packages, or override on Tenant detail when closing a larger deal.
+        Tenant-facing how-to lives in the Tenant Portals guide.
     </p>
     <table>
         <tr>
@@ -638,7 +817,8 @@
 
     <div class="footer-note">
         Ledrix Platform Handling Guide · Generated {{ $generatedAt }} · Keep alongside PRODUCTION.md for deploy/cron/webhook setup.
-        Update this document when new platform features ship (remove from FEATURE.md backlog).
+        Tenant CRM (Admin / Seller / Client): docs/Ledrix-Tenant-Portals-Guide.pdf.
+        Regenerate both: <code>php artisan docs:generate-pdfs</code>.
     </div>
 </body>
 </html>

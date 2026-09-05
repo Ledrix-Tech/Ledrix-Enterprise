@@ -4,14 +4,13 @@ namespace App\Http\Middleware;
 
 use App\Models\Central\Tenant;
 use App\Support\TenantContext;
+use App\Support\TenantDatabase;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * F-28: Switch the primary CRM connection to the tenant's dedicated database when configured.
+ * F-28: Use the tenant CRM database for models. Keep `primary` for sessions/jobs.
  */
 class SwitchTenantDatabaseConnection
 {
@@ -22,27 +21,17 @@ class SwitchTenantDatabaseConnection
         }
 
         $tenantId = TenantContext::resolve();
-
         if (! $tenantId) {
             return $next($request);
         }
 
         $tenant = Tenant::on('central')->find($tenantId);
-        $database = $tenant?->crm_database;
-
-        if (! filled($database)) {
-            return $next($request);
-        }
-
-        Config::set('database.connections.primary.database', $database);
-        DB::purge('primary');
-        DB::reconnect('primary');
+        TenantDatabase::activate($tenant);
 
         try {
             return $next($request);
         } finally {
-            Config::set('database.connections.primary.database', env('DB_PRIMARY_DATABASE', 'ledrix_primary'));
-            DB::purge('primary');
+            TenantDatabase::deactivate();
         }
     }
 }

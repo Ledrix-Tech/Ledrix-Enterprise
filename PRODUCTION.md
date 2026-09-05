@@ -5,7 +5,7 @@ Complete **Phase A (shared hosting)** first for launch, then **Phase B (VPS)** w
 
 **Platform domain:** production marketing + SaaS should use **`https://ledrix.co`** (`APP_URL` / `SEO_SITE_URL`).
 
-Also see: [`docs/Ledrix-Platform-Handling-Guide.pdf`](docs/Ledrix-Platform-Handling-Guide.pdf) for Super Admin feature handling (domains, DB isolation, SSO, SCIM).
+Also see: [`docs/Ledrix-Platform-Handling-Guide.pdf`](docs/Ledrix-Platform-Handling-Guide.pdf) (Super Admin / platform, including the enterprise feature list) and [`docs/Ledrix-Tenant-Portals-Guide.pdf`](docs/Ledrix-Tenant-Portals-Guide.pdf) (Admin, Seller, Client). Regenerate both with `php artisan docs:generate-pdfs`.
 
 ---
 
@@ -744,7 +744,8 @@ For most Ledrix installs, **cron + scheduler alone is enough**.
 | `scripts/schedule-run.ps1` | Windows Task Scheduler helper |
 | `routes/console.php` | All scheduled tasks |
 | `.env.example` | Environment template |
-| `docs/Ledrix-Platform-Handling-Guide.pdf` | SA runbook: domains, DB isolation, SSO, SCIM, billing |
+| `docs/Ledrix-Platform-Handling-Guide.pdf` | SA runbook: domains, DB isolation, SSO, SCIM, billing, enterprise feature list |
+| `docs/Ledrix-Tenant-Portals-Guide.pdf` | Admin / Seller / Client features and how they work |
 | `VPS.md` | VPS email notifications + server best-practice checklist |
 | `FEATURE.md` | Remaining product backlog |
 | `tests/TESTING.md` | How to run automated tests (payment flow) |

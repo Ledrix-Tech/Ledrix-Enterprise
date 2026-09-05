@@ -581,7 +581,7 @@
                             <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-broadcast"></i></span>
                             <div class="mkt-feat-item__body">
                                 <h3>SSO &amp; SCIM</h3>
-                                <p>OIDC sign-in and SCIM admin provisioning exist when we turn them on for you. Not a self-serve Okta panel in the trial. <a href="{{ route('security.get') }}">How that works</a>.</p>
+                                <p>OIDC sign-in and SCIM admin provisioning are ready when your team needs directory login. We enable that path with you. <a href="{{ route('security.get') }}">How that works</a>.</p>
                             </div>
                         </article>
                     </div>
@@ -595,14 +595,14 @@
                 <a href="{{ route('security.get') }}" class="mkt-feat-security">
                     <div class="mkt-feat-security__copy">
                         <span class="mkt-cat-kicker">Security &amp; compliance</span>
-                        <h2 class="mkt-section-title" id="cat-sec-heading">Isolation and GDPR live on their own page</h2>
-                        <p class="mkt-section-lead">We don’t headline compliance here. If you need the facts, they’re written plainly next door.</p>
+                        <h2 class="mkt-section-title" id="cat-sec-heading">Isolation, GDPR, and the path to formal compliance</h2>
+                        <p class="mkt-section-lead">See how workspaces stay separate, how export and erasure work, and how we plan audits and DPAs with growing teams.</p>
                     </div>
                     <span class="mkt-feat-security__cta">
                         <i class="bi bi-shield-lock" aria-hidden="true"></i>
                         <span>
                             <strong>Security &amp; compliance</strong>
-                            <em>Tenant isolation, GDPR requests, what we do not claim</em>
+                            <em>Tenant isolation, GDPR path, SSO, and compliance roadmap</em>
                         </span>
                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </span>

@@ -162,29 +162,44 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <label class="auth-label" for="country">Country</label>
+                                        @php
+                                            $countryCode = strtoupper((string) old('country', 'PK'));
+                                            $countries = \App\Support\Countries::all();
+                                            $countryName = $countries[$countryCode] ?? 'Pakistan';
+                                            $countryIso = isset($countries[$countryCode]) ? $countryCode : 'PK';
+                                        @endphp
+                                        <div class="auth-country-field" data-country-picker data-initial-country="{{ strtolower($countryIso) }}">
+                                            <select id="country" name="country" class="form-select auth-country-native @error('country') is-invalid @enderror" required>
+                                                @foreach ($countries as $code => $label)
+                                                    <option value="{{ $code }}" @selected($countryIso === $code)>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                            <button type="button" class="auth-country-trigger @error('country') is-invalid @enderror" hidden
+                                                aria-haspopup="listbox" aria-expanded="false" aria-label="Select country">
+                                                <span class="iti__flag-box"><span class="iti__flag iti__{{ strtolower($countryIso) }}" data-country-flag></span></span>
+                                                <span class="auth-country-name" data-country-name>{{ $countryName }}</span>
+                                                <span class="iti__arrow" aria-hidden="true"></span>
+                                            </button>
+                                            <div class="auth-country-dropdown" hidden>
+                                                <input type="search" id="country-search" class="auth-country-search" placeholder="Search country" autocomplete="off">
+                                                <ul class="auth-country-list" role="listbox"></ul>
+                                            </div>
+                                        </div>
+                                        @error('country')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                                        <div class="form-text">Same country list as the phone flag. Changing one updates the other.</div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="auth-label" for="phone">Phone</label>
                                         <div class="auth-phone-field">
                                             <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
                                                 class="form-control @error('phone') is-invalid @enderror"
                                                 data-phone-input data-phone-required="1" data-phone-sync-country="1"
-                                                data-initial-country="{{ strtolower(old('country', 'PK')) }}"
+                                                data-initial-country="{{ strtolower($countryIso) }}"
                                                 placeholder="Phone number" required autocomplete="tel">
                                         </div>
                                         @error('phone')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
-                                        <div class="form-text">Pick your country, then enter the mobile number only (e.g. 300 1234567) — do not retype +92.</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="auth-label" for="country">Country</label>
-                                        <div class="auth-input-group">
-                                            <i class="bi bi-globe2 auth-input-icon"></i>
-                                            <select id="country" name="country" class="form-select @error('country') is-invalid @enderror" required>
-                                                <option value="">Select country</option>
-                                                @foreach (['PK' => 'Pakistan', 'US' => 'United States', 'GB' => 'United Kingdom', 'IN' => 'India', 'AE' => 'United Arab Emirates', 'CA' => 'Canada', 'SA' => 'Saudi Arabia'] as $code => $label)
-                                                    <option value="{{ $code }}" @selected(old('country') === $code)>{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @error('country')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                                        <div class="form-text">Pick your country, then enter the mobile number only — do not retype the dial code.</div>
                                     </div>
                                     <div class="col-12">
                                         <label class="auth-label" for="website">Website <span class="text-muted fw-normal">(optional)</span></label>

@@ -144,7 +144,9 @@ class RegisterTenantService
 
             if (config('tenancy.db_isolation_enabled') && config('tenancy.provision_on_register')) {
                 try {
-                    app(TenantDatabaseProvisioner::class)->provision($tenant->fresh());
+                    $tenant = $tenant->fresh();
+                    app(TenantDatabaseProvisioner::class)->provision($tenant);
+                    app(ProvisionTenantAdminService::class)->provision($tenant->fresh());
                 } catch (Throwable $dbError) {
                     Log::error('Tenant DB provisioning failed after registration', [
                         'tenant_id' => $tenant->id,

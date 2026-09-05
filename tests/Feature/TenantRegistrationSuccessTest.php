@@ -34,7 +34,11 @@ class TenantRegistrationSuccessTest extends TestCase
         $this->get(route('tenant.register.form', 'crm-basic'))
             ->assertOk()
             ->assertSee('7-day free trial')
-            ->assertSee('Start 7-day free trial');
+            ->assertSee('Start 7-day free trial')
+            ->assertSee('data-country-picker', false)
+            ->assertSee('Pakistan', false)
+            ->assertSee('United Arab Emirates', false)
+            ->assertSee('Germany', false);
     }
 
     public function test_register_success_url_does_not_404_as_plan_slug(): void

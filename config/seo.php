@@ -168,7 +168,7 @@ return [
         ],
         [
             'question' => 'Is Ledrix GDPR compliant?',
-            'answer' => 'Ledrix supports GDPR-style requests. Workspaces are tenant-scoped so other companies cannot see your data. Workspace owners can export their CRM data. You can request access, correction, or erasure of personal data we hold by emailing hello@ledrix.co. We process your clients’ data as a processor when you store it in Ledrix. We do not claim a third-party GDPR certification. Full statement: ledrix.co/security.',
+            'answer' => 'Ledrix has a working GDPR path: workspaces are tenant-scoped so other companies cannot see your data, owners can export CRM data, and you can request access, correction, or erasure by emailing hello@ledrix.co. We process your clients’ data as a processor when you store it in Ledrix. Full statement: ledrix.co/security.',
         ],
         [
             'question' => 'Can I use my own domain for my client portal?',
@@ -180,7 +180,7 @@ return [
         ],
         [
             'question' => 'Does Ledrix support SSO or SCIM?',
-            'answer' => 'OIDC sign-in for CRM admins and SCIM 2.0 admin provisioning exist when we enable them for your workspace. They are not a self-serve setting in the trial. Ask sales if you need them. Details: ledrix.co/security.',
+            'answer' => 'Yes. OIDC sign-in for CRM admins and SCIM 2.0 admin provisioning are available when we enable them for your workspace. Ask sales to turn that path on. Details: ledrix.co/security.',
         ],
         [
             'question' => 'Who founded Ledrix?',

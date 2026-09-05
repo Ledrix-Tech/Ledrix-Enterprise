@@ -25,7 +25,7 @@ final class TenantHostResolver
     {
         $host = strtolower($host);
 
-        if (in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+        if (in_array($host, ['localhost', '127.0.0.1', '::1'], true) || str_ends_with($host, '.localhost')) {
             return true;
         }
 
@@ -77,21 +77,39 @@ final class TenantHostResolver
     public static function isPlatformWorkspaceHost(string $host): bool
     {
         $host = strtolower(trim($host));
-        $platform = self::platformHost();
+        $platform = self::displayPlatformHost();
 
         return $host === $platform || str_ends_with($host, '.'.$platform);
     }
 
+    /**
+     * Host used in {slug}.{platform} links. IPs are not valid parents, so local APP_URL
+     * of 127.0.0.1 becomes localhost (browsers resolve *.localhost to this machine).
+     */
+    public static function displayPlatformHost(): string
+    {
+        $platform = self::platformHost();
+
+        return filter_var($platform, FILTER_VALIDATE_IP) ? 'localhost' : $platform;
+    }
+
     public static function workspaceHostForSlug(string $slug): string
     {
-        return strtolower(trim($slug)).'.'.self::platformHost();
+        return strtolower(trim($slug)).'.'.self::displayPlatformHost();
     }
 
     public static function workspaceBaseUrlForSlug(string $slug): string
     {
-        $scheme = parse_url((string) config('app.url'), PHP_URL_SCHEME) ?: 'https';
+        $parsed = parse_url((string) config('app.url'));
+        $scheme = $parsed['scheme'] ?? 'https';
+        $port = $parsed['port'] ?? null;
+        $url = $scheme.'://'.self::workspaceHostForSlug($slug);
 
-        return $scheme.'://'.self::workspaceHostForSlug($slug);
+        if ($port && ! in_array((int) $port, [80, 443], true)) {
+            $url .= ':'.$port;
+        }
+
+        return $url;
     }
 
     public static function workspaceBaseUrlForTenant(Tenant $tenant): string
@@ -115,8 +133,9 @@ final class TenantHostResolver
     private static function resolveFromSlugSubdomain(string $host): ?Tenant
     {
         $parts = explode('.', $host);
+        $isLocalSlug = count($parts) === 2 && $parts[1] === 'localhost';
 
-        if (count($parts) < 3) {
+        if (count($parts) < 3 && ! $isLocalSlug) {
             return null;
         }
 

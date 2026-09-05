@@ -95,6 +95,26 @@ return [
             ]) : [],
         ],
 
+        // Dedicated CRM DB per tenant (F-28). Middleware retargets `database` only.
+        // Sessions / jobs / cache must keep using `primary`.
+        'tenant' => [
+            'driver' => 'mysql',
+            'host' => env('DB_PRIMARY_HOST', '127.0.0.1'),
+            'port' => env('DB_PRIMARY_PORT', '3306'),
+            'database' => env('DB_PRIMARY_DATABASE', 'ledrix_primary'),
+            'username' => env('DB_PRIMARY_USERNAME', 'root'),
+            'password' => env('DB_PRIMARY_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
