@@ -39,27 +39,20 @@ class NotifyStakeholders
 
     public static function dispute(Payment $payment, Order $order, string $provider, string $stage, ?string $reason = null): void
     {
-        $client  = $order->client;
-        $fs      = $order->frontSeller ?? $order->seller;
-        $pm      = $order->ownerSeller ?? null;
+        $seller = $payment->credit_to_seller_id
+            ? \App\Models\Seller::query()->find($payment->credit_to_seller_id)
+            : null;
+        $seller = $seller ?? $order->frontSeller ?? $order->seller;
         $admins  = Admin::where('role', 'admin')->get();
         $finance = Admin::where('role', 'finance')->get();
         $mail    = new PaymentDisputeNotification($payment, $order, $provider, $stage, $reason);
         $extra   = ['payment_id' => $payment->id, 'order_id' => $order->id, 'stage' => $stage];
 
-        if ($client?->email) {
-            SafeMail::notify($client->email, $mail, 'payment dispute', $extra);
-        }
-
-        if ($fs?->email) {
-            SafeMail::notify($fs, $mail, 'payment dispute', $extra);
-        }
-
-        if ($pm?->email && (! $fs || $pm->id !== $fs->id)) {
-            SafeMail::notify($pm, $mail, 'payment dispute', $extra);
-        }
-
         SafeMail::notify($admins, $mail, 'payment dispute', $extra);
         SafeMail::notify($finance, $mail, 'payment dispute', $extra);
+
+        if ($stage === 'lost' && $seller?->email) {
+            SafeMail::notify($seller, $mail, 'payment dispute', $extra);
+        }
     }
 }

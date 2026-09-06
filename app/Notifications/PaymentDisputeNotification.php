@@ -30,6 +30,8 @@ class PaymentDisputeNotification extends Notification{
         $stageLabel = match ($this->stage) {
             'created' => 'Dispute Opened',
             'updated' => 'Dispute Updated',
+            'won'     => 'Dispute Won — No Deduction',
+            'lost'    => 'Dispute Lost — Commission Deducted',
             'resolved' => 'Dispute Resolved',
             default   => ucfirst($this->stage),
         };

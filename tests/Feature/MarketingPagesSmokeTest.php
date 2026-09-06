@@ -102,6 +102,7 @@ class MarketingPagesSmokeTest extends TestCase
             ->assertSee('payout reports', false)
             ->assertSee('Integrations', false)
             ->assertSee('API tokens', false)
+            ->assertSee('Outbound webhooks', false)
             ->assertSee('Disputes &amp; refunds', false)
             ->assertSee('Sheet import', false)
             ->assertSee('Seller panel for closers', false)
@@ -114,10 +115,12 @@ class MarketingPagesSmokeTest extends TestCase
             ->assertOk()
             ->assertSee('Workspace isolation', false)
             ->assertSee('SSO and SCIM', false)
-            ->assertSee('GDPR path', false)
-            ->assertSee('Formal compliance path', false)
+            ->assertSee('GDPR — export and erasure', false)
+            ->assertSee('Audit trails (live)', false)
+            ->assertSee('Lead view activity', false)
             ->assertDontSee('SOC 2 certified', false)
-            ->assertDontSee('We do not claim', false);
+            ->assertDontSee('We do not claim', false)
+            ->assertDontSee('We enable that path with you', false);
 
         $this->get(route('faq.get'))
             ->assertOk()

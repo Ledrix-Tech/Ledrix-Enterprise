@@ -164,11 +164,11 @@ return [
         ],
         [
             'question' => 'Is my data isolated on Ledrix?',
-            'answer' => 'Yes. Every company gets a private workspace. Your brands, leads, orders, and clients stay separate from every other organization on the platform.',
+            'answer' => 'Yes. Every company gets a private workspace. Your brands, leads, orders, and clients stay separate from every other organization on the platform. Agencies that need a dedicated CRM database can request one. Full statement: ledrix.co/security.',
         ],
         [
             'question' => 'Is Ledrix GDPR compliant?',
-            'answer' => 'Ledrix has a working GDPR path: workspaces are tenant-scoped so other companies cannot see your data, owners can export CRM data, and you can request access, correction, or erasure by emailing hello@ledrix.co. We process your clients’ data as a processor when you store it in Ledrix. Full statement: ledrix.co/security.',
+            'answer' => 'Yes. Workspace owners request a ZIP export of CRM and billing CSVs with a written reason. Super Admin can erase a workspace and must log a reason. You remain the controller of client data you store; we process it to run the product. Access and correction: hello@ledrix.co. Full statement: ledrix.co/security.',
         ],
         [
             'question' => 'Can I use my own domain for my client portal?',
@@ -176,11 +176,11 @@ return [
         ],
         [
             'question' => 'Can I send website leads into Ledrix with a script or API?',
-            'answer' => 'Yes. Each brand can embed a lead script on your site, or you can POST leads to the API with a workspace token. The lead still routes to a closer and a brand. API access and lead scoring are plan features.',
+            'answer' => 'Yes. Each brand can embed a lead script, or POST leads with a workspace token. Plans with API access also get /api/v1 (company, membership, invoices, usage) and optional lead classify — the same real-vs-junk scorer as intake. Outbound webhooks push HMAC-signed events to your URL.',
         ],
         [
             'question' => 'Does Ledrix support SSO or SCIM?',
-            'answer' => 'Yes. OIDC sign-in for CRM admins and SCIM 2.0 admin provisioning are available when we enable them for your workspace. Ask sales to turn that path on. Details: ledrix.co/security.',
+            'answer' => 'Yes. Tell us your identity provider (Okta, Microsoft Entra, or any OIDC IdP). We turn on directory login for CRM admins and can enable SCIM so the IdP creates and deactivates those accounts. Details: ledrix.co/security.',
         ],
         [
             'question' => 'Who founded Ledrix?',

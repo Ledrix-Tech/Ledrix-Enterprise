@@ -45,12 +45,21 @@
 
     @if ($stage === 'created')
         <p class="email-muted">
-            Your bank or card issuer has opened a dispute on this transaction.
-            Our team will review and may contact you if more information is needed.
+            A dispute was filed. No seller commission has been deducted.
+            None will be until the case is finally resolved against the agency and funds are withdrawn.
         </p>
     @elseif ($stage === 'updated')
         <p class="email-muted">
-            The status of this dispute has been updated by the payment provider or bank.
+            The dispute is still open. No seller commission has been deducted.
+        </p>
+    @elseif ($stage === 'won')
+        <p class="email-muted">
+            The case was resolved in the agency’s favor. No seller commission was deducted.
+        </p>
+    @elseif ($stage === 'lost')
+        <p class="email-muted">
+            The case was resolved against the agency and funds were withdrawn.
+            Seller commission for this payment has been deducted once.
         </p>
     @elseif ($stage === 'resolved')
         <p class="email-muted">

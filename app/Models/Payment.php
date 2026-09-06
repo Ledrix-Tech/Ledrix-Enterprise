@@ -21,6 +21,8 @@ class Payment extends Model
         'status',
         'provider',
         'provider_payment_intent_id',
+        'provider_dispute_id',
+        'dispute_status',
         'payload',
         'credit_to_seller_id',
         'seller_id',

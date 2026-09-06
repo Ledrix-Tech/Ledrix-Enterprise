@@ -2,6 +2,7 @@
 
 namespace App\Services\Payments;
 
+use App\Services\PaymentRefundProcessor;
 use Illuminate\Support\Facades\Log;
 
 class PaymentEventRouter
@@ -37,11 +38,16 @@ class PaymentEventRouter
                 $this->refundProcessor->processStripeRefund($event);
                 break;
 
-            /* --- Dispute / Chargeback --- */
+            /* --- Dispute / Chargeback (clawback only on closed + lost) --- */
             case 'charge.dispute.created':
-            case 'charge.dispute.funds_withdrawn':
+            case 'charge.dispute.updated':
             case 'charge.dispute.closed':
-                $this->refundProcessor->processStripeChargeback($event);
+                $this->refundProcessor->processStripeDisputeEvent($event);
+                break;
+            case 'charge.dispute.funds_withdrawn':
+            case 'charge.dispute.funds_reinstated':
+            case 'radar.early_fraud_warning':
+                Log::info('Stripe dispute-related event ignored for seller clawback', ['type' => $type]);
                 break;
 
 

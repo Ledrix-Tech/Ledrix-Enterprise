@@ -241,7 +241,7 @@
                             <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-filter-circle"></i></span>
                             <div class="mkt-feat-item__body">
                                 <h3>Lead scoring</h3>
-                                <p>On eligible plans, intake can score a lead as real vs junk before a closer wastes a dial. It is a classifier — not a bot that writes emails.</p>
+                                <p>On eligible plans, intake can score a lead as real vs junk before a closer wastes a dial. It is a classifier — not a bot that writes emails. The same classifier is available as <code>/api/v1/leads/classify</code> when API access is on — see <a href="#integrations">Integrations</a>.</p>
                             </div>
                         </article>
                         <article class="mkt-feat-item">
@@ -306,7 +306,7 @@
                     <span class="mkt-cat-kicker">Multi-brand / multi-LLC</span>
                     <h2 class="mkt-section-title" id="cat-brand-heading">Unlimited brands. One login. No mixed data.</h2>
                     <p class="mkt-section-lead mx-auto">
-                        This is the reason agencies stop stacking CRM seats. Every LLC or brand stays in its own pipeline. You still run one workspace.
+                        This is the reason agencies stop stacking CRM seats. Every LLC or brand stays in its own pipeline. You still run one workspace — and another company on Ledrix cannot open it.
                     </p>
                 </div>
                 <article class="mkt-feature-panel">
@@ -318,13 +318,27 @@
                                     Web leads stay with the web brand. Marketing leads stay with marketing. Closers don’t trip over another LLC’s book.
                                     Admins see every brand in <em>this</em> company — not every tenant on Ledrix.
                                 </p>
+                                <p>
+                                    Every workspace is isolated from every other company on the platform. That scoping is live on day one.
+                                    Agencies that need a dedicated CRM database for a workspace can request one — we provision it for that tenant.
+                                </p>
                                 <ul class="mkt-feature-panel__list">
                                     <li><i class="bi bi-check2"></i> Separate brand pipelines under one account</li>
                                     <li><i class="bi bi-check2"></i> Routing that respects the brand the lead came from</li>
                                     <li><i class="bi bi-check2"></i> One bill instead of stacking seats per brand</li>
                                     <li><i class="bi bi-check2"></i> Sellers stay on their assignments — they don’t browse the whole shop</li>
                                     <li><i class="bi bi-check2"></i> Your workspace stays private from every other company on the platform</li>
+                                    <li><i class="bi bi-check2"></i> Dedicated CRM database available when a contract needs structural separation</li>
                                 </ul>
+                                <p class="mt-3 mb-0">
+                                    <a href="{{ route('security.get') }}">How isolation works</a>
+                                    ·
+                                    @if ($popularPackage)
+                                        <a href="{{ route('tenant.register.form', $popularPackage->slug) }}">Try {{ $popularPackage->name }} free</a>
+                                    @else
+                                        <a href="{{ route('pricing.get') }}">See plans</a>
+                                    @endif
+                                </p>
                                 <div class="mkt-feature-panel__outcome">
                                     <i class="bi bi-graph-up-arrow"></i>
                                     <span><strong>Pain solved</strong> — Dual CRM bills &amp; mixed brands</span>
@@ -354,7 +368,7 @@
                     <div class="mkt-feat-cat__intro">
                         <span class="mkt-cat-kicker">Client portal</span>
                         <h2 class="mkt-section-title" id="cat-client-heading">Clients log in. They don’t email “where is it?”</h2>
-                        <p class="mkt-section-lead">Their orders, invoices, tickets, and progress — not your pipeline.</p>
+                        <p class="mkt-section-lead">Their orders, invoices, tickets, and progress — so they stop chasing you, and you stop forwarding screenshots.</p>
                     </div>
                     <div class="mkt-feat-list mkt-feat-list--stack">
                         <article class="mkt-feat-item">
@@ -390,13 +404,13 @@
                     <div class="mkt-feat-spotlight__intro">
                         <span class="mkt-cat-kicker">Agency &amp; branding</span>
                         <h2 class="mkt-section-title" id="cat-agency-heading">Your brand on the door — when the plan includes it</h2>
-                        <p class="mkt-section-lead">For agencies reselling to their own clients. Not a homepage pitch. One fact:</p>
+                        <p class="mkt-section-lead">For agencies reselling the workspace to their own clients. Buyers should feel they hired you, not Ledrix.</p>
                     </div>
                     <article class="mkt-feat-spotlight__body">
                         <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-globe2"></i></span>
                         <div class="mkt-feat-item__body">
                             <h3>Custom domain</h3>
-                            <p>White-label the client portal under the agency’s own domain so buyers land on your URL, not Ledrix. Available on plans that include custom domains. You set the hostname and verify DNS in the product. Eligible plans can also drop Ledrix branding (logo) on the portal.</p>
+                            <p>Resell the workspace under your agency’s name: clients and closers land on your hostname, not Ledrix. White-label the client portal under the agency’s own domain. You set the hostname and verify DNS in Organization. Eligible plans can also replace the Ledrix logo. Available on plans that include custom domains.</p>
                         </div>
                     </article>
                 </div>
@@ -434,8 +448,8 @@
                     </article>
                     <article class="mkt-feat-card">
                         <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
-                        <h3>2FA &amp; audit log</h3>
-                        <p>Optional two-factor on admin and seller logins. Org owners get a workspace audit log. Details on the <a href="{{ route('security.get') }}">Security page</a>.</p>
+                        <h3>2FA, audit &amp; data export</h3>
+                        <p>Optional two-factor on admin and seller logins. Lead-view activity on the Admin dashboard (who opened which lead). Org audit log plus a ZIP export you request with a reason. <a href="{{ route('security.get') }}">Security page</a>.</p>
                     </article>
                     <article class="mkt-feat-card">
                         <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-credit-card-2-front"></i></span>
@@ -560,7 +574,7 @@
                     <div class="mkt-feat-cat__intro">
                         <span class="mkt-cat-kicker">Integrations</span>
                         <h2 class="mkt-section-title" id="cat-int-heading">Your site and tools can push. Closers still own the lead.</h2>
-                        <p class="mkt-section-lead">The pieces agencies check before they rule you out — not a homepage pitch.</p>
+                        <p class="mkt-section-lead">For the technical buyer: tokens, <code>/api/v1</code>, outbound events, and inbound payment webhooks — closers still get a named lead.</p>
                     </div>
                     <div class="mkt-feat-list mkt-feat-list--stack">
                         <article class="mkt-feat-item">
@@ -573,15 +587,31 @@
                         <article class="mkt-feat-item">
                             <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-key"></i></span>
                             <div class="mkt-feat-item__body">
-                                <h3>API tokens</h3>
-                                <p>Workspace tokens for the public lead API and <code>/api/v1</code> (company, usage, invoices, optional lead classify). On plans that include API access.</p>
+                                <h3>API tokens &amp; <code>/api/v1</code></h3>
+                                <p>
+                                    On plans with API access, Organization → API tokens issues a Bearer / <code>X-Api-Token</code>.
+                                    Pull company, membership, invoices, and usage from <code>/api/v1</code>.
+                                    POST website leads to the public lead API — they still route to a closer and a brand.
+                                    <code>/api/v1/leads/classify</code> is the same real-vs-junk classifier as <a href="#cat-lead-heading">Lead scoring</a>, callable from your stack.
+                                    Revoke a leaked token from the same screen.
+                                </p>
                             </div>
                         </article>
                         <article class="mkt-feat-item">
                             <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-broadcast"></i></span>
                             <div class="mkt-feat-item__body">
+                                <h3>Outbound webhooks</h3>
+                                <p>
+                                    Organization → Webhooks: add your HTTPS URL and secret. Ledrix POSTs HMAC-signed events (for example invoice paid, membership activated) so your ERP or Zapier does not poll.
+                                    Separate from that: Stripe and PayPal payment webhooks write paid, failed, refund, and dispute back onto the order — see <a href="#payments">Payments</a>.
+                                </p>
+                            </div>
+                        </article>
+                        <article class="mkt-feat-item">
+                            <span class="mkt-feat-item__icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
+                            <div class="mkt-feat-item__body">
                                 <h3>SSO &amp; SCIM</h3>
-                                <p>OIDC sign-in and SCIM admin provisioning are ready when your team needs directory login. We enable that path with you. <a href="{{ route('security.get') }}">How that works</a>.</p>
+                                <p>Tell us your identity provider. We turn on OIDC sign-in for CRM admins and, if you want it, SCIM so the IdP can create and deactivate those accounts. <a href="{{ route('security.get') }}">Setup steps</a>.</p>
                             </div>
                         </article>
                     </div>
@@ -595,14 +625,14 @@
                 <a href="{{ route('security.get') }}" class="mkt-feat-security">
                     <div class="mkt-feat-security__copy">
                         <span class="mkt-cat-kicker">Security &amp; compliance</span>
-                        <h2 class="mkt-section-title" id="cat-sec-heading">Isolation, GDPR, and the path to formal compliance</h2>
-                        <p class="mkt-section-lead">See how workspaces stay separate, how export and erasure work, and how we plan audits and DPAs with growing teams.</p>
+                        <h2 class="mkt-section-title" id="cat-sec-heading">Isolation, GDPR export, erasure, and SSO — written out</h2>
+                        <p class="mkt-section-lead">What is live (roles, export with a reason, erasure, audit log) and how we set up directory login for your team.</p>
                     </div>
                     <span class="mkt-feat-security__cta">
                         <i class="bi bi-shield-lock" aria-hidden="true"></i>
                         <span>
                             <strong>Security &amp; compliance</strong>
-                            <em>Tenant isolation, GDPR path, SSO, and compliance roadmap</em>
+                            <em>Workspace isolation, GDPR export &amp; erasure, audit log, SSO</em>
                         </span>
                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </span>

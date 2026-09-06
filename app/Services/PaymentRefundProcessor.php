@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AccountKey;
 use App\Models\Payment;
 use App\Models\PaymentLink;
 use App\Support\PpcWebhookVerifier;
@@ -71,26 +72,31 @@ class PaymentRefundProcessor
 
     public function processStripeDisputeEvent(\Stripe\Event $event): void
     {
-        $dispute  = $event->data->object;
-        $chargeId = $dispute->charge ?? null;
+        $type = (string) ($event->type ?? '');
 
-        if (! $chargeId) {
+        if (in_array($type, ['radar.early_fraud_warning', 'charge.dispute.funds_withdrawn', 'charge.dispute.funds_reinstated'], true)) {
+            Log::info('Stripe dispute-related event logged without seller clawback', [
+                'event_id' => $event->id ?? null,
+                'type'     => $type,
+            ]);
+
             return;
         }
 
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        $charge          = \Stripe\Charge::retrieve($chargeId);
-        $paymentIntentId = $charge->payment_intent ?? null;
-
-        if (! $paymentIntentId) {
-            return;
-        }
-
-        $payment = Payment::where('provider', 'stripe')
-            ->where('provider_payment_intent_id', $paymentIntentId)
-            ->first();
+        $dispute = $event->data->object;
+        $payment = $this->findStripePaymentForDispute($dispute);
 
         if (! $payment) {
+            Log::warning('Stripe dispute event: payment not found for tenant/brand', [
+                'event_id' => $event->id ?? null,
+                'type'     => $type,
+                'charge'   => $dispute->charge ?? null,
+            ]);
+
+            return;
+        }
+
+        if (! $this->paymentMatchesTenantBrand($payment, 'stripe', isset($event->account) ? (string) $event->account : null)) {
             return;
         }
 
@@ -100,24 +106,29 @@ class PaymentRefundProcessor
 
         $amount = (int) ($dispute->amount ?? 0);
         $status = (string) ($dispute->status ?? '');
+        $disputeId = (string) ($dispute->id ?? '');
+        $payload = $event->toArray();
 
-        if ($event->type === 'charge.dispute.closed') {
+        if ($type === 'charge.dispute.closed') {
             if ($status === 'lost') {
-                $this->applyChargebackLost($payment, $amount, 'stripe', $event->toArray(), 'lost');
+                $this->applyChargebackLost($payment, $amount, 'stripe', $payload, $disputeId);
             } elseif ($status === 'won') {
-                $this->markDisputeWon($payment, 'stripe', $event->toArray());
+                $this->markDisputeWon($payment, 'stripe', $payload, $disputeId);
             } else {
-                Log::warning('Stripe dispute closed with unexpected status', [
+                Log::info('Stripe dispute closed without a final lost/won ruling — no seller clawback', [
                     'status'     => $status,
                     'payment_id' => $payment->id,
+                    'dispute_id' => $disputeId,
                 ]);
             }
 
             return;
         }
 
-        $stage = $event->type === 'charge.dispute.created' ? 'created' : 'updated';
-        $this->markDisputeOpen($payment, $amount, 'stripe', $event->toArray(), $stage);
+        if (in_array($type, ['charge.dispute.created', 'charge.dispute.updated'], true)) {
+            $stage = $type === 'charge.dispute.created' ? 'created' : 'updated';
+            $this->markDisputeOpen($payment, $amount, 'stripe', $payload, $stage, $disputeId);
+        }
     }
 
     /** @deprecated Use processStripeRefundEvent */
@@ -149,7 +160,8 @@ class PaymentRefundProcessor
 
         $refundCents = (int) round((float) $refundValue * 100);
 
-        $payment = Payment::where('provider', 'paypal')
+        $payment = Payment::withoutGlobalScopes()
+            ->where('provider', 'paypal')
             ->where('provider_payment_intent_id', $captureId)
             ->first();
 
@@ -159,22 +171,45 @@ class PaymentRefundProcessor
             return;
         }
 
+        // Dispute-driven refunds are handled by CUSTOMER.DISPUTE.RESOLVED.
+        // Do not also run the voluntary-refund path (would overwrite chargeback
+        // status or deduct seller revenue a second time).
+        if (! empty($resource['dispute_id']) || $this->alreadyClawedBack($payment, (string) ($resource['dispute_id'] ?? ''))) {
+            Log::info('PayPal refund skipped — dispute loss is handled by dispute.resolved, not the refund webhook', [
+                'payment_id' => $payment->id,
+                'dispute_id' => $resource['dispute_id'] ?? $payment->provider_dispute_id,
+            ]);
+
+            return;
+        }
+
         $this->applyRefund($payment, $refundCents, 'paypal', $webhook);
     }
 
     public function processPaypalDisputeEvent(array $webhook, string $label): void
     {
-        $txn = $webhook['resource']['disputed_transactions'][0]['seller_transaction_id'] ?? null;
+        $resource = $webhook['resource'] ?? [];
+        $txn = $this->paypalDisputedTransactionId($resource);
 
         if (! $txn) {
             return;
         }
 
-        $payment = Payment::where('provider', 'paypal')
+        $payment = Payment::withoutGlobalScopes()
+            ->where('provider', 'paypal')
             ->where('provider_payment_intent_id', $txn)
             ->first();
 
         if (! $payment) {
+            Log::warning('PayPal dispute event: payment not found for tenant/brand', [
+                'event_type' => $label,
+                'txn'        => $txn,
+            ]);
+
+            return;
+        }
+
+        if (! $this->paymentMatchesTenantBrand($payment, 'paypal')) {
             return;
         }
 
@@ -182,32 +217,35 @@ class PaymentRefundProcessor
             return;
         }
 
+        $disputeId = (string) ($resource['dispute_id'] ?? '');
+        $amount = $this->paypalDisputeAmountCents($resource, (int) $payment->amount);
+
         if ($label === 'CUSTOMER.DISPUTE.RESOLVED') {
-            $outcome = strtoupper((string) ($webhook['resource']['outcome'] ?? ''));
+            $outcome = $this->paypalDisputeOutcome($resource);
 
             if (in_array($outcome, ['RESOLVED_BUYER_FAVOUR', 'RESOLVED_BUYER_FAVOR'], true)) {
-                $this->applyChargebackLost(
-                    $payment,
-                    (int) $payment->amount,
-                    'paypal',
-                    $webhook,
-                    'lost'
-                );
+                $this->applyChargebackLost($payment, $amount, 'paypal', $webhook, $disputeId);
             } elseif (in_array($outcome, ['RESOLVED_SELLER_FAVOUR', 'RESOLVED_SELLER_FAVOR'], true)) {
-                $this->markDisputeWon($payment, 'paypal', $webhook);
+                $this->markDisputeWon($payment, 'paypal', $webhook, $disputeId);
+            } else {
+                Log::info('PayPal dispute resolved without buyer/seller favour — no seller clawback', [
+                    'outcome'    => $outcome,
+                    'payment_id' => $payment->id,
+                    'dispute_id' => $disputeId,
+                ]);
             }
 
             return;
         }
 
         $stage = $label === 'CUSTOMER.DISPUTE.CREATED' ? 'created' : 'updated';
-        $this->markDisputeOpen($payment, (int) $payment->amount, 'paypal', $webhook, $stage);
+        $this->markDisputeOpen($payment, $amount, 'paypal', $webhook, $stage, $disputeId);
     }
 
     /** @deprecated Use processPaypalDisputeEvent */
     public function processPaypalChargeback(array $webhook): void
     {
-        $this->processPaypalDisputeEvent($webhook, 'CUSTOMER.DISPUTE.CREATED');
+        $this->processPaypalDisputeEvent($webhook, (string) ($webhook['event_type'] ?? 'CUSTOMER.DISPUTE.CREATED'));
     }
 
     private function applyRefund(Payment $payment, int $refundCents, string $provider, array $raw): void
@@ -262,9 +300,9 @@ class PaymentRefundProcessor
         });
     }
 
-    private function markDisputeOpen(Payment $payment, int $disputeAmount, string $provider, array $raw, string $stage): void
+    private function markDisputeOpen(Payment $payment, int $disputeAmount, string $provider, array $raw, string $stage, string $disputeId): void
     {
-        DB::transaction(function () use ($payment, $disputeAmount, $provider, $raw, $stage) {
+        DB::transaction(function () use ($payment, $disputeAmount, $provider, $raw, $stage, $disputeId) {
             $payment = Payment::lockForUpdate()->find($payment->id);
 
             if (! $payment) {
@@ -277,40 +315,40 @@ class PaymentRefundProcessor
                 return;
             }
 
-            if ($payment->refund_status !== 'chargeback') {
-                $payment->refund_status  = 'chargeback';
-                $payment->refund_payload = $raw;
-                $payment->save();
+            if ($payment->dispute_status === 'lost' && $payment->refund_status === 'chargeback') {
+                return;
             }
 
-            if ($order->refund_status !== 'chargeback') {
-                $order->refund_status = 'chargeback';
-                $order->save();
-            }
-
-            PaymentLink::where('order_id', $order->id)
-                ->update(['is_active_link' => false]);
+            $payment->provider_dispute_id = $disputeId !== '' ? $disputeId : $payment->provider_dispute_id;
+            $payment->dispute_status = 'open';
+            $payment->refund_payload = $raw;
+            $payment->needs_review = true;
+            $payment->save();
 
             NotifyStakeholders::dispute(
                 payment: $payment,
                 order: $order,
                 provider: $provider,
                 stage: $stage,
-                reason: 'A dispute/chargeback was filed by the customer.'
+                reason: $stage === 'created'
+                    ? 'A dispute was filed. No seller commission has been deducted, and none will be until the case is finally lost and funds are withdrawn.'
+                    : 'The dispute is still open. No seller commission has been deducted.'
             );
 
-            Log::warning('Dispute opened/updated', [
+            Log::warning('Dispute opened/updated — seller revenue unchanged', [
                 'payment_id' => $payment->id,
                 'order_id'   => $order->id,
                 'stage'      => $stage,
                 'amount'     => $disputeAmount,
+                'dispute_id' => $disputeId,
+                'refund_status' => $payment->refund_status,
             ]);
         });
     }
 
-    private function applyChargebackLost(Payment $payment, int $disputeAmount, string $provider, array $raw, string $stage): void
+    private function applyChargebackLost(Payment $payment, int $disputeAmount, string $provider, array $raw, string $disputeId): void
     {
-        DB::transaction(function () use ($payment, $disputeAmount, $provider, $raw, $stage) {
+        DB::transaction(function () use ($payment, $disputeAmount, $provider, $raw, $disputeId) {
             $payment = Payment::lockForUpdate()->find($payment->id);
 
             if (! $payment) {
@@ -323,13 +361,24 @@ class PaymentRefundProcessor
                 return;
             }
 
-            $payment->refund_status  = 'chargeback';
-            $payment->status           = 'refunded';
-            $payment->refund_payload   = $raw;
+            if ($this->alreadyClawedBack($payment, $disputeId)) {
+                Log::info('Seller clawback skipped — dispute already processed', [
+                    'payment_id' => $payment->id,
+                    'dispute_id' => $disputeId,
+                ]);
+
+                return;
+            }
+
+            $payment->provider_dispute_id = $disputeId !== '' ? $disputeId : $payment->provider_dispute_id;
+            $payment->dispute_status = 'lost';
+            $payment->refund_status = 'chargeback';
+            $payment->status = 'refunded';
+            $payment->refund_payload = $raw;
             $payment->save();
 
             $order->refund_status = 'chargeback';
-            $order->status        = 'refunded';
+            $order->status = 'refunded';
             $order->save();
 
             PaymentLink::where('order_id', $order->id)
@@ -339,22 +388,23 @@ class PaymentRefundProcessor
                 payment: $payment,
                 order: $order,
                 provider: $provider,
-                stage: $stage,
-                reason: 'The dispute was resolved against the merchant.'
+                stage: 'lost',
+                reason: 'The dispute was resolved against the agency and funds were withdrawn. Seller commission for this payment has been deducted once.'
             );
 
-            Log::warning('Chargeback applied', [
+            Log::warning('Chargeback applied after final loss', [
                 'payment_id' => $payment->id,
                 'order_id'   => $order->id,
-                'stage'      => $stage,
+                'stage'      => 'lost',
                 'amount'     => $disputeAmount,
+                'dispute_id' => $disputeId,
             ]);
         });
     }
 
-    private function markDisputeWon(Payment $payment, string $provider, array $raw): void
+    private function markDisputeWon(Payment $payment, string $provider, array $raw, string $disputeId): void
     {
-        DB::transaction(function () use ($payment, $provider, $raw) {
+        DB::transaction(function () use ($payment, $provider, $raw, $disputeId) {
             $payment = Payment::lockForUpdate()->find($payment->id);
 
             if (! $payment) {
@@ -363,7 +413,10 @@ class PaymentRefundProcessor
 
             $order = $payment->order;
 
+            $payment->provider_dispute_id = $disputeId !== '' ? $disputeId : $payment->provider_dispute_id;
+            $payment->dispute_status = 'won';
             $payment->refund_payload = $raw;
+            $payment->needs_review = false;
 
             if ($payment->refund_status === 'chargeback' && $payment->status === 'succeeded') {
                 $payment->refund_status = 'none';
@@ -371,21 +424,178 @@ class PaymentRefundProcessor
 
             $payment->save();
 
-            if ($order && $order->refund_status === 'chargeback') {
+            if ($order && $order->refund_status === 'chargeback' && $order->status !== 'refunded') {
                 $order->refund_status = 'none';
                 $order->save();
             }
 
-            NotifyStakeholders::dispute(
-                payment: $payment,
-                order: $order,
-                provider: $provider,
-                stage: 'won',
-                reason: 'The dispute was resolved in your favor.'
-            );
+            if ($order) {
+                NotifyStakeholders::dispute(
+                    payment: $payment,
+                    order: $order,
+                    provider: $provider,
+                    stage: 'won',
+                    reason: 'The dispute was resolved in the agency’s favor. No seller commission was deducted.'
+                );
+            }
 
-            Log::info('Dispute won', ['payment_id' => $payment->id]);
+            Log::info('Dispute won — no seller clawback', [
+                'payment_id' => $payment->id,
+                'dispute_id' => $disputeId,
+            ]);
         });
+    }
+
+    private function alreadyClawedBack(Payment $payment, string $disputeId): bool
+    {
+        if ($payment->refund_status !== 'chargeback' || $payment->dispute_status !== 'lost') {
+            return false;
+        }
+
+        if ($disputeId === '') {
+            return true;
+        }
+
+        return (string) $payment->provider_dispute_id === $disputeId;
+    }
+
+    private function findStripePaymentForDispute(object $dispute): ?Payment
+    {
+        $paymentIntentId = isset($dispute->payment_intent) ? (string) $dispute->payment_intent : '';
+        $chargeId = isset($dispute->charge) ? (string) $dispute->charge : '';
+
+        if ($paymentIntentId !== '') {
+            $payment = Payment::withoutGlobalScopes()
+                ->where('provider', 'stripe')
+                ->where('provider_payment_intent_id', $paymentIntentId)
+                ->first();
+
+            if ($payment) {
+                return $payment;
+            }
+        }
+
+        if ($chargeId !== '') {
+            $payment = Payment::withoutGlobalScopes()
+                ->where('provider', 'stripe')
+                ->where('payload', 'like', '%'.$chargeId.'%')
+                ->first();
+
+            if ($payment) {
+                return $payment;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<string, mixed>  $resource
+     */
+    private function paypalDisputedTransactionId(array $resource): ?string
+    {
+        $first = $resource['disputed_transactions'][0] ?? [];
+
+        foreach (['seller_transaction_id', 'seller_transaction', 'original_transaction_id'] as $key) {
+            $value = $first[$key] ?? null;
+            if (is_string($value) && $value !== '') {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<string, mixed>  $resource
+     */
+    private function paypalDisputeOutcome(array $resource): string
+    {
+        $code = $resource['dispute_outcome']['outcome_code']
+            ?? $resource['outcome']
+            ?? '';
+
+        return strtoupper((string) $code);
+    }
+
+    /**
+     * @param  array<string, mixed>  $resource
+     */
+    private function paypalDisputeAmountCents(array $resource, int $fallback): int
+    {
+        $value = $resource['dispute_amount']['value'] ?? null;
+
+        if ($value === null || $value === '') {
+            return $fallback;
+        }
+
+        return (int) round((float) $value * 100);
+    }
+
+    /**
+     * Confirm the payment belongs to a real tenant/brand merchant account
+     * before any seller balance is touched. Ledrix brands use per-brand
+     * AccountKey rows (not Stripe Connect acct_ IDs); if a Connect account
+     * is present on the event it is logged for ops, not used as a standalone match.
+     */
+    private function paymentMatchesTenantBrand(Payment $payment, string $provider, ?string $connectedAccountId = null): bool
+    {
+        $payment->loadMissing('order');
+
+        $tenantId = (int) ($payment->tenant_id ?? 0);
+        $brandId = (int) ($payment->order?->brand_id ?? 0);
+
+        if ($tenantId <= 0 || $brandId <= 0) {
+            Log::warning('Dispute webhook rejected — payment is not bound to a tenant/brand', [
+                'payment_id' => $payment->id,
+                'provider'   => $provider,
+            ]);
+
+            return false;
+        }
+
+        $keys = AccountKey::withoutGlobalScopes()
+            ->where('tenant_id', $tenantId)
+            ->where('brand_id', $brandId)
+            ->where('module', 'ppc')
+            ->where('status', 'active')
+            ->first();
+
+        if (! $keys) {
+            Log::warning('Dispute webhook rejected — brand merchant account keys not found', [
+                'payment_id' => $payment->id,
+                'tenant_id'  => $tenantId,
+                'brand_id'   => $brandId,
+                'provider'   => $provider,
+            ]);
+
+            return false;
+        }
+
+        $hasKeys = $provider === 'paypal'
+            ? $keys->hasPaypalSecret()
+            : $keys->hasStripeSecret();
+
+        if (! $hasKeys) {
+            Log::warning('Dispute webhook rejected — brand keys do not match provider', [
+                'payment_id' => $payment->id,
+                'provider'   => $provider,
+                'brand_id'   => $brandId,
+            ]);
+
+            return false;
+        }
+
+        if ($connectedAccountId) {
+            Log::info('Stripe dispute event connected account noted', [
+                'payment_id'            => $payment->id,
+                'connected_account'     => $connectedAccountId,
+                'tenant_id'             => $tenantId,
+                'brand_id'              => $brandId,
+            ]);
+        }
+
+        return true;
     }
 
     private function chargebackTrackingAllowed(Payment $payment): bool
