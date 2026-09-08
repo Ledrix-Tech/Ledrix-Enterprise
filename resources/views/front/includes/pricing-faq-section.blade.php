@@ -8,7 +8,7 @@ $accordionId = $accordionId ?? 'pricingFaq';
 <section class="pricing-faq-section" aria-labelledby="pricing-faq-heading">
     <div class="container">
         <h2 class="text-center mb-4" id="pricing-faq-heading">Pricing &amp; trial FAQs</h2>
-        <p class="text-center mb-4">Common questions about Ledrix CRM, trials, and multi-tenant sales workflows.</p>
+        <p class="text-center mb-4">Common questions about Ledrix CRM trials, billing, and isolated agency workspaces.</p>
         <div class="row justify-content-center">
             <div class="col-lg-11">
                 <div class="accordion" id="{{ $accordionId }}">

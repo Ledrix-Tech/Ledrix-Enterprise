@@ -5,7 +5,7 @@
     <div class="container">
         <a class="navbar-brand" href="{{ route('index.get') }}">
             <img src="{{ asset(config('seo.front_logo', 'front-assets/imgs/logo-ic.png')) }}"
-                alt="Ledrix CRM — multi-tenant sales CRM software for agencies">
+                alt="Ledrix CRM — multi-tenant CRM for agencies running multiple client brands">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">

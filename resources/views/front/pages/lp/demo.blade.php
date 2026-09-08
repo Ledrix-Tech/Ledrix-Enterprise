@@ -2,8 +2,8 @@
 
 @section('title', 'Book a demo')
 
-@section('seo_title', 'Book a Ledrix CRM Demo — See Agency Sales CRM in Action')
-@section('meta_description', 'Request a Ledrix CRM demo. See lead capture, seller assignment, payments, and client portal — built for agencies and closers.')
+@section('seo_title', 'Book a Ledrix CRM Demo — Agency Brand Isolation in Action')
+@section('meta_description', 'Request a Ledrix CRM demo. See client brand isolation, merchant routing, seller panels, and the client portal — built for agencies running multiple brands.')
 @section('robots', 'noindex, follow')
 
 @section('main-content')
@@ -11,9 +11,9 @@
         <section class="mkt-hero mkt-hero-contact text-center">
             <div class="container mkt-hero-inner px-3 px-sm-4">
                 <span class="mkt-hero-badge"><i class="bi bi-calendar2-check"></i> 20-minute product walkthrough</span>
-                <h1>See how agencies capture more leads with Ledrix</h1>
+                <h1>See how agencies stop mixing client brands in Ledrix</h1>
                 <p class="mkt-hero-lead">
-                    Book a short demo — lead intake, seller panels, payment links, and client portal.
+                    Book a short demo — brand isolation, seller panels, the right merchant per client, and a portal so buyers stop asking for updates.
                     We typically reply within one business day.
                 </p>
                 <a href="#demoForm" class="btn btn-lg mkt-btn-primary">Request a demo</a>
@@ -75,7 +75,7 @@
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-lg mkt-btn-primary w-100">Request demo</button>
                                         <p class="small text-muted mt-3 mb-0 text-center">
-                                            Prefer self-serve? <a href="{{ route('lp.trial') }}">Start a free trial</a>
+                                            Prefer self-serve? <a href="{{ route('lp.trial') }}">Start a free trial — no card</a>
                                         </p>
                                     </div>
                                 </div>
@@ -89,15 +89,15 @@
                                 <div class="mkt-info-item">
                                     <div class="mkt-info-icon"><i class="bi bi-funnel"></i></div>
                                     <div>
-                                        <strong>Lead → seller → paid client</strong>
-                                        <span>See the full pipeline without tool-switching.</span>
+                                        <strong>Lead → right brand → right merchant</strong>
+                                        <span>See the pipeline without dumping every client into one CRM.</span>
                                     </div>
                                 </div>
                                 <div class="mkt-info-item">
                                     <div class="mkt-info-icon"><i class="bi bi-buildings"></i></div>
                                     <div>
-                                        <strong>Multi-tenant isolation</strong>
-                                        <span>Separate workspaces for brands and teams.</span>
+                                        <strong>Workspace isolation</strong>
+                                        <span>Each agency’s workspace is isolated. Inside it, brands and merchants stay apart.</span>
                                     </div>
                                 </div>
                                 <div class="mkt-info-item mb-0">

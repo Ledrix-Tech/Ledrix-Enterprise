@@ -9,7 +9,7 @@
     $sectionId = $sectionId ?? 'faq';
     $accordionId = $accordionId ?? 'mktFaqAccordion';
     $title = $title ?? 'Frequently asked questions';
-    $lead = $lead ?? 'Common questions about Ledrix CRM, trials, and multi-tenant sales workflows.';
+    $lead = $lead ?? 'Common questions about Ledrix CRM, trials, and agency workspaces that keep client brands apart.';
     $sectionAlt = $sectionAlt ?? true;
     $colClass = $enterprise ? 'col-lg-10' : 'col-lg-12';
 @endphp

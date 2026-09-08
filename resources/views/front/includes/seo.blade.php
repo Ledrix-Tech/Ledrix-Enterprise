@@ -18,7 +18,7 @@
 
     $ogImagePath = trim($__env->yieldContent('og_image')) ?: config('seo.og_image');
     $ogImage = str_starts_with($ogImagePath, 'http') ? $ogImagePath : asset($ogImagePath);
-    $ogImageAlt = trim($__env->yieldContent('og_image_alt')) ?: ($siteName . ' — sales CRM for closers, agencies, and founders');
+    $ogImageAlt = trim($__env->yieldContent('og_image_alt')) ?: ($siteName . ' — agency CRM for multiple client brands');
 
     $org = config('seo.organization');
     $orgUrl = rtrim((string) (config('seo.site_url') ?: ($org['url'] ?? null) ?: config('app.url')), '/');
@@ -72,11 +72,11 @@
             'url' => $orgUrl,
             'description' => config('seo.default_description'),
             'featureList' => [
-                'Seller panel for closers',
-                'Instant lead routing and ownership',
-                'Stripe and PayPal payment links from the lead card',
-                'Multi-brand pipelines under one login',
-                'Client portal with order chat',
+                'Isolated client brand pipelines',
+                'Stripe and PayPal links under the correct merchant',
+                'Chargeback and refund tracking per client payment',
+                'Seller panel with assigned records only',
+                'Client portal for orders and invoices',
                 'Historical sales sheet import',
             ],
             'audience' => [

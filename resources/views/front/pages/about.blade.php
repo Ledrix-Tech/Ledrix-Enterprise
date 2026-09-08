@@ -2,9 +2,9 @@
 
 @section('title', 'About Us')
 
-@section('seo_title', 'About Ledrix CRM — Built to Stop Dropped Leads & Slow Closes')
-@section('meta_description', 'Ledrix was built for founders and agency owners who lose deals to unclaimed leads, mixed brand pipelines, and slow payment links. Meet founder Zeeshan Asghar and see why teams switch.')
-@section('meta_keywords', 'About Ledrix, Ledrix CRM company, Zeeshan Asghar, CRM for founders, agency CRM, stop dropped leads, seller panel CRM')
+@section('seo_title', 'About Ledrix CRM — Built to Stop Mixed Client Brands and Payments')
+@section('meta_description', 'Ledrix was built for agencies that lose money to mixed leads, shared Stripe logins, and closers who see the wrong client’s book. Meet founder Zeeshan Asghar.')
+@section('meta_keywords', 'About Ledrix, Ledrix CRM company, Zeeshan Asghar, agency CRM, multi-brand CRM, merchant routing, seller panel CRM')
 
 @section('og_type', 'profile')
 @section('og_image_alt', 'Zeeshan Asghar — Founder & CEO of Ledrix CRM')
@@ -29,7 +29,7 @@
         '@type' => 'AboutPage',
         '@id' => route('about.get') . '#aboutpage',
         'name' => 'About Ledrix CRM',
-        'description' => 'Company story and founder profile for Ledrix — sales CRM that stops dropped leads, mixed brands, and slow payment links.',
+        'description' => 'Company story and founder profile for Ledrix — the agency CRM that stops mixed client brands, shared merchants, and closers in the wrong book.',
         'url' => route('about.get'),
         'isPartOf' => ['@id' => $orgUrl . '#website'],
         'about' => ['@id' => $orgUrl . '#organization'],
@@ -62,7 +62,7 @@
         'foundingDate' => config('seo.organization.founding_date'),
         'founder' => ['@id' => route('about.get') . '#founder'],
         'sameAs' => config('seo.organization.same_as', []),
-        'description' => 'Ledrix CRM — sales CRM helping founders and agencies stop dropped leads, keep brands separate, and collect payments faster.',
+        'description' => 'Ledrix CRM — agency CRM that keeps client brands, leads, and merchant payments apart.',
     ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
 @endpush
@@ -80,17 +80,17 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-10 mkt-about-hero-inner">
                 <span class="mkt-about-eyebrow"><i class="bi bi-building"></i> About Ledrix CRM</span>
-                <h1 id="about-hero-heading">We built Ledrix because founders were tired of dropped leads and slow invoices</h1>
+                <h1 id="about-hero-heading">We built Ledrix because agencies were tired of one CRM and one Stripe for every client</h1>
                 <p class="mkt-about-hero-lead">
-                    Spreadsheets, mixed brand pipelines, closers cherry-picking leads, and payment links that arrive after the buyer cools off —
-                    Ledrix exists to kill those leaks for founders, agency owners, and sales teams.
+                    Mixed leads, chargebacks on the wrong brand, closers opening books they shouldn’t —
+                    Ledrix exists to kill those leaks for agency owners, founders, and sales teams in the US and UK.
                 </p>
                 <div class="mkt-hero-actions justify-content-center mb-4">
                     <a href="{{ route('index.get') }}#home-video" class="btn btn-lg mkt-btn-primary">Watch 60-sec demo</a>
                     @if ($popularPackage)
-                        <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg mkt-btn-ghost">Open free workspace</a>
+                        <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg mkt-btn-ghost">{{ $trialStartCtaPopular }}</a>
                     @else
-                        <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-ghost">See plans — no card</a>
+                        <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-ghost">{{ $trialStartCtaGeneric }}</a>
                     @endif
                 </div>
                 <div class="row g-3 justify-content-center mkt-about-hero-stats">
@@ -123,9 +123,9 @@
             <div class="container">
                 <div class="text-center mb-4 mb-lg-5">
                     <span class="mkt-about-eyebrow mkt-about-eyebrow--dark">Who we build for</span>
-                    <h2 class="mkt-about-section-title" id="about-serve-heading">Built for people tired of dropped leads and dual CRM bills</h2>
+                    <h2 class="mkt-about-section-title" id="about-serve-heading">Built for people tired of mixed clients and shared merchants</h2>
                     <p class="mkt-about-lead mx-auto mb-0" style="max-width: 720px;">
-                        Ledrix was shaped by agency pain: leads rotting in spreadsheets, brands split across tools, closers cherry-picking, and payment links that take forever after the Zoom yes.
+                        Ledrix was shaped by agency pain: five “companies” in one CRM, one Stripe login, closers who see the wrong book, and chargebacks with no client attached.
                     </p>
                 </div>
                 <div class="row g-4">
@@ -140,7 +140,7 @@
                         <div class="mkt-about-serve-card">
                             <div class="mkt-about-serve-icon"><i class="bi bi-buildings"></i></div>
                             <h3 class="h5">Agency owners</h3>
-                            <p class="mb-0 text-secondary">Run multiple brands under one login — stop paying twice and mixing pipelines.</p>
+                            <p class="mb-0 text-secondary">Run multiple client brands under one login — stop mixing leads, merchants, and chargebacks.</p>
                         </div>
                     </article>
                     <article class="col-md-4">
@@ -164,7 +164,7 @@
                     </div>
                     <div class="col-lg-7 mkt-about-prose">
                         <p class="mkt-about-lead">
-                            Most CRMs become bloated databases sellers avoid. Ledrix was built around the leaks that cost agencies money — unclaimed leads, mixed brands, cherry-picking closers, and invoices that go out too late.
+                            Most CRMs become bloated databases that treat your agency as one company. Ledrix was built around the leaks that cost agencies money — mixed client brands, shared merchants, closers in the wrong book, and chargebacks with no owner.
                         </p>
                         <div class="mkt-about-flow" role="list" aria-label="Ledrix revenue workflow">
                             <span role="listitem">Capture lead</span>
@@ -385,12 +385,12 @@
         {{-- CTA --}}
         <section class="mkt-cta-band" aria-labelledby="about-cta-heading">
             <div class="container text-center">
-                <h2 id="about-cta-heading">Ready to grow sales with Ledrix CRM?</h2>
+                <h2 id="about-cta-heading">Ready to split the ledger without stacking CRMs?</h2>
                 <p class="mb-4 mx-auto mkt-cta-lead" style="max-width: 600px;">
-                    Tired of dropped leads and slow invoices? Watch the demo, then open a free workspace — no credit card required.
+                    Tired of mixed brands and chargebacks on the wrong client? Watch the demo, then start a free trial — no credit card required.
                 </p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">View plans &amp; register</a>
+                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaGeneric }}</a>
                     <a href="{{ route('index.get') }}#home-video" class="btn btn-lg mkt-btn-ghost">Watch 60-sec demo</a>
                 </div>
             </div>

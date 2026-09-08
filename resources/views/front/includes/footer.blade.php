@@ -9,7 +9,7 @@
                 </a>
                 @include('front.includes.social-icons')
                 <p class="small mb-0 opacity-75">
-                    Multi-tenant sales CRM for agencies and closers — leads, sellers, orders, and payments in one workspace.
+                    Multi-tenant CRM for agencies running multiple client brands — leads, merchants, and access stay on the brand they belong to.
                 </p>
             </div>
             <div class="col-lg-4">

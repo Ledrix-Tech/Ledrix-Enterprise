@@ -2,9 +2,9 @@
 
 @section('title', 'Pricing')
 
-@section('seo_title', 'Ledrix CRM Pricing — Plans for Closers & Agencies (No Card)')
-@section('meta_description', 'Compare Ledrix CRM plans for closers and agencies. Free trial with a real seller panel, lead routing, and payment links. No credit card required.')
-@section('meta_keywords', 'Ledrix pricing, sales CRM pricing, closer CRM plans, CRM free trial, seller panel, payment links CRM, multi-brand CRM pricing')
+@section('seo_title', 'Ledrix CRM Pricing — Agency Plans, Free Trial, No Card')
+@section('meta_description', 'Compare Ledrix CRM plans for agencies running multiple client brands. Isolated pipelines, merchant routing, seller panels. Free trial — no credit card required.')
+@section('meta_keywords', 'Ledrix pricing, agency CRM pricing, multi-brand CRM plans, CRM free trial no credit card, seller panel, Stripe merchant routing')
 
 @push('schema')
     @include('front.includes.schema-breadcrumbs', ['items' => [
@@ -17,7 +17,7 @@
             '@'.'context' => 'https://schema.org',
             '@type' => 'Product',
             'name' => 'Ledrix CRM Subscription',
-            'description' => 'Sales CRM plans for founders and agencies — lead routing, seller panels, multi-brand pipelines, payment links, and per-plan free trial.',
+            'description' => 'Agency CRM plans — isolated client brands, merchant routing, seller panels, and a per-plan free trial with no card.',
             'brand' => ['@type' => 'Brand', 'name' => 'Ledrix'],
             'offers' => [
                 '@type' => 'AggregateOffer',
@@ -57,13 +57,13 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 pricing-hero-inner">
-                        <span class="pricing-hero-badge"><i class="bi bi-lightning-charge"></i> Pick a plan after you see the demo</span>
-                        <h1 id="pricing-hero-heading">Pricing that plugs sales leaks — not another CRM bill</h1>
+                        <span class="pricing-hero-badge"><i class="bi bi-lightning-charge"></i> Try the workspace before you pick a plan</span>
+                        <h1 id="pricing-hero-heading">Pricing for agencies who are done mixing client money</h1>
                         <p class="pricing-hero-lead">
                             @if ($minPrice !== null)
                                 Plans from ${{ number_format($minPrice, $minPrice == floor($minPrice) ? 0 : 2) }}/month.
                             @endif
-                            Open a live workspace with lead routing, seller panels, and payment links —
+                            Open a live workspace with brand isolation, the right merchant per client, and seller panels —
                             @if ($trialLabelGeneric === 'plan-based free trial')
                                 each plan has its own free trial,
                             @else
@@ -203,7 +203,7 @@
                                             <a href="{{ route('tenant.register.form', array_filter(['slug' => $package->slug, 'ref' => request('ref')])) }}"
                                                 class="btn w-100 {{ $package->is_popular ? 'btn-primary pricing-btn' : 'pricing-btn pricing-btn-outline' }}">
                                                 @if ((int) $package->trial_days > 0)
-                                                    Start {{ (int) $package->trial_days }}-day free trial
+                                                    Start {{ (int) $package->trial_days }}-day free trial — no card
                                                 @else
                                                     Get started
                                                 @endif
@@ -230,7 +230,7 @@
                     <div class="pricing-compare-header text-center">
                         <span class="pricing-compare-kicker">Full comparison</span>
                         <h2 id="pricing-compare-heading">Compare plans side by side</h2>
-                        <p class="text-muted mb-0">Usage limits and modules for every package — choose the plan that matches your team size and sales workflow.</p>
+                        <p class="text-muted mb-0">Usage limits and modules for every package — choose the plan that matches how many client brands you run.</p>
                     </div>
 
                     <div class="pricing-compare-panel">
@@ -302,8 +302,8 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
-                            <h2 id="pricing-cta-heading">Ready to stop dropping leads?</h2>
-                            <p>Watch the demo, then open {{ $featured->name ?? 'a plan' }} live — no credit card. Route leads, open a seller panel, send a payment link.</p>
+                            <h2 id="pricing-cta-heading">Ready to stop mixing client payments?</h2>
+                            <p>Watch the demo, then open {{ $featured->name ?? 'a plan' }} live — no credit card. Isolate a brand, assign a closer, send a payment link under the right merchant.</p>
                             <div class="d-flex flex-wrap gap-3 justify-content-center">
                                 <a href="{{ route('tenant.register.form', array_filter(['slug' => $featured->slug, 'ref' => request('ref')])) }}" class="btn btn-light btn-lg fw-bold px-4">
                                     {{ $trialStartCtaOnFeatured }}

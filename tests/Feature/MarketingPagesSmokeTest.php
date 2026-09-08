@@ -75,7 +75,7 @@ class MarketingPagesSmokeTest extends TestCase
             ->assertSee('Every role gets its own view', false)
             ->assertSee('They don’t have to ask — they can check', false)
             ->assertSee('For closers', false)
-            ->assertSee('Open my seller panel', false)
+            ->assertSee('Start free trial', false)
             ->assertSee('sales CRM', false)
             ->assertDontSee('You’ll know before they have to tell you', false)
             ->assertDontSee('Is Ledrix GDPR compliant', false)

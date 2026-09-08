@@ -38,7 +38,7 @@
                             <div>
                                 <span class="mkt-legal-kicker"><i class="bi bi-shield-lock"></i> For the agency owner</span>
                                 <h1>Security &amp; compliance</h1>
-                                <p class="mkt-legal-lead">What is live today so you can answer a client’s data question without scrambling — and how we set up SSO when your team is ready.</p>
+                                <p class="mkt-legal-lead">What is live today so you can answer a client’s data question without scrambling — including how each agency workspace stays isolated, and how we set up SSO when your team is ready.</p>
                             </div>
                             <div class="mkt-legal-updated">
                                 <span class="mkt-legal-updated-label">Last updated</span>

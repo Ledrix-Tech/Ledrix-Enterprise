@@ -2,9 +2,9 @@
 
 @section('title', 'FAQ')
 
-@section('seo_title', 'Ledrix CRM FAQ — Seller Panel, Payment Links, Free Trial')
-@section('meta_description', 'Ledrix CRM FAQ for closers and agencies: seller panel, payment links on the call, lead routing, sheet import, client portal, and a free trial with no card.')
-@section('meta_keywords', 'Ledrix FAQ, sales CRM FAQ, closer CRM, seller panel, payment links CRM, free trial CRM, multi-brand CRM, sheet import')
+@section('seo_title', 'Ledrix CRM FAQ — Brand Isolation, Merchant Routing, Free Trial')
+@section('meta_description', 'Ledrix CRM FAQ for agencies: client brand isolation, Stripe and PayPal under the right merchant, seller access, client portal, and a free trial with no card.')
+@section('meta_keywords', 'Ledrix FAQ, agency CRM FAQ, brand isolation, merchant routing, seller panel, free trial no credit card, multi-brand CRM')
 
 @push('schema')
     @include('front.includes.schema-breadcrumbs', ['items' => [
@@ -31,10 +31,10 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-10 mkt-faq-hero-inner">
                         <span class="mkt-faq-hero-badge"><i class="bi bi-question-circle-fill"></i> Help center</span>
-                        <h1 id="faq-hero-heading">FAQ — seller panel, payment links, and how closers get paid faster</h1>
+                        <h1 id="faq-hero-heading">FAQ — mixed clients, the right merchant, and who sees which book</h1>
                         <p class="mkt-faq-hero-lead">
-                            Straight answers for closers, founders, and agency owners evaluating Ledrix —
-                            seller panels, payment links on the call, lead routing, trials, and data privacy.
+                            Straight answers for agency owners and sales teams evaluating Ledrix —
+                            brand isolation, payment routing, seller access, trials, and data privacy.
                         </p>
                         <div class="mkt-faq-hero-actions">
                             <a href="{{ route('index.get') }}#home-video" class="btn btn-lg mkt-btn-primary">Watch 60-sec demo</a>
@@ -103,12 +103,12 @@
                             <div class="row g-4 align-items-center w-100 mx-0">
                                 <div class="col-lg-7">
                                     <span class="mkt-faq-mid-kicker"><i class="bi bi-graph-up-arrow"></i> Ready to evaluate?</span>
-                                    <h2 id="faq-mid-cta-heading">Skip the spreadsheet chaos — see Ledrix live</h2>
+                                    <h2 id="faq-mid-cta-heading">Skip the mixed-ledger chaos — see Ledrix live</h2>
                                     <p class="mkt-faq-mid-lead">
                                         @if ($minPrice !== null)
                                             Plans from ${{ number_format($minPrice, $minPrice == floor($minPrice) ? 0 : 2) }}/month.
                                         @endif
-                                        Watch how lead routing and payment links work — then open a free workspace. No credit card.
+                                        Watch how brand isolation and merchant routing work — then start a free trial. No credit card.
                                     </p>
                                     <ul class="mkt-faq-mid-list">
                                         <li><i class="bi bi-check-circle-fill"></i> Real workspace, not a sandbox demo</li>
@@ -123,7 +123,7 @@
                                         <p class="mkt-faq-mid-box-desc">Set up your workspace in minutes. Compare plans anytime.</p>
                                         <div class="d-grid gap-2">
                                             @if ($popularPackage)
-                                                <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg mkt-btn-primary">Start on {{ $popularPackage->name }}</a>
+                                                <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaPopular }}</a>
                                             @else
                                                 <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">View plans &amp; start trial</a>
                                             @endif
@@ -179,13 +179,13 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 w-100">
-                        <h2 id="faq-cta-heading">Still losing deals to dropped leads?</h2>
+                        <h2 id="faq-cta-heading">Still reconciling chargebacks against the wrong client?</h2>
                         <p class="mb-4 mkt-cta-lead">
-                            Watch the demo, explore <a href="{{ route('features.get') }}" class="text-white fw-semibold">how Ledrix plugs each leak</a>,
+                            Watch the demo, explore <a href="{{ route('features.get') }}" class="text-white fw-semibold">how Ledrix keeps brands and merchants apart</a>,
                             or talk to sales — we respond within one business day.
                         </p>
                         <div class="d-flex flex-wrap justify-content-center gap-3">
-                            <a href="{{ route('index.get') }}#home-video" class="btn btn-lg btn-light fw-bold px-4">Watch the demo</a>
+                            <a href="{{ route('pricing.get') }}" class="btn btn-lg btn-light fw-bold px-4">{{ $trialStartCtaGeneric }}</a>
                             <a href="{{ route('contact-us.get') }}" class="btn btn-lg mkt-btn-ghost">Contact sales</a>
                         </div>
                     </div>

@@ -2,9 +2,9 @@
 
 @section('title', 'Home')
 
-@section('seo_title', 'Ledrix CRM — Sales CRM for Closers Who Get Paid Faster')
-@section('meta_description', 'Sales CRM for closers: own every lead, work your seller panel, and send Stripe or PayPal from the lead card — on the call. Try Ledrix free. No card.')
-@section('meta_keywords', 'sales CRM for closers, closer CRM, seller panel CRM, payment links CRM, Stripe CRM, PayPal payment link, lead routing CRM, multi-brand CRM, agency sales CRM, Ledrix CRM, stop dropped leads')
+@section('seo_title', 'Ledrix CRM — Stop Mixing Client Brands, Leads, and Payments')
+@section('meta_description', 'Agencies that run every client through one CRM and one Stripe account mix leads and land chargebacks on the wrong brand. Ledrix isolates each client’s pipeline and merchant. Free trial, no card.')
+@section('meta_keywords', 'agency CRM, multi-brand CRM, client brand isolation, Stripe merchant routing, chargeback tracking, seller panel, client portal, digital marketing agency CRM, Ledrix CRM')
 
 @push('head')
     @php
@@ -48,8 +48,8 @@
         '@type' => 'WebPage',
         '@id' => route('index.get') . '#webpage',
         'url' => route('index.get'),
-        'name' => 'Ledrix CRM — Sales CRM for Closers Who Get Paid Faster',
-        'description' => 'Sales CRM for closers: own every inbound lead, work a focused seller panel, send Stripe or PayPal payment links from the lead card, and keep agency brands separate under one login.',
+        'name' => 'Ledrix CRM — Stop Mixing Client Brands, Leads, and Payments',
+        'description' => 'Agency CRM that keeps each client brand’s leads, seller access, and Stripe or PayPal merchant payments apart — so a chargeback never lands on the wrong client.',
 
         'isPartOf' => ['@id' => $orgUrl . '#website'],
         'about' => ['@type' => 'SoftwareApplication', 'name' => 'Ledrix CRM'],
@@ -85,7 +85,7 @@
             '@'.'context' => 'https://schema.org',
             '@type' => 'Product',
             'name' => 'Ledrix CRM',
-            'description' => 'Sales CRM for closers, founders, and agencies — focused seller panel, instant lead ownership, payment links from the lead card, and multi-brand pipelines.',
+            'description' => 'Agency CRM for teams running multiple client brands — isolated pipelines, merchant routing, chargeback tracking on the right client, seller panels, and a client portal.',
 
             'brand' => ['@type' => 'Brand', 'name' => 'Ledrix'],
             'offers' => [
@@ -111,14 +111,14 @@
     {!! json_encode([
         '@'.'context' => 'https://schema.org',
         '@type' => 'HowTo',
-        'name' => 'How closers take a lead to paid in Ledrix CRM',
-        'description' => 'Four steps from inbound lead to payment link and client visibility in Ledrix, the sales CRM for closers.',
+        'name' => 'How agencies keep client brands, leads, and payments apart in Ledrix',
+        'description' => 'Four steps from inbound lead to the right merchant payment — without mixing client companies in one CRM.',
         'totalTime' => 'PT5M',
         'step' => [
-            ['@type' => 'HowToStep', 'position' => 1, 'name' => 'Lead lands on a closer', 'text' => 'Website, API, or form intake routes the lead to the right brand and seller instantly.'],
-            ['@type' => 'HowToStep', 'position' => 2, 'name' => 'Closer works the seller panel', 'text' => 'Assignments, follow-ups, and notes stay on the deal in a focused seller panel.'],
-            ['@type' => 'HowToStep', 'position' => 3, 'name' => 'Send Stripe or PayPal on the call', 'text' => 'Generate a payment link from the lead card the moment the buyer says yes.'],
-            ['@type' => 'HowToStep', 'position' => 4, 'name' => 'Buyer sees it land', 'text' => 'Portal invite and payment mail go out so the client can check invoices and message the closer.'],
+            ['@type' => 'HowToStep', 'position' => 1, 'name' => 'Lead lands on the right brand', 'text' => 'Website, API, or form intake routes the lead to that client brand and the assigned closer — not a shared pile.'],
+            ['@type' => 'HowToStep', 'position' => 2, 'name' => 'Closer works only their book', 'text' => 'The seller panel shows assigned records only. Commission-only closers cannot browse the agency’s full lead database.'],
+            ['@type' => 'HowToStep', 'position' => 3, 'name' => 'Payment hits the right merchant', 'text' => 'Stripe or PayPal generates under that client’s own merchant account, not a shared default.'],
+            ['@type' => 'HowToStep', 'position' => 4, 'name' => 'Client checks status themselves', 'text' => 'The buyer opens invoices and project progress in their portal — they do not see other clients, and they do not Slack the agency for an update.'],
         ],
     ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
@@ -148,21 +148,22 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 mkt-hero-inner">
-                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> Built for closers who refuse to lose a yes</span>
-                <h1 id="home-hero-heading">Close the deal. Send the payment. Get paid — before they go cold.</h1>
+                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> Built for agencies running more than one client brand</span>
+                <h1 id="home-hero-heading">Stop running five clients through one CRM and one Stripe account.</h1>
                 <p class="mkt-hero-lead">
-                    Ledrix is the sales CRM closers actually want to open. Every inbound lead lands on you — not a shared spreadsheet.
-                    Your seller panel shows only your book. The second they say yes, you send Stripe or PayPal from the lead card. Still on the call. Still hot.
+                    When every brand dumps into the same pipeline, leads mix, a closer opens a book they should never see,
+                    and a chargeback lands on the client who didn’t take the payment. Ledrix keeps each client’s leads,
+                    access, and merchant money apart — under one agency workspace.
                 </p>
                 <div class="mkt-hero-actions">
-                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">Open my seller panel — free</a>
-                    <a href="#home-video" class="btn btn-lg mkt-btn-ghost">Watch a closer close in 60 sec</a>
+                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaGeneric }}</a>
+                    <a href="#home-video" class="btn btn-lg mkt-btn-ghost">Watch how brand isolation works</a>
                 </div>
                 <div class="mkt-trust-row">
-                    <span><i class="bi bi-credit-card-2-front"></i> No card to start</span>
-                    <span><i class="bi bi-lightning-charge"></i> Payment link on the call</span>
-                    <span><i class="bi bi-person-badge"></i> Your book only — no noise</span>
-                    <span><i class="bi bi-buildings"></i> Multiple brands, one login</span>
+                    <span><i class="bi bi-credit-card-2-front"></i> No card required</span>
+                    <span><i class="bi bi-shop"></i> Each brand’s own Stripe / PayPal</span>
+                    <span><i class="bi bi-person-badge"></i> Closers see assigned records only</span>
+                    <span><i class="bi bi-shield-exclamation"></i> Chargebacks stay on the right client</span>
                 </div>
                     </div>
                 </div>
@@ -173,9 +174,10 @@
         <section class="mkt-section mkt-section-white mkt-home-audience" aria-labelledby="home-audience-heading">
             <div class="container">
                 <div class="text-center mb-4 mb-lg-5">
-                    <h2 class="mkt-section-title" id="home-audience-heading">Your book. Your close. Their payment — before they go cold.</h2>
+                    <h2 class="mkt-section-title" id="home-audience-heading">The mix-up is the product problem. Ledrix is the split.</h2>
                     <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
-                        Ledrix is the sales CRM built around how closers actually sell: own the lead, work the follow-up, send the payment link, and keep the buyer in one thread — not five tabs.
+                        Digital agencies in the US and UK still run client “companies” through one CRM, one payment login, and a spreadsheet on the side.
+                        Ledrix is the sales CRM that treats each client brand as its own pipeline and merchant — without giving you a second SaaS bill per brand.
                     </p>
                 </div>
                 <div class="row g-4">
@@ -186,13 +188,13 @@
                             </div>
                             <h3 class="h4 mb-3">For closers</h3>
                             <p class="text-secondary mb-4">
-                                Stop hunting HubSpot, Stripe, and Slack just to collect. Open one seller panel: your leads, your follow-ups, and a payment link you can send while they’re still on Zoom.
+                                Commission-only sellers should not see the whole agency database. Open a seller panel with assigned records only — then send that brand’s Stripe or PayPal link from the lead card.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
-                                <li><i class="bi bi-check-circle-fill"></i> Your assigned book — nobody else’s</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Stripe or PayPal from the lead card, on the call</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Follow-ups on the deal, not in your head</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Reply to the client on the order — no Slack dig</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Assigned book — not every client’s leads</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Payment link under that brand’s merchant</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Follow-ups on the deal, not in a shared sheet</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Reply on the order — no Slack dig</li>
                             </ul>
                         </div>
                     </article>
@@ -203,12 +205,12 @@
                             </div>
                             <h3 class="h4 mb-3">For founders</h3>
                             <p class="text-secondary mb-4">
-                                Every inbound lead gets an owner in seconds. Your closers stay in a focused panel. You see the real pipeline — not a spreadsheet that went cold overnight.
+                                One shared Stripe account is how a refund hits the wrong client. Give each brand its own merchant keys, then watch the real pipeline — not a spreadsheet that mixed three LLCs overnight.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
-                                <li><i class="bi bi-check-circle-fill"></i> Leads route to a closer — not a shared sheet</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Leads route to a brand and a closer — not a shared sheet</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Seller panel: only what they need to close now</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Payment links from the deal — no tool-hopping</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Payment links from the deal — correct merchant</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Live workspace in minutes — no card to start</li>
                             </ul>
                         </div>
@@ -220,13 +222,13 @@
                             </div>
                             <h3 class="h4 mb-3">For agency owners</h3>
                             <p class="text-secondary mb-4">
-                                Still paying for two CRM accounts to keep web leads away from marketing leads? Run unlimited brands under one login — without mixing data.
+                                Still stuffing every client “company” into one CRM so a closer can see Brand B’s leads while collecting on Brand A’s Stripe? Run unlimited brands under one login — without mixing data or merchants.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
-                                <li><i class="bi bi-check-circle-fill"></i> Separate brand pipelines, one account</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Separate brand pipelines, one agency workspace</li>
                                 <li><i class="bi bi-check-circle-fill"></i> The right closer gets the right brand’s lead</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Admins see everything; reps see only their book</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Import historical sales from a sheet when you switch</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Chargebacks tracked on that client’s payment</li>
                             </ul>
                         </div>
                     </article>
@@ -240,7 +242,7 @@
                 <div class="text-center mb-4 mb-lg-5">
                     <h2 class="mkt-section-title" id="home-roles-heading">Every role gets its own view</h2>
                     <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
-                        Admin, seller, and client each sign into a different dashboard. Same company. Same brands. Nobody shares a login or a pile of tickets.
+                        Admin, seller, and client each sign into a different dashboard. Same agency. Same brands. A commission-only closer never sees the whole lead database — and a client never sees another brand’s invoice.
                     </p>
                 </div>
                 <div class="row g-4">
@@ -251,7 +253,7 @@
                             </div>
                             <h3 class="h4 mb-3">Admin</h3>
                             <p class="text-secondary mb-4">
-                                You see every brand, closer, lead, and order in your workspace. Routing, users, and cash — not a seller’s stripped-down book.
+                                You see every client brand, closer, lead, and order in your workspace. Routing, merchant keys, and cash — not a seller’s stripped-down book.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
                                 <li><i class="bi bi-check-circle-fill"></i> Full CRM across all your brands</li>
@@ -267,7 +269,7 @@
                             </div>
                             <h3 class="h4 mb-3">Seller</h3>
                             <p class="text-secondary mb-4">
-                                Closers open a focused seller panel: assigned leads, orders, and the payment link on that deal. No bloated CRM. No cherry-picking. No browsing the company database.
+                                Closers open a focused seller panel: assigned leads, orders, and the payment link on that deal. No bloated CRM. No browsing another client’s book. No company-wide lead dump.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
                                 <li><i class="bi bi-check-circle-fill"></i> Their pipeline — not yours, not the company’s</li>
@@ -283,7 +285,7 @@
                             </div>
                             <h3 class="h4 mb-3">Client</h3>
                             <p class="text-secondary mb-4">
-                                Buyers log into a client portal — invoices, project progress, briefs, tickets, and a thread with their seller. They never see your other clients.
+                                Buyers log into a client portal — invoices, project progress, briefs, tickets, and a thread with their seller. They never see your other clients. They do not have to message you for a status update.
                             </p>
                             <ul class="mkt-check-list list-unstyled mb-0">
                                 <li><i class="bi bi-check-circle-fill"></i> Their orders and invoices only</li>
@@ -340,30 +342,30 @@
         {{-- Sales growth outcomes --}}
         <section class="mkt-section mkt-home-growth" aria-labelledby="home-growth-heading">
             <div class="container text-center">
-                    <h2 class="mkt-section-title" id="home-growth-heading">The four things closers feel on day one</h2>
+                    <h2 class="mkt-section-title" id="home-growth-heading">Four leaks agencies feel every week</h2>
                     <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
-                    Every inbound lead gets an owner. Every closer stays in their book. Every “yes” becomes a payment link in seconds. Every brand stays clean.
+                    Mixed leads. Closers in the wrong book. Payments on the wrong merchant. Chargebacks with no client attached. Ledrix closes each one.
                     </p>
                     <div class="mkt-home-growth-grid mt-4 mt-lg-5">
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-funnel" aria-hidden="true"></i>
-                        <h3>You own the lead instantly</h3>
-                        <p>Website and form leads route to a named closer — not a shared sheet waiting for someone to claim them.</p>
+                        <h3>Leads stop mixing</h3>
+                        <p>Website and form leads route to a named brand and closer — not a shared sheet where Client A’s inbound sits next to Client B’s.</p>
                     </article>
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-person-badge" aria-hidden="true"></i>
-                        <h3>Your seller panel is your book</h3>
-                        <p>Assigned leads, follow-ups, and the payment link. No cherry-picking. No browsing the company database.</p>
+                        <h3>Closers stay in their book</h3>
+                        <p>Assigned leads, follow-ups, and the payment link. Commission-only sellers cannot open the agency’s full database.</p>
                     </article>
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-cash-stack" aria-hidden="true"></i>
-                        <h3>Payment link while they’re hot</h3>
-                        <p>They say yes on Zoom — you send Stripe or PayPal from the lead card before they get cold feet.</p>
+                        <h3>Money hits the right merchant</h3>
+                        <p>They say yes — you send Stripe or PayPal from the lead card under that client’s own account, not a shared default.</p>
                     </article>
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-buildings" aria-hidden="true"></i>
-                        <h3>Brands stay unmixed</h3>
-                        <p>Run every agency brand under one login. No second CRM bill. No mixing design leads with marketing leads.</p>
+                        <h3>Chargebacks stay attached</h3>
+                        <p>Refund and dispute events land on that client’s payment. You are not reconciling a surprise Slack thread against the wrong brand.</p>
                     </article>
                     </div>
             </div>
@@ -375,7 +377,7 @@
                 <div class="row align-items-center g-4 g-lg-5">
                     <div class="col-lg-7">
                         <span class="mkt-home-story-kicker">The Ledrix story</span>
-                        <h2 class="mkt-section-title text-start" id="home-story-heading">Built because closers deserved better than spreadsheets</h2>
+                        <h2 class="mkt-section-title text-start" id="home-story-heading">Built because agencies were tired of sharing a ledger</h2>
                         <div class="mkt-about-story-prose text-start">
                             @if (! empty($founderStory['origin']))
                                 <p>{{ $founderStory['origin'] }}</p>
@@ -384,7 +386,7 @@
                                 <p>{{ $founderStory['founding'] }}</p>
                             @endif
                             <p class="mb-0">
-                                Today, Ledrix is the sales CRM closers finish deals in — pipeline discipline, payment links on the call, and room to scale without enterprise bloat.
+                                Today, Ledrix is the sales CRM agencies use to keep client brands, leads, and payments apart — without a second SaaS stack per LLC.
                                 <a href="{{ route('about.get') }}">Read the full founder story</a> or explore <a href="{{ route('features.get') }}">CRM features</a>.
                             </p>
                         </div>
@@ -393,7 +395,7 @@
                         <div class="mkt-home-story-aside">
                             <div class="mkt-home-story-stat">
                                 <span class="mkt-home-story-stat-num">1</span>
-                                <span class="mkt-home-story-stat-label">workspace for leads, sellers, orders &amp; clients</span>
+                                <span class="mkt-home-story-stat-label">agency workspace for brands, leads, orders &amp; merchants</span>
                             </div>
                             <div class="mkt-home-story-stat">
                                 <span class="mkt-home-story-stat-num">0</span>
@@ -412,16 +414,16 @@
         {{-- 60-second video --}}
         <section class="mkt-video-section mkt-home-video" id="home-video" aria-labelledby="home-video-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title mb-2" id="home-video-heading">Watch a closer take a lead to paid — in 60 seconds</h2>
+                <h2 class="mkt-section-title mb-2" id="home-video-heading">Watch a lead hit the right brand — in 60 seconds</h2>
                 <p class="text-muted mb-4 mx-auto" style="max-width: 680px;">
-                    See the lead land on a closer, the seller panel open, and a payment link go out from the same screen — before you create an account.
+                    See the lead land on a client brand, the closer open only their assigned book, and a payment link go out under that merchant — before you create an account.
                 </p>
                 @if ($homeVideoExists && $homeVideoSrc)
                     <div class="mkt-video-block" data-mkt-video>
                         <div class="mkt-video-wrapper" id="mktVideoWrapper">
                             <img class="mkt-video-thumb"
                                 src="{{ $homeVideoPoster ?? asset(config('seo.og_image')) }}"
-                                alt="Ledrix CRM demo for sales closers — seller panel, lead routing, and payment links from the lead card"
+                                alt="Ledrix CRM demo for agencies — brand isolation, seller panel, and Stripe or PayPal under the right merchant"
                                 width="960"
                                 height="540"
                                 loading="lazy">
@@ -464,7 +466,7 @@
                 @else
                     <div class="alert alert-light border mx-auto" style="max-width: 560px;" role="status">
                         <p class="mb-2 fw-semibold">Video preview loading soon</p>
-                        <p class="mb-0 small text-secondary">In the meantime, <a href="{{ route('pricing.get') }}">start your {{ $trialLabelGeneric }}</a> or <a href="{{ route('contact-us.get') }}">book a demo</a> with our team.</p>
+                        <p class="mb-0 small text-secondary">In the meantime, <a href="{{ route('pricing.get') }}">{{ $trialStartCtaGeneric }}</a> or <a href="{{ route('contact-us.get') }}">book a demo</a> with our team.</p>
                     </div>
                 @endif
             </div>
@@ -473,30 +475,30 @@
         {{-- How it works --}}
         <section class="mkt-section mkt-section-alt" aria-labelledby="home-how-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="home-how-heading">Four steps — from inbound lead to paid deal</h2>
+                <h2 class="mkt-section-title" id="home-how-heading">Four steps — from inbound lead to the right merchant</h2>
                 <p class="mkt-section-lead">
-                    No more HubSpot for tracking, Stripe for links, and Slack for updates. Closers work one screen — and the buyer sees it land.
+                    No more one CRM dump, one Stripe login, and Slack for “which client was that chargeback?” Closers work one screen. Money stays on the brand that earned it.
                 </p>
                 <div class="mkt-grid-4">
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">1</span>
-                        <h3 class="h5">Lead lands on you</h3>
-                        <p>Website, API, or form. The right brand and closer get it instantly — nothing sits unworked in a shared pile.</p>
+                        <h3 class="h5">Lead lands on the right brand</h3>
+                        <p>Website, API, or form. That client’s closer gets it instantly — nothing sits unworked in a shared pile with every other LLC.</p>
                     </article>
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">2</span>
-                        <h3 class="h5">You work your seller panel</h3>
-                        <p>Assignments, follow-ups, and notes in one place. You can’t get lost in the company database — and nobody steals your book.</p>
+                        <h3 class="h5">Closer works only their book</h3>
+                        <p>Assignments, follow-ups, and notes in one seller panel. They cannot browse the agency database — and they cannot collect on the wrong brand.</p>
                     </article>
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">3</span>
-                        <h3 class="h5">Send the payment on the call</h3>
-                        <p>Stripe or PayPal from the lead card the moment they say yes — before buyer’s remorse sets in.</p>
+                        <h3 class="h5">Payment hits the right merchant</h3>
+                        <p>Stripe or PayPal from the lead card — generated under that client’s own account, not a shared default.</p>
                     </article>
                     <article class="mkt-card text-start">
                         <span class="mkt-step-num">4</span>
-                        <h3 class="h5">Buyer sees it land</h3>
-                        <p>Portal invite and payment mail go out. They open invoices, project progress, and can message you — no “did it go through?” ping.</p>
+                        <h3 class="h5">Client checks it themselves</h3>
+                        <p>Portal invite and payment mail go out. They open invoices and project progress — no “where’s my project?” ping, and no view into your other clients.</p>
                     </article>
                 </div>
             </div>
@@ -507,12 +509,12 @@
         <section class="mkt-section mkt-home-pricing" aria-labelledby="home-pricing-heading">
             <div class="container">
                 <div class="text-center mb-4 mb-lg-5">
-                    <h2 class="mkt-section-title" id="home-pricing-heading">Try the seller panel first. Pick a plan after.</h2>
+                    <h2 class="mkt-section-title" id="home-pricing-heading">Try the workspace first. Pick a plan after.</h2>
                     <p class="mkt-section-lead mx-auto" style="max-width: 680px;">
                         @if ($minPrice !== null)
                             Plans from ${{ number_format($minPrice, $minPrice == floor($minPrice) ? 0 : 2) }}/month.
                         @endif
-                        Open a live workspace — no credit card — and send a payment link from a real lead card. Watch the 60-second demo if you want the tour first.
+                        Open a live agency workspace — no credit card — and send a payment link under the right merchant. Watch the 60-second demo if you want the tour first.
                         <a href="{{ route('pricing.get') }}">Compare all plans</a>.
                     </p>
                 </div>
@@ -539,7 +541,11 @@
                                     </p>
                                 @endif
                                 <a href="{{ route('tenant.register.form', $package->slug) }}" class="btn mkt-btn-primary w-100">
-                                    See {{ $package->name }} live{{ (int) $package->trial_days > 0 ? ' — ' . (int) $package->trial_days . ' days free' : '' }}
+                                    @if ((int) $package->trial_days > 0)
+                                        Start {{ (int) $package->trial_days }}-day free trial — no card
+                                    @else
+                                        Get started on {{ $package->name }}
+                                    @endif
                                 </a>
                             </article>
                         </div>
@@ -557,23 +563,23 @@
         {{-- Use cases --}}
         <section class="mkt-section mkt-section-muted" aria-labelledby="home-usecases-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="home-usecases-heading">If this is your week, Ledrix pays you faster</h2>
-                <p class="mkt-section-lead">Three leaks that steal closer commission — and how Ledrix plugs each one.</p>
+                <h2 class="mkt-section-title" id="home-usecases-heading">If this is your week, the mix-up is already costing you</h2>
+                <p class="mkt-section-lead">Three failures generic CRMs ignore — and how Ledrix stops each one.</p>
                 <div class="mkt-grid-3">
                     <article class="mkt-card text-start">
                         <div class="mkt-card-icon"><i class="bi bi-funnel"></i></div>
-                        <h3 class="h5">Leads die in the spreadsheet</h3>
-                        <p>Inbound sits unclaimed while the team argues over who owns it. Ledrix assigns the closer the second the lead arrives.</p>
+                        <h3 class="h5">Leads from three clients in one sheet</h3>
+                        <p>Inbound sits unclaimed, then a closer works the wrong brand. Ledrix assigns the lead to that client’s closer the second it arrives.</p>
                     </article>
                     <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-tools"></i></div>
-                        <h3 class="h5">The yes cools while you switch tabs</h3>
-                        <p>HubSpot → Stripe → Slack for every deal. Ledrix puts the lead, the follow-up, and the payment link on one card.</p>
+                        <div class="mkt-card-icon"><i class="bi bi-credit-card"></i></div>
+                        <h3 class="h5">Chargeback on the wrong Stripe account</h3>
+                        <p>One merchant for the whole agency is how Client B pays for Client A’s dispute. Ledrix generates the link under that brand’s own Stripe or PayPal.</p>
                     </article>
                     <article class="mkt-card text-start">
-                        <div class="mkt-card-icon"><i class="bi bi-building"></i></div>
-                        <h3 class="h5">Two brands, two CRM bills</h3>
-                        <p>Agency owners launch sub-brands then pay twice — or mix pipelines. One login. Separate data. Unlimited brands.</p>
+                        <div class="mkt-card-icon"><i class="bi bi-eye-slash"></i></div>
+                        <h3 class="h5">A closer saw a book they shouldn’t</h3>
+                        <p>Commission-only sellers should not browse the agency database. The seller panel shows assigned records only.</p>
                     </article>
                 </div>
             </div>
@@ -582,17 +588,17 @@
         {{-- Testimonial --}}
         <section class="mkt-testimonial text-center" aria-labelledby="home-testimonial-heading">
             <div class="container">
-                <h2 class="h4 fw-bold mb-4" id="home-testimonial-heading">What closers say after the first week</h2>
+                <h2 class="h4 fw-bold mb-4" id="home-testimonial-heading">What agencies say after they split the ledger</h2>
                 <div class="row g-4 justify-content-center">
                     <div class="col-lg-6">
                         <div class="mkt-quote-card h-100">
-                            <blockquote class="mb-0">"I send the payment link before I hang up. We stopped losing deals in the gap between yes and invoice."</blockquote>
-                            <footer class="small opacity-75 mt-3">— Closer, agency sales floor</footer>
+                            <blockquote class="mb-0">"A chargeback used to mean a Slack hunt for which client it belonged to. Now it sits on that brand’s payment. We stopped guessing."</blockquote>
+                            <footer class="small opacity-75 mt-3">— Agency owner, multi-brand growth shop</footer>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="mkt-quote-card h-100">
-                            <blockquote class="mb-0">"My panel is just my book. No one else’s leads. Follow-ups sit on the deal — I don’t keep a second spreadsheet."</blockquote>
+                            <blockquote class="mb-0">"My panel is just my book. I cannot see the other clients. Payment links go out under the brand I’m closing — not a shared Stripe dump."</blockquote>
                             <footer class="small opacity-75 mt-3">— Closer, multi-brand team</footer>
                         </div>
                     </div>
@@ -605,30 +611,30 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 text-center">
-                        <h2 class="mkt-section-title" id="why-ledrix-heading">Ledrix CRM: sales software closers finish deals in</h2>
+                        <h2 class="mkt-section-title" id="why-ledrix-heading">Ledrix CRM: the sales CRM that won’t mix your clients</h2>
                         <p class="mkt-section-lead">
-                            Stop dropping leads. Stop waiting hours for an invoice after a Zoom “yes.” Stop mixing brand pipelines.
-                            One sales CRM — your seller panel, payment links, and client thread in the same workspace.
+                            Stop dumping every brand into one pipeline. Stop collecting on one Stripe account. Stop letting closers see data they shouldn’t.
+                            One agency workspace — isolated brands, the right merchant, and a client portal so buyers stop asking for updates.
                         </p>
                     </div>
                 </div>
                 <div class="row g-4 mt-2">
                     <div class="col-md-4">
                         <article class="mkt-card text-start h-100">
-                            <h3 class="h5">Lead routing that claims ownership</h3>
-                            <p class="mb-0 small text-secondary">Every inbound lead gets a closer. No shared pile. No “I thought you had it.” Built for teams that cannot afford ghosted follow-ups.</p>
+                            <h3 class="h5">Brand routing that claims ownership</h3>
+                            <p class="mb-0 small text-secondary">Every inbound lead hits a client brand and a closer. No shared pile. No “I thought that was Brand B’s.” Built for agencies that cannot afford mixed lists.</p>
                         </article>
                     </div>
                     <div class="col-md-4">
                         <article class="mkt-card text-start h-100">
-                            <h3 class="h5">Payments before the buyer cools</h3>
-                            <p class="mb-0 small text-secondary">Generate Stripe or PayPal links inside the lead card in seconds — not hours later in a separate billing tool after the Zoom ends.</p>
+                            <h3 class="h5">Payments on the right merchant</h3>
+                            <p class="mb-0 small text-secondary">Generate Stripe or PayPal inside the lead card under that client’s own keys — not hours later in a shared billing login after the Zoom ends.</p>
                         </article>
                     </div>
                     <div class="col-md-4">
                         <article class="mkt-card text-start h-100">
                             <h3 class="h5">Your data stays yours</h3>
-                            <p class="mb-0 small text-secondary">Every company gets an isolated workspace. Brands, sellers, and clients never mix with another organization’s data on the platform.</p>
+                            <p class="mb-0 small text-secondary">Every agency gets an isolated workspace. Brands, sellers, and clients never mix with another organization’s data — and closers never mix with another client’s book.</p>
                         </article>
                     </div>
                 </div>
@@ -637,19 +643,19 @@
 
         @include('front.includes.faq-section', [
             'limit' => 5,
-            'title' => 'Closers ask this before they try Ledrix',
-            'lead' => 'Seller panel, payment links on the call, lead ownership, and whether you need a card to start.',
+            'title' => 'Agencies ask this before they try Ledrix',
+            'lead' => 'Brand isolation, merchant routing, seller access, and whether you need a card to start.',
         ])
 
         {{-- Trial CTA --}}
         <section class="mkt-cta-band" id="trial" aria-labelledby="home-cta-heading">
             <div class="container text-center">
-                <h2 id="home-cta-heading">Your next yes should already have a payment link.</h2>
+                <h2 id="home-cta-heading">Your next chargeback should already know which client it belongs to.</h2>
                 <p class="mb-4 mx-auto" style="max-width: 600px;">
-                    Open a live seller panel — no credit card. Route a lead, send a Stripe or PayPal link, and see why closers stop going back to spreadsheets.
+                    Open a live agency workspace — no credit card. Route a brand’s lead, send Stripe or PayPal under that merchant, and keep closers out of books they shouldn’t see.
                 </p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">Open my seller panel — free</a>
+                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaGeneric }}</a>
                     <a href="#home-video" class="btn btn-lg mkt-btn-ghost">Watch the 60-sec demo</a>
                 </div>
             </div>

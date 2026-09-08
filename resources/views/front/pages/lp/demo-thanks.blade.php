@@ -16,7 +16,7 @@
                     Thanks — we received your demo request. A Ledrix teammate will email you within one business day.
                 </p>
                 <div class="mkt-hero-actions justify-content-center">
-                    <a href="{{ route('lp.trial') }}" class="btn btn-lg mkt-btn-primary">Start a free trial</a>
+                    <a href="{{ route('lp.trial') }}" class="btn btn-lg mkt-btn-primary">Start a free trial — no card</a>
                     <a href="{{ route('index.get') }}" class="btn btn-lg mkt-btn-secondary">Back to home</a>
                 </div>
             </div>

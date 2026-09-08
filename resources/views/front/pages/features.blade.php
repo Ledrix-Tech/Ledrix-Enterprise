@@ -2,9 +2,9 @@
 
 @section('title', 'Features')
 
-@section('seo_title', 'Ledrix CRM Features — Seller Panel, Payment Links, Lead Routing')
-@section('meta_description', 'Ledrix CRM features closers use daily: seller panel, lead routing, Stripe and PayPal payment links, multi-brand pipelines, client portal, and sheet import. Try free.')
-@section('meta_keywords', 'Ledrix CRM features, seller panel CRM, payment links CRM, Stripe PayPal CRM, lead routing, multi-brand CRM, client portal CRM, sales CRM for closers, historical sales import, agency CRM features')
+@section('seo_title', 'Ledrix CRM Features — Brand Isolation, Merchant Routing, Seller Panel')
+@section('meta_description', 'Ledrix CRM features for agencies: isolated client brands, Stripe and PayPal under the right merchant, chargeback tracking, seller panels, and a client portal. Free trial, no card.')
+@section('meta_keywords', 'agency CRM features, brand isolation CRM, Stripe merchant routing, chargeback tracking, seller panel, client portal, multi-brand CRM, Ledrix CRM')
 
 @push('schema')
     @include('front.includes.schema-breadcrumbs', ['items' => [
@@ -15,8 +15,8 @@
     {!! json_encode([
         '@'.'context' => 'https://schema.org',
         '@type' => 'ItemList',
-        'name' => 'Ledrix CRM Features for Closers and Agencies',
-        'description' => 'Seller panel, lead routing, Stripe and PayPal payment links, multi-brand pipelines, client portal, sheet import, and admin oversight in Ledrix CRM.',
+        'name' => 'Ledrix CRM Features for Agencies Running Multiple Client Brands',
+        'description' => 'Brand isolation, Stripe and PayPal under the right merchant, chargeback tracking, seller panel, client portal, sheet import, and admin oversight in Ledrix CRM.',
         'itemListElement' => [
             ['@type' => 'ListItem', 'position' => 1, 'name' => 'Lead routing and seller panel'],
             ['@type' => 'ListItem', 'position' => 2, 'name' => 'Payment links from the lead card'],
@@ -43,25 +43,25 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 mkt-hero-inner">
-                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> Every tool a closer needs — none of the bloat</span>
-                <h1 id="features-hero-heading">Seller panel. Payment link. Owned lead. That’s the whole close.</h1>
+                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> Built for the mix-up generic CRMs ignore</span>
+                <h1 id="features-hero-heading">Each client brand gets its own pipeline, merchant, and access — not a shared dump.</h1>
                 <p class="mkt-hero-lead">
-                    Ledrix CRM features are built for how closers sell: instant lead ownership, a focused seller panel,
-                    Stripe or PayPal from the lead card, clean brand pipelines, and a client portal so buyers stop pinging you.
+                    Ledrix CRM features start with the pain: mixed leads, a closer in the wrong book, a chargeback on the wrong Stripe account.
+                    Then the fix: brand isolation, merchant routing, a seller panel that only shows assigned records, and a portal so clients stop asking for updates.
                 </p>
                 <div class="mkt-hero-actions">
                     @if ($popularPackage)
-                        <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg mkt-btn-primary">Open my seller panel — free</a>
+                        <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaPopular }}</a>
                     @else
-                        <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">See plans — no card</a>
+                        <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaGeneric }}</a>
                     @endif
-                    <a href="{{ route('index.get') }}#home-video" class="btn btn-lg mkt-btn-ghost">Watch a closer close in 60 sec</a>
+                    <a href="{{ route('index.get') }}#home-video" class="btn btn-lg mkt-btn-ghost">Watch 60-sec demo</a>
                 </div>
                 <div class="mkt-trust-row">
-                    <span><i class="bi bi-lightning-charge"></i> Payment link on the call</span>
-                    <span><i class="bi bi-person-badge"></i> Your book only</span>
+                    <span><i class="bi bi-shop"></i> Right merchant per brand</span>
+                    <span><i class="bi bi-person-badge"></i> Assigned records only</span>
                     <span><i class="bi bi-credit-card-2-front"></i> No card for trial</span>
-                    <span><i class="bi bi-buildings"></i> Unlimited brands, one login</span>
+                    <span><i class="bi bi-buildings"></i> Unlimited brands, one workspace</span>
                 </div>
                     </div>
                 </div>
@@ -71,29 +71,29 @@
         {{-- Without vs With --}}
         <section class="mkt-section mkt-section-white mkt-features-compare" aria-labelledby="features-compare-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="features-compare-heading">Why closers switch from spreadsheets to Ledrix</h2>
+                <h2 class="mkt-section-title" id="features-compare-heading">Why agencies leave one-CRM-for-every-client</h2>
                 <p class="mkt-section-lead mx-auto mb-4 mb-lg-5" style="max-width: 680px;">
-                    If your current stack looks like the left column, you are leaving commission on the table every week.
+                    If your current stack looks like the left column, a chargeback is already sitting on the wrong brand.
                 </p>
                 <div class="mkt-features-compare-grid text-start">
                     <div class="mkt-features-compare-col mkt-features-compare-col--without">
                         <h3><i class="bi bi-x-circle me-1"></i> Without Ledrix</h3>
                         <ul>
-                            <li><i class="bi bi-x-lg"></i> Leads sit in a shared sheet until someone claims them</li>
-                            <li><i class="bi bi-x-lg"></i> Closers hunt HubSpot, Stripe, and Slack mid-call</li>
-                            <li><i class="bi bi-x-lg"></i> Follow-ups live in someone’s head — or get stolen</li>
-                            <li><i class="bi bi-x-lg"></i> “Where’s my project?” eats dial time</li>
-                            <li><i class="bi bi-x-lg"></i> The yes cools before the invoice goes out</li>
+                            <li><i class="bi bi-x-lg"></i> Every client company dumped into one CRM</li>
+                            <li><i class="bi bi-x-lg"></i> One Stripe / PayPal login for the whole agency</li>
+                            <li><i class="bi bi-x-lg"></i> Closers can open leads they shouldn’t see</li>
+                            <li><i class="bi bi-x-lg"></i> “Where’s my project?” eats delivery time</li>
+                            <li><i class="bi bi-x-lg"></i> Chargebacks land with no client attached</li>
                         </ul>
                     </div>
                     <div class="mkt-features-compare-col mkt-features-compare-col--with">
                         <h3><i class="bi bi-check-circle me-1"></i> With Ledrix CRM</h3>
                         <ul>
-                            <li><i class="bi bi-check-lg"></i> Every lead lands on a named closer instantly</li>
-                            <li><i class="bi bi-check-lg"></i> Seller panel: your book, your follow-ups, your link</li>
-                            <li><i class="bi bi-check-lg"></i> Stripe or PayPal from the lead card on the call</li>
-                            <li><i class="bi bi-check-lg"></i> Clients check status and message you on the order</li>
-                            <li><i class="bi bi-check-lg"></i> Admins see the real pipeline — closers stay focused</li>
+                            <li><i class="bi bi-check-lg"></i> Each brand keeps its own pipeline</li>
+                            <li><i class="bi bi-check-lg"></i> Payment links generate under that client’s merchant</li>
+                            <li><i class="bi bi-check-lg"></i> Seller panel: assigned book only</li>
+                            <li><i class="bi bi-check-lg"></i> Clients check status and invoices in their portal</li>
+                            <li><i class="bi bi-check-lg"></i> Disputes attach to that client’s payment</li>
                         </ul>
                     </div>
                 </div>
@@ -103,30 +103,30 @@
         {{-- Sales growth outcomes --}}
         <section class="mkt-section mkt-home-growth" aria-labelledby="features-growth-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="features-growth-heading">The features closers refuse to sell without</h2>
+                <h2 class="mkt-section-title" id="features-growth-heading">The features agencies refuse to sell without</h2>
                 <p class="mkt-section-lead mx-auto" style="max-width: 760px;">
-                    If a sales CRM hides the payment link, mixes your book, or leaves leads unclaimed — closers will not use it. Ledrix ships the pieces they open every day.
+                    If a CRM mixes client companies, shares one merchant, or lets closers browse the whole shop — you will keep reconciling in a spreadsheet. Ledrix ships the split they need.
                 </p>
                 <div class="mkt-home-growth-grid mt-4 mt-lg-5">
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-funnel-fill" aria-hidden="true"></i>
                         <h3>Lead routing &amp; ownership</h3>
-                        <p>Website and form leads route to a closer — not a shared spreadsheet waiting for someone to claim them.</p>
+                        <p>Website and form leads route to a client brand and a closer — not a shared spreadsheet waiting for someone to claim them.</p>
                     </article>
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-lightning-fill" aria-hidden="true"></i>
                         <h3>Focused seller panel</h3>
-                        <p>Your assigned book only. Follow-ups on the deal. No cherry-picking. No browsing the company database.</p>
+                        <p>Assigned book only. Follow-ups on the deal. Commission-only closers cannot browse the agency’s full lead database.</p>
                     </article>
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-cash-coin" aria-hidden="true"></i>
-                        <h3>Payment links on the call</h3>
-                        <p>They say yes on Zoom — you send Stripe or PayPal from the lead card in seconds. Still on the call.</p>
+                        <h3>Payment links on the right merchant</h3>
+                        <p>They say yes — you send Stripe or PayPal from the lead card under that client’s own account, not a shared default.</p>
                     </article>
                     <article class="mkt-home-growth-item">
                         <i class="bi bi-buildings" aria-hidden="true"></i>
                         <h3>Multi-brand pipelines</h3>
-                        <p>Stop paying for two CRMs. Keep design leads away from marketing leads — same account, clean pipelines.</p>
+                        <p>Stop stuffing every LLC into one CRM. Keep Client A’s leads and money away from Client B — same agency workspace, clean split.</p>
                     </article>
                 </div>
             </div>
@@ -156,13 +156,13 @@
                 <div class="mkt-features-mid-cta-card">
                     <div class="row align-items-center g-4 g-lg-5">
                         <div class="col-lg-7">
-                            <span class="mkt-features-mid-cta-kicker"><i class="bi bi-lightning-charge-fill"></i> Try the close — then keep the workspace</span>
+                            <span class="mkt-features-mid-cta-kicker"><i class="bi bi-lightning-charge-fill"></i> Try the split — then keep the workspace</span>
                             <h2 id="features-mid-cta-heading">
-                                Still sending invoices after the Zoom ends?<br>
-                                <span class="mkt-features-mid-cta-accent">Open your seller panel and send the link today.</span>
+                                Still collecting every client on one Stripe login?<br>
+                                <span class="mkt-features-mid-cta-accent">Open a workspace and route the next payment to the right merchant.</span>
                             </h2>
                             <p class="mkt-features-mid-cta-lead">
-                                Real workspace — no credit card. Own a lead, open your book, send Stripe or PayPal from the card. That is the whole product.
+                                Real agency workspace — no credit card. Isolate a brand, assign a closer, send Stripe or PayPal under that client’s keys.
                             </p>
                             <ul class="mkt-features-mid-cta-list">
                                 <li><i class="bi bi-check-circle-fill"></i> Real admin &amp; seller panels — not a fake sandbox</li>
@@ -176,14 +176,14 @@
                                 <div class="mkt-features-mid-cta-box-badge">
                                     <i class="bi bi-unlock-fill"></i> No card required
                                 </div>
-                                <p class="mkt-features-mid-cta-box-title">Open a free workspace</p>
-                                <p class="mkt-features-mid-cta-box-desc">Full CRM access. Cancel anytime.</p>
+                                <p class="mkt-features-mid-cta-box-title">{{ $popularPackage ? $trialStartCtaPopular : $trialStartCtaGeneric }}</p>
+                                <p class="mkt-features-mid-cta-box-desc">Full CRM access. Cancel anytime. No card.</p>
                                 @if ($popularPackage)
                                     <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg mkt-btn-primary w-100 mb-2">
-                                        Try {{ $popularPackage->name }} free
+                                        {{ $trialStartCtaPopular }}
                                     </a>
                                 @else
-                                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary w-100 mb-2">See plans — no card</a>
+                                    <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary w-100 mb-2">{{ $trialStartCtaGeneric }}</a>
                                 @endif
                                 <a href="{{ route('index.get') }}#home-video" class="btn btn-lg mkt-btn-ghost w-100">
                                     <i class="bi bi-play-fill"></i> Watch 60-sec demo
@@ -261,14 +261,14 @@
             <div class="container">
                 <div class="mkt-feat-cards-head">
                     <span class="mkt-cat-kicker">Payments</span>
-                    <h2 class="mkt-section-title" id="cat-pay-heading">Payment link in seconds after “yes”</h2>
-                    <p class="mkt-section-lead">Stripe or PayPal from the lead card — while you are still on the call, before the buyer goes cold.</p>
+                    <h2 class="mkt-section-title" id="cat-pay-heading">Payment link under the client who actually sold it</h2>
+                    <p class="mkt-section-lead">Stripe or PayPal from the lead card — generated on that brand’s merchant, not a shared agency default.</p>
                 </div>
                 <div class="mkt-feat-cards">
                     <article class="mkt-feat-card">
                         <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-credit-card"></i></span>
                         <h3>Links from the deal</h3>
-                        <p>Generate Stripe or PayPal inside the lead card. No hop to a separate billing tab mid-close.</p>
+                        <p>Generate Stripe or PayPal inside the lead card under that client’s merchant keys. No hop to a shared billing login mid-close.</p>
                     </article>
                     <article class="mkt-feat-card">
                         <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span>
@@ -288,7 +288,7 @@
                     <article class="mkt-feat-card">
                         <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-shield-exclamation"></i></span>
                         <h3>Disputes &amp; refunds</h3>
-                        <p>Stripe and PayPal refund and dispute events can land back on the payment — so chargebacks aren’t a surprise Slack thread. On eligible plans.</p>
+                        <p>Stripe and PayPal refund and dispute events land back on that client’s payment — so a chargeback is not a surprise Slack thread against the wrong brand. On eligible plans.</p>
                     </article>
                     <article class="mkt-feat-card">
                         <span class="mkt-feat-card__icon" aria-hidden="true"><i class="bi bi-plugin"></i></span>
@@ -304,9 +304,9 @@
             <div class="container">
                 <div class="mkt-cat-head text-center">
                     <span class="mkt-cat-kicker">Multi-brand / multi-LLC</span>
-                    <h2 class="mkt-section-title" id="cat-brand-heading">Unlimited brands. One login. No mixed data.</h2>
+                    <h2 class="mkt-section-title" id="cat-brand-heading">Unlimited client brands. One agency workspace. No mixed ledger.</h2>
                     <p class="mkt-section-lead mx-auto">
-                        This is the reason agencies stop stacking CRM seats. Every LLC or brand stays in its own pipeline. You still run one workspace — and another company on Ledrix cannot open it.
+                        This is why agencies stop stuffing every LLC into one CRM. Each client brand keeps its own pipeline and merchant. You still run one workspace — and another company on Ledrix cannot open it.
                     </p>
                 </div>
                 <article class="mkt-feature-panel">
@@ -315,8 +315,8 @@
                             <div class="mkt-feature-panel__inner">
                                 <h3>Stop paying for two CRMs to keep brands apart</h3>
                                 <p>
-                                    Web leads stay with the web brand. Marketing leads stay with marketing. Closers don’t trip over another LLC’s book.
-                                    Admins see every brand in <em>this</em> company — not every tenant on Ledrix.
+                                    Client A’s leads stay with Client A. Client B’s money stays on Client B’s merchant. Closers don’t trip over another LLC’s book.
+                                    Admins see every brand in <em>this</em> agency — not every tenant on Ledrix.
                                 </p>
                                 <p>
                                     Every workspace is isolated from every other company on the platform. That scoping is live on day one.
@@ -341,7 +341,7 @@
                                 </p>
                                 <div class="mkt-feature-panel__outcome">
                                     <i class="bi bi-graph-up-arrow"></i>
-                                    <span><strong>Pain solved</strong> — Dual CRM bills &amp; mixed brands</span>
+                                    <span><strong>Pain solved</strong> — Mixed clients, mixed merchants, mixed chargebacks</span>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +368,7 @@
                     <div class="mkt-feat-cat__intro">
                         <span class="mkt-cat-kicker">Client portal</span>
                         <h2 class="mkt-section-title" id="cat-client-heading">Clients log in. They don’t email “where is it?”</h2>
-                        <p class="mkt-section-lead">Their orders, invoices, tickets, and progress — so they stop chasing you, and you stop forwarding screenshots.</p>
+                        <p class="mkt-section-lead">Their orders, invoices, tickets, and progress — so they stop chasing the agency, and you stop forwarding screenshots from the wrong brand.</p>
                     </div>
                     <div class="mkt-feat-list mkt-feat-list--stack">
                         <article class="mkt-feat-item">
@@ -643,9 +643,9 @@
         {{-- Trial unlock --}}
         <section class="mkt-section mkt-features-trial-unlock" aria-labelledby="features-trial-heading">
             <div class="container text-center">
-                <h2 class="mkt-section-title" id="features-trial-heading">Prove the close in a live workspace — no credit card</h2>
+                <h2 class="mkt-section-title" id="features-trial-heading">Prove the split in a live workspace — no credit card</h2>
                 <p class="mkt-section-lead mx-auto mb-4 mb-lg-5" style="max-width: 720px;">
-                    Open Ledrix and do what closers do: own a lead, open your seller panel, send a payment link. Watch the demo first if you want the tour.
+                    Open Ledrix and do what agencies do: isolate a brand, assign a closer, send a payment link under that merchant. Watch the demo first if you want the tour.
                 </p>
                 <div class="mkt-features-trial-grid">
                     <div class="mkt-features-trial-item">
@@ -675,9 +675,9 @@
                 </div>
                 <div class="mt-4 mt-lg-5">
                     @if ($popularPackage)
-                        <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg btn-light fw-bold px-4">Try {{ $popularPackage->name }} free</a>
+                        <a href="{{ route('tenant.register.form', $popularPackage->slug) }}" class="btn btn-lg btn-light fw-bold px-4">{{ $trialStartCtaPopular }}</a>
                     @else
-                        <a href="{{ route('pricing.get') }}" class="btn btn-lg btn-light fw-bold px-4">See plans — no card</a>
+                        <a href="{{ route('pricing.get') }}" class="btn btn-lg btn-light fw-bold px-4">{{ $trialStartCtaGeneric }}</a>
                     @endif
                 </div>
             </div>
@@ -686,12 +686,12 @@
         {{-- CTA --}}
         <section class="mkt-cta-band text-center" aria-labelledby="features-cta-heading">
             <div class="container">
-                <h2 id="features-cta-heading">Ready to send the next payment link from the call?</h2>
+                <h2 id="features-cta-heading">Ready to stop collecting every client on one merchant?</h2>
                 <p class="mb-4 mx-auto" style="max-width: 560px;">
-                    Open a free seller panel — no credit card. Route a lead, send Stripe or PayPal, and keep the book that pays you.
+                    Open a free agency workspace — no credit card. Route a brand, send Stripe or PayPal under that client, and keep closers out of books they shouldn’t see.
                 </p>
                 <div class="d-flex flex-wrap gap-2 justify-content-center">
-                    <a href="{{ route('pricing.get') }}" class="btn btn-light btn-lg fw-bold px-4">Open my seller panel — free</a>
+                    <a href="{{ route('pricing.get') }}" class="btn btn-light btn-lg fw-bold px-4">{{ $trialStartCtaGeneric }}</a>
                     <a href="{{ route('index.get') }}#home-video" class="btn btn-outline-light btn-lg px-4">Watch the 60-sec demo</a>
                 </div>
             </div>
@@ -699,8 +699,8 @@
 
         @include('front.includes.faq-section', [
             'limit' => 4,
-            'title' => 'Feature questions closers ask first',
-            'lead' => 'What you see in the seller panel, how payment links work, and who the CRM is built for.',
+            'title' => 'Feature questions agencies ask first',
+            'lead' => 'How brands stay isolated, where payment links generate, and who sees which records.',
         ])
     </div>
 @endsection

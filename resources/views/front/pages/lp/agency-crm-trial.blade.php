@@ -1,23 +1,23 @@
 @extends('front.layout.lp')
 
-@section('title', 'Start free trial')
+@section('title', 'Start free trial — no card')
 
-@section('seo_title', 'Ledrix CRM Free Trial — Agency Sales CRM for Leads & Closers')
-@section('meta_description', 'Start a free Ledrix CRM trial. Capture leads, assign sellers, collect payments, and run your agency pipeline — no credit card required.')
+@section('seo_title', 'Ledrix CRM Free Trial — No Card, Agency Workspace in Minutes')
+@section('meta_description', 'Start a free Ledrix CRM trial with no credit card. Isolate client brands, route Stripe and PayPal to the right merchant, and keep closers in their assigned book.')
 @section('robots', 'noindex, follow')
 
 @section('main-content')
     <div class="mkt-page lp-page">
         <section class="mkt-hero text-center">
             <div class="container mkt-hero-inner px-3 px-sm-4">
-                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> {{ $trialDays }}-day free trial</span>
-                <h1>Get more clients with Ledrix CRM</h1>
+                <span class="mkt-hero-badge"><i class="bi bi-lightning-charge-fill"></i> {{ $trialDays }}-day free trial — no card</span>
+                <h1>Stop mixing client brands in one CRM</h1>
                 <p class="mkt-hero-lead">
-                    Capture leads, assign sellers, send payment links, and run your agency pipeline in one tenant-isolated workspace — no credit card required.
+                    Isolate each client’s leads, generate Stripe and PayPal under that merchant, and keep commission-only closers out of the full database — no credit card required.
                 </p>
                 <div class="mkt-hero-actions">
                     <a href="{{ $registerUrl }}" class="btn btn-lg mkt-btn-primary" data-lp-cta="trial-hero">
-                        Start free trial
+                        Start {{ $trialDays }}-day free trial — no card
                         @if ($package)
                             <span class="opacity-75">· {{ $package->name }}</span>
                         @endif
@@ -25,34 +25,34 @@
                     <a href="{{ route('lp.demo') }}" class="btn btn-lg mkt-btn-ghost">Book a demo</a>
                 </div>
                 <div class="mkt-trust-row">
-                    <span><i class="bi bi-credit-card-2-front"></i> No card for trial</span>
-                    <span><i class="bi bi-shield-lock"></i> Tenant-isolated CRM</span>
-                    <span><i class="bi bi-box-arrow-in-right"></i> Live in minutes</span>
+                    <span><i class="bi bi-credit-card-2-front"></i> No card required</span>
+                    <span><i class="bi bi-shield-lock"></i> Each agency workspace isolated</span>
+                    <span><i class="bi bi-shop"></i> Right merchant per brand</span>
                 </div>
             </div>
         </section>
 
         <section class="mkt-section mkt-section-alt">
             <div class="container text-center px-3 px-sm-4">
-                <h2 class="mkt-section-title">Built for teams who live on leads</h2>
+                <h2 class="mkt-section-title">Built for agencies who cannot share a ledger</h2>
                 <p class="mkt-section-lead">
-                    Turn inbound demand into booked calls and paid clients — without spreadsheet chaos.
+                    Turn inbound demand into the right brand’s closer and the right merchant — without a spreadsheet dump.
                 </p>
                 <div class="mkt-grid-3 text-start">
                     <div class="mkt-card">
                         <div class="mkt-card-icon"><i class="bi bi-inbox"></i></div>
-                        <h5>Lead capture that sticks</h5>
-                        <p>Ingest from web forms, scripts, and API — then route to the right seller fast.</p>
+                        <h5>Leads that stay on the brand</h5>
+                        <p>Ingest from web forms, scripts, and API — then route to that client’s closer, not a shared pile.</p>
                     </div>
                     <div class="mkt-card">
                         <div class="mkt-card-icon"><i class="bi bi-people"></i></div>
                         <h5>Seller + admin workspaces</h5>
-                        <p>Admins see the full pipeline; sellers get assigned leads, orders, and follow-ups.</p>
+                        <p>Admins see every brand; commission-only closers get assigned records only.</p>
                     </div>
                     <div class="mkt-card">
                         <div class="mkt-card-icon"><i class="bi bi-cash-coin"></i></div>
-                        <h5>Get paid inside the CRM</h5>
-                        <p>Stripe and PayPal payment links, client portal, and order tracking in one place.</p>
+                        <h5>Paid on the right merchant</h5>
+                        <p>Stripe and PayPal payment links, client portal, and dispute tracking on that client’s payment.</p>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                         </h2>
                         <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#lpTrialFaq">
                             <div class="accordion-body">
-                                Agencies, closers, and sales teams that need multi-tenant CRM: leads, sellers, orders, and client payments.
+                                Agencies and sales teams in the US and UK that run multiple client brands — and are done stuffing them into one CRM and one payment account.
                             </div>
                         </div>
                     </div>
@@ -104,9 +104,9 @@
 
         <section class="mkt-cta-band text-center">
             <div class="container px-3 px-sm-4">
-                <h2>Ready to grow your pipeline?</h2>
-                <p>Start your free Ledrix trial and onboard your first leads today.</p>
-                <a href="{{ $registerUrl }}" class="btn btn-lg mkt-btn-primary" data-lp-cta="trial-footer">Start free trial</a>
+                <h2>Ready to keep the next chargeback on the right client?</h2>
+                <p>Start your {{ $trialDays }}-day Ledrix trial — no card — and onboard your first brand today.</p>
+                <a href="{{ $registerUrl }}" class="btn btn-lg mkt-btn-primary" data-lp-cta="trial-footer">Start {{ $trialDays }}-day free trial — no card</a>
             </div>
         </section>
     </div>

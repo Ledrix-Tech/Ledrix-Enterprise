@@ -46,7 +46,7 @@ class MarketingTrialCopyTest extends TestCase
             new PackagePricing(['trial_days' => 21]),
         ]);
 
-        $this->assertSame('Start free trial', MarketingTrialCopy::startGenericCta($packages));
+        $this->assertSame('Start free trial — no card', MarketingTrialCopy::startGenericCta($packages));
     }
 
     public function test_start_generic_cta_includes_days_when_all_plans_match(): void
@@ -56,6 +56,6 @@ class MarketingTrialCopyTest extends TestCase
             new PackagePricing(['trial_days' => 14]),
         ]);
 
-        $this->assertSame('Start 14-day free trial', MarketingTrialCopy::startGenericCta($packages));
+        $this->assertSame('Start 14-day free trial — no card', MarketingTrialCopy::startGenericCta($packages));
     }
 }

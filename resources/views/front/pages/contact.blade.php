@@ -2,9 +2,9 @@
 
 @section('title', 'Contact')
 
-@section('seo_title', 'Contact Ledrix CRM — Sales & Support')
-@section('meta_description', 'Contact the Ledrix CRM team for pricing, enterprise plans, demos, and onboarding help. We respond within one business day.')
-@section('meta_keywords', 'Contact Ledrix, Ledrix CRM support, CRM demo, sales CRM contact, agency CRM inquiry')
+@section('seo_title', 'Contact Ledrix CRM — Agency Sales & Support')
+@section('meta_description', 'Contact the Ledrix CRM team about mixed client brands, merchant routing, pricing, or a demo. We respond within one business day. Free trial, no card.')
+@section('meta_keywords', 'Contact Ledrix, Ledrix CRM support, agency CRM demo, multi-brand CRM inquiry')
 
 @push('schema')
     @include('front.includes.schema-breadcrumbs', ['items' => [
@@ -57,10 +57,10 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-10 mkt-contact-hero-inner">
                         <span class="mkt-contact-hero-badge"><i class="bi bi-chat-dots"></i> Sales &amp; support</span>
-                        <h1 id="contact-hero-heading">Talk to us about dropped leads, multi-brand chaos, or a demo</h1>
+                        <h1 id="contact-hero-heading">Talk to us about mixed clients, the wrong merchant, or a demo</h1>
                         <p class="mkt-contact-hero-lead">
-                            Pricing questions, agency onboarding, or want to see seller panels and payment links live?
-                            Send a message — we typically reply within one business day. Or skip the wait and open a free workspace.
+                            Pricing questions, agency onboarding, or want to see brand isolation and merchant routing live?
+                            Send a message — we typically reply within one business day. Or skip the wait and start a free trial — no card.
                         </p>
                         <div class="mkt-contact-hero-actions">
                             <a href="#contactForm" class="btn btn-lg mkt-btn-primary">Send a message</a>
@@ -185,14 +185,14 @@
                                 <div class="mkt-contact-trial-card">
                                     <div class="mkt-contact-trial-icon"><i class="bi bi-rocket-takeoff"></i></div>
                                     <h3>Prefer self-serve?</h3>
-                                    <p>Open a free workspace — no card, no sales call. See lead routing and payment links live.</p>
-                                    <a href="{{ $trialUrl }}" class="btn btn-primary w-100">Start free trial</a>
+                                    <p>Start a free trial — no card, no sales call. Isolate a brand and send a payment link under the right merchant.</p>
+                                    <a href="{{ $trialUrl }}" class="btn btn-primary w-100">{{ $popularPackage ? $trialStartCtaPopular : $trialStartCtaGeneric }}</a>
                                 </div>
 
                                 <div class="mkt-contact-card">
                                     <h4 class="mkt-contact-sidebar-title"><i class="bi bi-stars"></i> Why Ledrix?</h4>
                                     <ul class="mkt-contact-feature-list">
-                                        @foreach (['Leads claimed — not left in a pile', 'Multiple brands, one login', 'Payment link after the Zoom yes', 'Closers only see their book', 'Admin view across every brand', 'Client portal without extra tools'] as $item)
+                                        @foreach (['Each client brand keeps its own pipeline', 'Stripe / PayPal under the right merchant', 'Chargebacks attach to that client’s payment', 'Closers only see assigned records', 'Admin view across every brand', 'Client portal so they stop asking for updates'] as $item)
                                             <li><i class="bi bi-check-lg"></i> {{ $item }}</li>
                                         @endforeach
                                     </ul>

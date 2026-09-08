@@ -4,11 +4,11 @@ return [
 
     'site_name' => 'Ledrix CRM',
 
-    'default_title' => 'Ledrix CRM — Sales CRM for Closers Who Get Paid Faster',
+    'default_title' => 'Ledrix CRM — Agency CRM That Keeps Client Brands, Leads, and Payments Apart',
 
-    'default_description' => 'Ledrix is the sales CRM closers open first: instant lead ownership, a focused seller panel, and Stripe or PayPal payment links from the lead card. Free trial, no card.',
+    'default_description' => 'Stop running every client brand through one CRM and one payment account. Ledrix isolates each brand’s leads, routes Stripe and PayPal to the right merchant, and tracks chargebacks on the client who actually took the money. Free trial, no card.',
 
-    'default_keywords' => 'Ledrix CRM, sales CRM for closers, closer CRM, seller panel, payment links CRM, Stripe CRM, lead routing, multi-brand CRM, agency sales CRM, stop dropped leads',
+    'default_keywords' => 'agency CRM, multi-brand CRM, client brand isolation, Stripe merchant routing, PayPal payment links, chargeback tracking CRM, seller panel, client portal, digital marketing agency CRM, Ledrix CRM',
 
     'twitter_handle' => '@ledrixcrm',
 
@@ -41,8 +41,8 @@ return [
     'home_video' => [
         'file'         => 'front-assets/media/front-video.mp4',
         'poster'       => 'front-assets/media/ledrix-thumb.PNG',
-        'title'        => 'Ledrix CRM — 60-second overview for closers, founders, and agencies',
-        'description'  => 'Watch a closer take an inbound lead to a payment link in Ledrix: seller panel, brand routing, and Stripe or PayPal from the lead card — before you sign up.',
+        'title'        => 'Ledrix CRM — 60-second overview for agencies running multiple client brands',
+        'description'  => 'Watch a lead land on the right brand, a closer work only their assigned book, and a Stripe or PayPal link generate under that client’s merchant — before you sign up.',
         'duration_iso' => 'PT1M',
     ],
 
@@ -72,11 +72,11 @@ return [
         'linkedin' => 'https://www.linkedin.com/in/zeeshan-asghar-500a40255/',
         'photo' => 'front-assets/imgs/founder-lounge.png',
         'story' => [
-            'origin' => 'While working with agencies and sales teams, Zeeshan Asghar noticed a familiar pattern: closers were drowning in spreadsheets, payment links lived in one tool, leads in another, and client updates in a third. Closers did not need more features — they needed one workspace that matched how a deal actually closes.',
-            'founding' => 'In 2024, he founded Ledrix to help revenue teams grow with structure instead of chaos — capturing leads, assigning sellers, closing orders, and collecting payments in a tenant-isolated CRM built for agencies from day one.',
-            'today' => 'Ledrix has expanded into a crafted, not cobbled platform: multi-brand workspaces, seller and client portals, Stripe and PayPal flows, and automation-ready architecture. Led by Zeeshan, the team is building the practical sales operating system scaling agencies expect today — and the intelligent CRM they will need tomorrow.',
+            'origin' => 'While working with digital agencies, Zeeshan Asghar kept seeing the same failure: five client “companies” stuffed into one CRM and one Stripe login. Leads mixed. Closers opened records they should never see. Refunds and chargebacks landed on the wrong client. Spreadsheets and generic CRMs made it worse, not better.',
+            'founding' => 'In 2024 he founded Ledrix so an agency could run multiple client brands in one workspace without sharing a ledger — each brand’s leads, access, and merchant payments stay apart.',
+            'today' => 'Ledrix is the agency CRM built for that split: isolated brand pipelines, Stripe and PayPal links under the right merchant, chargeback tracking on the payment that was actually disputed, plus seller and client portals so nobody hunts Slack for status. Led by Zeeshan, the team keeps shipping the operating system growing agencies actually run — not another bloated contact database.',
         ],
-        'description' => 'Zeeshan Asghar founded Ledrix to build a sales CRM closers will actually use — combining lead ownership, a focused seller panel, and payment links with modern SaaS architecture.',
+        'description' => 'Zeeshan Asghar founded Ledrix to stop agencies from mixing client leads and payments in one CRM — with brand isolation, merchant routing, and role-based seller and client portals.',
     ],
 
     'sitemap' => [
@@ -112,31 +112,31 @@ return [
     'faq' => [
         [
             'question' => 'What is Ledrix CRM?',
-            'answer' => 'Ledrix is a sales CRM for closers, founders, and agencies. It routes every inbound lead to a closer, opens a focused seller panel (their book only), and lets them send Stripe or PayPal payment links from the lead card — while the buyer is still on the call.',
+            'answer' => 'Ledrix is a multi-tenant CRM for agencies that run multiple client brands. It stops you stuffing every company into one pipeline and one payment account — leads stay on the right brand, Stripe and PayPal links generate under that client’s merchant, and chargebacks attach to the payment that was actually disputed.',
         ],
         [
             'question' => 'What does a sales closer get in Ledrix?',
-            'answer' => 'A seller panel with assigned leads, follow-ups, orders, and the payment link on that deal. Closers cannot browse the company database or cherry-pick someone else’s book. They get mail when a lead is assigned, and they reply to clients on the order — not in Slack.',
+            'answer' => 'A seller panel with assigned leads, follow-ups, orders, and the payment link on that deal. Commission-only closers cannot browse the agency’s full lead database or another client’s book. They get mail when a lead is assigned, and they reply to that client on the order — not in Slack.',
         ],
         [
             'question' => 'Can I send a payment link while I am still on the call?',
-            'answer' => 'Yes. Generate Stripe or PayPal from the lead card in seconds after the buyer says yes. You do not hop to a separate billing tab mid-close. Paid and failed updates can land back on the order so you know if it went through.',
+            'answer' => 'Yes. Generate Stripe or PayPal from the lead card in seconds after the buyer says yes — under that client brand’s own merchant account, not a shared default. You do not hop to a separate billing tab mid-close.',
         ],
         [
             'question' => 'Who is Ledrix CRM for?',
-            'answer' => 'Closers who want a focused pipeline, founders scaling a sales team, and agency owners running multiple brands — without paying for HubSpot + Stripe + Slack as three disconnected steps.',
+            'answer' => 'US and UK digital marketing and growth agencies, plus sales teams that manage more than one client brand — people currently juggling spreadsheets, a generic CRM, or a single Stripe login that mixes every client’s money.',
         ],
         [
             'question' => 'Is Ledrix CRM free to try?',
-            'answer' => 'Yes. Open a plan-based free trial with a real seller panel and admin CRM — no credit card required. Watch the 60-second demo first if you want the tour before signup.',
+            'answer' => 'Yes. Start a plan-based free trial with a real agency workspace — no credit card required. You only pay if you continue after the trial.',
         ],
         [
             'question' => 'How is Ledrix different from other CRM software?',
-            'answer' => 'Most CRMs are contact databases closers avoid. Ledrix is built around the close: instant lead ownership, a stripped-down seller panel, payment links in seconds after a yes, and unlimited brands under one login — not hours later in another app.',
+            'answer' => 'Generic CRMs treat your agency like one company. Ledrix treats each client brand as its own pipeline and merchant. Closers see only assigned records. Refunds and chargebacks land on the client who took the payment — not on whoever happened to be the default Stripe account.',
         ],
         [
             'question' => 'Does Ledrix support multiple brands or teams?',
-            'answer' => 'Yes. Run every brand under one account without mixing pipelines. Admins see the full picture; sellers only see their assignments; clients get a secure portal.',
+            'answer' => 'Yes. Run every client brand under one agency workspace without mixing leads or payments. Admins see the full picture; sellers only see their assignments; each client gets a portal for their own orders and invoices.',
         ],
         [
             'question' => 'Do clients get their own portal?',
@@ -152,7 +152,7 @@ return [
         ],
         [
             'question' => 'What payment gateways does Ledrix CRM support?',
-            'answer' => 'Stripe and PayPal payment links from inside the lead/order flow — so your closer can collect while the buyer is still hot. Milestone billing and subscription billing are also supported on eligible plans.',
+            'answer' => 'Stripe and PayPal payment links from inside the lead/order flow, generated under that client brand’s merchant keys — not a shared agency default. Paid, failed, refund, and dispute events can land back on that payment. Milestone billing and subscription billing are also supported on eligible plans.',
         ],
         [
             'question' => 'Can I import historical sales from a spreadsheet?',
@@ -160,11 +160,11 @@ return [
         ],
         [
             'question' => 'Can I use Ledrix CRM for lead management only?',
-            'answer' => 'Yes. Start with lead intake and seller routing so nothing sits in a shared spreadsheet. Add orders and payment links when you’re ready to close faster.',
+            'answer' => 'Yes. Start with brand-aware lead intake and seller routing so client lists never share a spreadsheet. Add orders and merchant payment links when you are ready to collect without mixing ledgers.',
         ],
         [
             'question' => 'Is my data isolated on Ledrix?',
-            'answer' => 'Yes. Every company gets a private workspace. Your brands, leads, orders, and clients stay separate from every other organization on the platform. Agencies that need a dedicated CRM database can request one. Full statement: ledrix.co/security.',
+            'answer' => 'Yes. Every agency gets a private workspace. Your brands, leads, orders, and clients stay separate from every other organization on the platform. Inside the workspace, commission-only sellers only see assigned records. Agencies that need a dedicated CRM database can request one. Full statement: ledrix.co/security.',
         ],
         [
             'question' => 'Is Ledrix GDPR compliant?',
@@ -184,7 +184,7 @@ return [
         ],
         [
             'question' => 'Who founded Ledrix?',
-            'answer' => 'Ledrix was founded by Zeeshan Asghar, who leads product and platform direction with a focus on practical CRM tools for modern sales teams and agencies.',
+            'answer' => 'Ledrix was founded by Zeeshan Asghar, who leads product and platform direction with a focus on practical CRM tools for agencies running multiple client brands.',
         ],
         [
             'question' => 'How do I contact Ledrix for sales or support?',
@@ -195,11 +195,11 @@ return [
     'pricing_faq' => [
         [
             'question' => 'How does the Ledrix CRM free trial work?',
-            'answer' => 'Choose a plan and create your workspace. You get full CRM access for the trial period on your package. We verify your email before activating the trial — no payment is collected upfront.',
+            'answer' => 'Choose a plan and create your agency workspace. You get full CRM access for the trial period on your package. We verify your email before activating the trial — no credit card, no charge until you decide to continue.',
         ],
         [
             'question' => 'Do I need a credit card to start a Ledrix trial?',
-            'answer' => 'No. You can start your free trial without entering card details. Billing is only required when you choose to continue after the trial ends.',
+            'answer' => 'No. Start your free trial without entering card details. Billing starts only if you choose to continue after the trial ends.',
         ],
         [
             'question' => 'What happens after my Ledrix trial ends?',
@@ -211,7 +211,7 @@ return [
         ],
         [
             'question' => 'Is my Ledrix workspace isolated from other companies?',
-            'answer' => 'Yes. Ledrix is multi-tenant SaaS — each workspace has its own tenant ID. Your leads, sellers, clients, and orders are scoped to your account only.',
+            'answer' => 'Yes. Ledrix is multi-tenant SaaS — each agency workspace is isolated. Your leads, sellers, clients, and orders are scoped to your account only. Inside that workspace, client brands and merchant payments stay on the brand they belong to.',
         ],
         [
             'question' => 'Can I switch Ledrix CRM plans later?',
@@ -223,7 +223,7 @@ return [
         ],
         [
             'question' => 'What payment methods does Ledrix support?',
-            'answer' => 'Stripe and PayPal are supported on eligible plans for tenant subscriptions and CRM payment links. Payment setup is completed after trial when you choose to subscribe.',
+            'answer' => 'Stripe and PayPal are supported on eligible plans for tenant subscriptions and for CRM payment links generated under each client brand’s merchant. Payment setup for your Ledrix subscription is completed after trial when you choose to subscribe.',
         ],
     ],
 
