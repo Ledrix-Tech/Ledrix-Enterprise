@@ -466,6 +466,11 @@
     padding: 0.85rem 1rem;
 }
 
+body.auth-layout .auth-page,
+body.auth-layout .auth-shell {
+    min-height: 100vh;
+}
+
 body:has(.auth-page) .footer {
     display: none;
 }
@@ -473,4 +478,9 @@ body:has(.auth-page) .footer {
 body:has(.auth-page) .auth-page,
 body:has(.auth-page) .auth-shell {
     min-height: calc(100vh - 72px);
+}
+
+body.auth-layout:has(.auth-page) .auth-page,
+body.auth-layout:has(.auth-page) .auth-shell {
+    min-height: 100vh;
 }

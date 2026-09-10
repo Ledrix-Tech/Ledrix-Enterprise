@@ -31,8 +31,10 @@
     @stack('head')
 </head>
 
-<body>
-    @include('front.includes.header')
+<body @class(['auth-layout' => View::hasSection('hide_navbar')])>
+    @unless (View::hasSection('hide_navbar'))
+        @include('front.includes.header')
+    @endunless
 
     <main id="main-content" role="main">
         @yield('main-content')
@@ -54,7 +56,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('front-assets/js/app.js') }}" defer></script>
     @stack('scripts')
-    @include('front.includes.footer')
+    @unless (View::hasSection('hide_navbar'))
+        @include('front.includes.footer')
+    @endunless
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 @extends('front.layout.layout')
 
+@section('hide_navbar', true)
 @section('title', 'Sign In')
 
 @section('robots', 'noindex, nofollow')
@@ -102,6 +103,7 @@
                         <p class="auth-footer-link">
                             Don't have an account?
                             <a href="{{ route('pricing.get') }}">Start free trial</a>
+                            · <a href="{{ route('sandbox.register') }}">Tour the sandbox</a>
                         </p>
                     </div>
                 </div>

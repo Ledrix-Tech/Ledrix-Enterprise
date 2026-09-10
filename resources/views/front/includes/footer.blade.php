@@ -16,6 +16,7 @@
                 <strong class="d-block mb-2 small text-uppercase opacity-75">Product</strong>
                 <a href="{{ route('features.get') }}" class="text-white d-block mb-1 text-decoration-none">Features</a>
                 <a href="{{ route('pricing.get') }}" class="text-white d-block mb-1 text-decoration-none">Pricing</a>
+                <a href="{{ route('sandbox.register') }}" class="text-white d-block mb-1 text-decoration-none">Try sandbox</a>
                 <a href="{{ route('about.get') }}" class="text-white d-block mb-1 text-decoration-none">About</a>
                 <a href="{{ route('faq.get') }}" class="text-white d-block mb-1 text-decoration-none">FAQ</a>
                 <a href="{{ route('contact-us.get') }}" class="text-white d-block mb-1 text-decoration-none">Contact</a>

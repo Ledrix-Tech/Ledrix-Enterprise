@@ -73,6 +73,12 @@ return [
             'driver'   => 'session',
             'provider' => 'tenants',
         ],
+
+        // Demo visitors — central demo_accounts, not tenants
+        'demo' => [
+            'driver'   => 'session',
+            'provider' => 'demo_accounts',
+        ],
     ],
 
     /*
@@ -108,6 +114,11 @@ return [
         'tenants' => [
             'driver' => 'eloquent',
             'model'  => App\Models\Central\Tenant::class,
+        ],
+
+        'demo_accounts' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Central\DemoAccount::class,
         ],
 
         'admins' => [

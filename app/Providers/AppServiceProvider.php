@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\PayPalGateway;
 use App\Services\PaymentGatewayFactory;
 use App\Services\StripeGateway;
+use App\View\Composers\DemoSandboxBannerComposer;
 use App\View\Composers\MarketingTrialComposer;
 use Illuminate\Mail\MailManager;
 use Illuminate\Pagination\Paginator;
@@ -89,6 +90,8 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['admin.*', 'sellers.*'], function ($view) {
             $view->with('authAdmin', Auth::guard('admin')->user());
         });
+
+        View::composer('sandbox.banner', DemoSandboxBannerComposer::class);
 
         View::composer([
             'front.pages.index',

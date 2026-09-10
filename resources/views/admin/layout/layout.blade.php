@@ -18,6 +18,7 @@
 
 <body class="crm-body">
     @include('admin.includes.impersonation-banner')
+    @include('sandbox.banner')
     <div class="crm-shell">
         @include('admin.includes.top-bar')
         <div id="crmSidebarOverlay" class="crm-sidebar-overlay"></div>

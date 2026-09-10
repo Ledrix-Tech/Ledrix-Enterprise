@@ -157,8 +157,10 @@
                 </p>
                 <div class="mkt-hero-actions">
                     <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaGeneric }}</a>
+                    <a href="{{ route('sandbox.register') }}" class="btn btn-lg mkt-btn-ghost">Try the sandbox</a>
                     <a href="#home-video" class="btn btn-lg mkt-btn-ghost">Watch how brand isolation works</a>
                 </div>
+                <p class="small text-secondary mt-3 mb-0">Sandbox is a shared tour with sample data. A trial is a private workspace of your own.</p>
                 <div class="mkt-trust-row">
                     <span><i class="bi bi-credit-card-2-front"></i> No card required</span>
                     <span><i class="bi bi-shop"></i> Each brand’s own Stripe / PayPal</span>
@@ -656,6 +658,7 @@
                 </p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
                     <a href="{{ route('pricing.get') }}" class="btn btn-lg mkt-btn-primary">{{ $trialStartCtaGeneric }}</a>
+                    <a href="{{ route('sandbox.register') }}" class="btn btn-lg mkt-btn-ghost">Try the sandbox</a>
                     <a href="#home-video" class="btn btn-lg mkt-btn-ghost">Watch the 60-sec demo</a>
                 </div>
             </div>

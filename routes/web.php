@@ -6,6 +6,7 @@ use App\Http\Controllers\Central\StripeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontViews\LandingPagesController;
 use App\Http\Controllers\FrontViews\ViewsController as FrontViewsController;
+use App\Http\Controllers\FrontViews\SandboxAuthController;
 use App\Http\Controllers\FrontViews\SeoController;
 
 
@@ -48,6 +49,19 @@ Route::post('/contact', [ContactQueryController::class, 'storeContactQuery'])
 Route::post('/request-demo', [DemoRequestController::class, 'store'])
     ->middleware('throttle:8,1')
     ->name('demo.store');
+
+Route::get('/sandbox', [SandboxAuthController::class, 'show'])->name('sandbox.register');
+Route::get('/sandbox/login', [SandboxAuthController::class, 'loginForm'])->name('sandbox.login');
+Route::post('/sandbox', [SandboxAuthController::class, 'store'])
+    ->middleware('throttle:8,1')
+    ->name('sandbox.register.store');
+Route::post('/sandbox/login', [SandboxAuthController::class, 'login'])
+    ->middleware('throttle:8,1')
+    ->name('sandbox.login.post');
+Route::post('/sandbox/open/{role}', [SandboxAuthController::class, 'open'])
+    ->whereIn('role', ['admin', 'seller', 'client'])
+    ->name('sandbox.open');
+Route::post('/sandbox/logout', [SandboxAuthController::class, 'logout'])->name('sandbox.logout');
 
 Route::get('/renew/approve/{token}', [StripeController::class, 'approveRenewal'])
     ->name('super-renew.approve');

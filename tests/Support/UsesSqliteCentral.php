@@ -88,6 +88,10 @@ trait UsesSqliteCentral
             $table->string('status')->default('inactive');
             $table->string('suspended_reason')->nullable();
             $table->timestamp('suspended_at')->nullable();
+            $table->boolean('trial_used')->default(false);
+            $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('crm_database')->nullable();
             $table->json('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -274,6 +278,105 @@ trait UsesSqliteCentral
             $table->timestamp('confirmed_at')->nullable();
             $table->timestamps();
             $table->unique('email');
+        });
+
+        Schema::connection('central')->create('tenant_memberships', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('tenant_id');
+            $table->unsignedBigInteger('plan_id')->nullable();
+            $table->string('billing_cycle')->default('monthly');
+            $table->decimal('amount', 10, 2)->default(0);
+            $table->string('currency', 3)->default('USD');
+            $table->string('api_key', 64)->unique();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->date('trial_start')->nullable();
+            $table->date('trial_end')->nullable();
+            $table->string('renewed_by')->default('stripe');
+            $table->string('conversion_source')->nullable();
+            $table->string('status')->default('trialing');
+            $table->timestamp('cancelled_at')->nullable();
+            $table->json('meta')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::connection('central')->create('tenant_usage_snapshots', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('tenant_id')->unique();
+            $table->unsignedInteger('total_brands')->default(0);
+            $table->unsignedInteger('total_sellers')->default(0);
+            $table->unsignedInteger('total_admins')->default(0);
+            $table->unsignedInteger('total_clients')->default(0);
+            $table->unsignedInteger('total_orders')->default(0);
+            $table->unsignedInteger('total_payment_links')->default(0);
+            $table->unsignedInteger('total_account_keys')->default(0);
+            $table->unsignedInteger('total_projects')->default(0);
+            $table->unsignedInteger('leads_this_month')->default(0);
+            $table->timestamp('month_reset_at')->nullable();
+            $table->unsignedInteger('storage_used_mb')->default(0);
+            $table->timestamp('last_synced_at')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::connection('central')->create('tenant_feature_overrides', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('tenant_id')->unique();
+            $table->boolean('feature_ppc_module')->nullable();
+            $table->boolean('feature_upwork_module')->nullable();
+            $table->boolean('feature_milestone_payments')->nullable();
+            $table->boolean('feature_stripe')->nullable();
+            $table->boolean('feature_paypal')->nullable();
+            $table->boolean('feature_webhooks')->nullable();
+            $table->boolean('feature_chargeback_tracking')->nullable();
+            $table->boolean('feature_dual_invoicing')->nullable();
+            $table->boolean('feature_client_portal')->nullable();
+            $table->boolean('feature_lead_prediction')->nullable();
+            $table->boolean('feature_seller_leaderboard')->nullable();
+            $table->boolean('feature_performance_bonus')->nullable();
+            $table->boolean('feature_projects')->nullable();
+            $table->boolean('feature_support_tickets')->nullable();
+            $table->boolean('feature_api_access')->nullable();
+            $table->boolean('feature_custom_domain')->nullable();
+            $table->boolean('feature_white_label')->nullable();
+            $table->text('override_reason')->nullable();
+            $table->unsignedBigInteger('overridden_by')->nullable();
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::connection('central')->create('tenant_limit_overrides', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('tenant_id')->unique();
+            $table->integer('max_brands')->nullable();
+            $table->integer('max_sellers')->nullable();
+            $table->integer('max_admins')->nullable();
+            $table->integer('max_clients')->nullable();
+            $table->integer('max_leads_per_month')->nullable();
+            $table->integer('max_orders')->nullable();
+            $table->integer('max_payment_links')->nullable();
+            $table->integer('max_account_keys')->nullable();
+            $table->integer('max_projects')->nullable();
+            $table->integer('max_storage_mb')->nullable();
+            $table->text('override_reason')->nullable();
+            $table->unsignedBigInteger('overridden_by')->nullable();
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::connection('central')->create('demo_accounts', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('company')->nullable();
+            $table->unsignedBigInteger('tenant_id')->nullable();
+            $table->string('status', 32)->default('active');
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip', 45)->nullable();
+            $table->timestamp('expires_at')->nullable();
+            $table->json('meta')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 }

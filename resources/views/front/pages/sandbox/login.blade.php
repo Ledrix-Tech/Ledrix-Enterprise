@@ -1,7 +1,7 @@
 @extends('front.layout.layout')
 
 @section('hide_navbar', true)
-@section('title', 'Sign In | Ledrix')
+@section('title', 'Sandbox sign in | Ledrix')
 
 @push('styles')
     @include('front.includes.auth-styles')
@@ -16,26 +16,27 @@
                         <a href="{{ route('index.get') }}" class="d-inline-block mb-4">
                             <img src="{{ asset(config('seo.front_logo', 'front-assets/imgs/logo-ic.png')) }}" alt="Ledrix CRM logo" style="max-width:140px;height:auto;">
                         </a>
-                        <span class="auth-brand-badge"><i class="bi bi-shield-check"></i> Secure workspace access</span>
-                        <h1>Sign in to Ledrix</h1>
-                        <p class="auth-aside-lead">Manage your subscription, billing, and CRM from one tenant dashboard.</p>
-                        <ul class="auth-feature-list">
-                            <li><i class="bi bi-check-circle-fill"></i> Trial & plan status at a glance</li>
-                            <li><i class="bi bi-check-circle-fill"></i> One-click CRM admin access</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Tenant-isolated data</li>
-                        </ul>
+                        <span class="auth-brand-badge"><i class="bi bi-play-circle"></i> Shared sandbox</span>
+                        <h1>Continue the CRM tour</h1>
+                        <p class="auth-aside-lead">This login only opens the shared demo workspace. It is not your trial or billing account.</p>
                     </div>
                 </div>
                 <div class="col-lg-7 auth-main">
                     <div class="auth-card">
                         <div class="auth-card-header mb-4">
-                            <h2>Welcome back</h2>
-                            <p>Use your work email and password to continue.</p>
+                            <h2>Sandbox sign in</h2>
+                            <p>Use the email you registered for the sandbox.</p>
                         </div>
-                        <form method="POST" action="{{ route('tenant.login.post') }}">
+                        @if (session('error'))
+                            <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
+                        @endif
+                        @if (session('success'))
+                            <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+                        @endif
+                        <form method="POST" action="{{ route('sandbox.login.post') }}">
                             @csrf
                             <div class="mb-3">
-                                <label class="auth-label" for="email">Work email</label>
+                                <label class="auth-label" for="email">Email</label>
                                 <div class="auth-input-group">
                                     <i class="bi bi-envelope auth-input-icon"></i>
                                     <input type="email" id="email" name="email" value="{{ old('email') }}"
@@ -57,11 +58,13 @@
                                 </div>
                                 @error('password')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                             </div>
-                            <button type="submit" class="btn btn-primary auth-btn-primary w-100">Sign in</button>
+                            <button type="submit" class="btn btn-primary auth-btn-primary w-100">Enter the sandbox</button>
                         </form>
-                        <p class="auth-footer-link">
-                            New to Ledrix? <a href="{{ route('pricing.get') }}">Start free trial</a>
-                            · <a href="{{ route('sandbox.register') }}">Tour the sandbox</a>
+                        <p class="auth-footer-link mb-2">
+                            New here? <a href="{{ route('sandbox.register') }}">Create a sandbox login</a>
+                        </p>
+                        <p class="auth-footer-link mb-0">
+                            Need a private workspace? <a href="{{ route('pricing.get') }}">Start a real trial</a>
                         </p>
                     </div>
                 </div>

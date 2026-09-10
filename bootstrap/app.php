@@ -44,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'impersonation.active' => \App\Http\Middleware\EnsureActiveImpersonation::class,
             '2fa.forced' => \App\Http\Middleware\EnsureForcedTwoFactor::class,
             'scim.auth' => \App\Http\Middleware\AuthenticateScimBearer::class,
+            'sandbox.restrict' => \App\Http\Middleware\RestrictDemoSandboxAccess::class,
         ]);
 
         // Global middleware
@@ -74,12 +75,14 @@ return Application::configure(basePath: dirname(__DIR__))
             // (batch lives on ledrix_tenant_X, binding would query ledrix_primary).
             \App\Http\Middleware\SetTenantContext::class,
             \App\Http\Middleware\SwitchTenantDatabaseConnection::class,
+            \App\Http\Middleware\SwitchDemoSandboxDatabase::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCSRFToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CheckSectionMaintenance::class,
             \App\Http\Middleware\EnforceCustomDomainPanelAccess::class,
             \App\Http\Middleware\CaptureMarketingAttribution::class,
+            \App\Http\Middleware\RestrictDemoSandboxAccess::class,
         ]);
 
         // API group (no session, CSRF)

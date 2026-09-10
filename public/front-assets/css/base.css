@@ -46,6 +46,87 @@ body {
     color: black !important;
 }
 
+.navbar-collapse {
+    align-items: center;
+}
+
+.nav-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.65rem;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.nav-cta-signin {
+    color: var(--ledrix-primary, #4338ca);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 0.45rem 0.55rem;
+    line-height: 1.2;
+}
+
+.nav-cta-signin:hover {
+    color: var(--ledrix-primary-dark, #312e81);
+    text-decoration: underline;
+}
+
+.nav-cta .btn.nav-cta-demo,
+.nav-cta .btn.nav-cta-start {
+    border-radius: 8px;
+    font-size: 0.9rem;
+    padding: 0.42rem 1rem;
+    line-height: 1.2;
+    box-shadow: none;
+}
+
+.nav-cta .btn.nav-cta-demo {
+    background: #fff;
+    color: var(--ledrix-primary, #4338ca);
+    border: 2px solid var(--ledrix-primary, #4338ca);
+    font-weight: 600;
+}
+
+.nav-cta .btn.nav-cta-demo:hover,
+.nav-cta .btn.nav-cta-demo:focus {
+    background: rgba(var(--ledrix-primary-rgb, 67, 56, 202), 0.08);
+    color: var(--ledrix-primary-dark, #312e81);
+    border-color: var(--ledrix-primary-dark, #312e81);
+}
+
+.nav-cta .btn.nav-cta-start {
+    background: var(--ledrix-primary, #4338ca);
+    color: var(--ledrix-on-primary, #ffffff);
+    border: 2px solid var(--ledrix-primary, #4338ca);
+    font-weight: 700;
+}
+
+.nav-cta .btn.nav-cta-start:hover,
+.nav-cta .btn.nav-cta-start:focus {
+    background: var(--ledrix-primary-dark, #312e81);
+    border-color: var(--ledrix-primary-dark, #312e81);
+    color: var(--ledrix-on-primary, #ffffff);
+}
+
+@media (min-width: 992px) {
+    .navbar-collapse {
+        display: flex !important;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
+
+    .nav-cta {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+        flex-wrap: nowrap;
+    }
+}
+
 .hero {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
         url('https://www.phpuncle.com/wp-content/uploads/crm-software.jpg') no-repeat center center;

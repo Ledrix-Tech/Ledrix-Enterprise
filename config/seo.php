@@ -83,6 +83,7 @@ return [
         ['path' => '/', 'priority' => '1.0', 'changefreq' => 'weekly'],
         ['path' => '/features', 'priority' => '0.9', 'changefreq' => 'monthly'],
         ['path' => '/pricing', 'priority' => '0.9', 'changefreq' => 'weekly'],
+        ['path' => '/sandbox', 'priority' => '0.7', 'changefreq' => 'weekly'],
         ['path' => '/about', 'priority' => '0.85', 'changefreq' => 'monthly'],
         ['path' => '/faq', 'priority' => '0.85', 'changefreq' => 'monthly'],
         ['path' => '/contact-us', 'priority' => '0.8', 'changefreq' => 'monthly'],

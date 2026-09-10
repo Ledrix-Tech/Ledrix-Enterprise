@@ -11,8 +11,8 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
-            <ul class="navbar-nav">
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav me-lg-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ route('features.get') }}">Features</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('pricing.get') }}">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('about.get') }}">About</a></li>
@@ -21,15 +21,15 @@
                     <a href="{{ route('contact-us.get') }}" class="nav-link">Contact</a>
                 </li>
             </ul>
-            @if (auth()->guard('tenant')->check())
-            <a href="{{ route('tenant.dashboard') }}" class="btn btn-outline-primary btn-sm ms-3">
-                <i class="fa fa-user"></i> Profile
-            </a>
-            @else
-            <a href="{{ route('tenant.login') }}" class="btn btn-outline-primary btn-sm ms-3">
-                <i class="fa fa-sign-in"></i> Sign in
-            </a>
-            @endif
+            <div class="nav-cta">
+                @if (auth()->guard('tenant')->check())
+                    <a href="{{ route('tenant.dashboard') }}" class="nav-cta-signin">Profile</a>
+                @else
+                    <a href="{{ route('tenant.login') }}" class="nav-cta-signin">Sign in</a>
+                @endif
+                <a href="{{ route('sandbox.register') }}" class="btn nav-cta-demo">Demo</a>
+                <a href="{{ route('pricing.get') }}" class="btn nav-cta-start">Get started free</a>
+            </div>
         </div>
     </div>
 </nav>

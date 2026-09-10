@@ -95,6 +95,24 @@ return [
             ]) : [],
         ],
 
+        'demos_db' => [
+            'driver' => 'mysql',
+            'host' => env('DB_DEMOS_HOST', env('DB_PRIMARY_HOST', '127.0.0.1')),
+            'port' => env('DB_DEMOS_PORT', env('DB_PRIMARY_PORT', '3306')),
+            'database' => env('DB_DEMOS_DATABASE', 'ledrix_demos'),
+            'username' => env('DB_DEMOS_USERNAME', env('DB_PRIMARY_USERNAME', 'root')),
+            'password' => env('DB_DEMOS_PASSWORD', env('DB_PRIMARY_PASSWORD', '')),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         // Dedicated CRM DB per tenant (F-28). Middleware retargets `database` only.
         // Sessions / jobs / cache must keep using `primary`.
         'tenant' => [

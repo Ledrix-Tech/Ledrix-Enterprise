@@ -18,6 +18,7 @@
 </head>
 
 <body class="crm-body">
+    @include('sandbox.banner')
     <div class="crm-shell">
         @include('sellers.includes.top-bar')
         <div id="crmSidebarOverlay" class="crm-sidebar-overlay"></div>
