@@ -89,6 +89,12 @@ class RestrictDemoSandboxAccess
             return ! in_array($routeName, $allowed, true);
         }
 
+        if (str_starts_with($routeName, 'admin.2fa.')
+            || str_starts_with($routeName, 'seller.2fa.')
+            || str_starts_with($routeName, 'client.2fa.')) {
+            return true;
+        }
+
         $blocked = [
             'admin.account-keys.post',
             'admin.account-keys-update',

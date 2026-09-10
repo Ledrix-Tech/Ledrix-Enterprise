@@ -117,6 +117,24 @@ class SandboxDemoAccountTest extends TestCase
             ->assertRedirect(route('admin.index.get'));
     }
 
+    public function test_sandbox_session_skips_forced_admin_2fa(): void
+    {
+        config(['security.force_tenant_admin_2fa' => true]);
+
+        $this->post(route('sandbox.register.store'), [
+            'name'                  => 'Riley Demo',
+            'email'                 => 'riley.sandbox@example.com',
+            'password'              => 'password12',
+            'password_confirmation' => 'password12',
+        ])->assertRedirect(route('admin.index.get'));
+
+        $dashboard = $this->get(route('admin.index.get'));
+        $this->assertNotSame(route('admin.2fa.setup'), $dashboard->headers->get('Location'));
+
+        $this->get(route('admin.2fa.setup'))
+            ->assertRedirect(route('admin.index.get'));
+    }
+
     public function test_sandbox_seeds_tour_brands_and_does_not_mark_trial_used(): void
     {
         $this->post(route('sandbox.register.store'), [

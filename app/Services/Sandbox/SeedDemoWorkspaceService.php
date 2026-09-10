@@ -142,7 +142,9 @@ class SeedDemoWorkspaceService
             ->first();
 
         if ($admin) {
-            return $admin;
+            $this->clearTwoFactor($admin);
+
+            return $admin->fresh();
         }
 
         return Admin::withoutGlobalScopes()->create([
@@ -165,6 +167,8 @@ class SeedDemoWorkspaceService
             if ((int) $seller->brand_id !== (int) $brand->id) {
                 $seller->update(['brand_id' => $brand->id]);
             }
+
+            $this->clearTwoFactor($seller);
 
             return $seller->fresh();
         }
@@ -197,6 +201,7 @@ class SeedDemoWorkspaceService
                 'status' => 'Active',
                 'meta'   => $meta,
             ]);
+            $this->clearTwoFactor($client);
 
             return $client->fresh();
         }
@@ -210,6 +215,18 @@ class SeedDemoWorkspaceService
             'status'    => 'Active',
             'meta'      => ['portal_access' => true],
         ]);
+    }
+
+    private function clearTwoFactor(Admin|Seller|Client $user): void
+    {
+        if (! $user->two_factor_secret && ! $user->two_factor_recovery_codes) {
+            return;
+        }
+
+        $user->forceFill([
+            'two_factor_secret'         => null,
+            'two_factor_recovery_codes' => null,
+        ])->save();
     }
 
     private function seedLeadsAndPayments(

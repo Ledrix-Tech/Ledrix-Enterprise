@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\SandboxWorkspace;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +58,11 @@ class EnsureForcedTwoFactor
 
         // Do not force during SA impersonation — operator may not have tenant 2FA.
         if (session()->has('impersonator_super_admin_id')) {
+            return $next($request);
+        }
+
+        // Shared sandbox tour only. Trial and paying tenant admins still follow force_tenant_admin_2fa.
+        if (session()->has('demo_account_id') || SandboxWorkspace::currentIsSandbox()) {
             return $next($request);
         }
 
