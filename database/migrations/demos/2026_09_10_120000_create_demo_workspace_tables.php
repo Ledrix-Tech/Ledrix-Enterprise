@@ -14,7 +14,16 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::connection('demos_db')->create('brands', function (Blueprint $t) {
+        $schema = Schema::connection('demos_db');
+        $create = function (string $table, \Closure $callback) use ($schema): void {
+            if ($schema->hasTable($table)) {
+                return;
+            }
+
+            $schema->create($table, $callback);
+        };
+
+        $create('brands', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->enum('module', ['upwork', 'ppc'])->default('ppc');
@@ -31,7 +40,7 @@ return new class extends Migration
             $t->timestamps();
         });
 
-        Schema::connection('demos_db')->create('admins', function (Blueprint $t) {
+        $create('admins', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->string('name');
@@ -47,7 +56,7 @@ return new class extends Migration
             $t->unique(['tenant_id', 'email']);
         });
 
-        Schema::connection('demos_db')->create('clients', function (Blueprint $t) {
+        $create('clients', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->string('name');
@@ -64,7 +73,7 @@ return new class extends Migration
             $t->unique(['tenant_id', 'email']);
         });
 
-        Schema::connection('demos_db')->create('sellers', function (Blueprint $t) {
+        $create('sellers', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('brand_id')->constrained('brands')->cascadeOnDelete();
@@ -82,7 +91,7 @@ return new class extends Migration
             $t->unique(['tenant_id', 'email']);
         });
 
-        Schema::connection('demos_db')->create('leads', function (Blueprint $t) {
+        $create('leads', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('seller_id')->constrained('sellers')->cascadeOnDelete();
@@ -110,7 +119,7 @@ return new class extends Migration
             $t->index(['brand_id', 'seller_id', 'status', 'created_at']);
         });
 
-        Schema::connection('demos_db')->create('lead_assignments', function (Blueprint $t) {
+        $create('lead_assignments', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('lead_id')->constrained('leads')->cascadeOnDelete();
@@ -126,7 +135,7 @@ return new class extends Migration
             $t->softDeletes();
         });
 
-        Schema::connection('demos_db')->create('orders', function (Blueprint $t) {
+        $create('orders', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('lead_id')->constrained('leads')->cascadeOnDelete();
@@ -164,7 +173,7 @@ return new class extends Migration
             $t->softDeletes();
         });
 
-        Schema::connection('demos_db')->create('payment_links', function (Blueprint $t) {
+        $create('payment_links', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('lead_id')->constrained('leads')->cascadeOnDelete();
@@ -197,7 +206,7 @@ return new class extends Migration
             $t->softDeletes();
         });
 
-        Schema::connection('demos_db')->create('payments', function (Blueprint $t) {
+        $create('payments', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
@@ -227,7 +236,7 @@ return new class extends Migration
             $t->unique(['provider', 'provider_payment_intent_id']);
         });
 
-        Schema::connection('demos_db')->create('account_keys', function (Blueprint $t) {
+        $create('account_keys', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->enum('module', ['upwork', 'ppc'])->default('ppc');
@@ -244,10 +253,16 @@ return new class extends Migration
             $t->timestamps();
         });
 
-        Schema::connection('demos_db')->create('profile_details', function (Blueprint $t) {
+        if ($schema->hasTable('profile_details')) {
+            $schema->drop('profile_details');
+        }
+
+        $create('profile_details', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->nullable()->index();
-            $t->morphs('user');
+            $t->unsignedBigInteger('user_id');
+            $t->string('user_type', 64);
+            $t->index(['user_id', 'user_type']);
             $t->string('profile')->nullable();
             $t->string('name')->nullable();
             $t->string('email')->nullable();
@@ -259,7 +274,7 @@ return new class extends Migration
             $t->softDeletes();
         });
 
-        Schema::connection('demos_db')->create('client_tickets', function (Blueprint $t) {
+        $create('client_tickets', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
@@ -281,7 +296,7 @@ return new class extends Migration
             $t->softDeletes();
         });
 
-        Schema::connection('demos_db')->create('projects', function (Blueprint $t) {
+        $create('projects', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->string('title');
@@ -298,7 +313,7 @@ return new class extends Migration
             $t->timestamps();
         });
 
-        Schema::connection('demos_db')->create('project_tasks', function (Blueprint $t) {
+        $create('project_tasks', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->nullable()->index();
             $t->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
@@ -312,7 +327,7 @@ return new class extends Migration
             $t->timestamps();
         });
 
-        Schema::connection('demos_db')->create('order_messages', function (Blueprint $t) {
+        $create('order_messages', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->index();
             $t->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
@@ -325,7 +340,7 @@ return new class extends Migration
             $t->timestamps();
         });
 
-        Schema::connection('demos_db')->create('questionnairs', function (Blueprint $t) {
+        $create('questionnairs', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->nullable()->index();
             $t->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
@@ -338,7 +353,7 @@ return new class extends Migration
             $t->timestamps();
         });
 
-        Schema::connection('demos_db')->create('performance_bonuses', function (Blueprint $t) {
+        $create('performance_bonuses', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->nullable()->index();
             $t->foreignId('seller_id')->constrained('sellers')->cascadeOnDelete();
@@ -352,7 +367,7 @@ return new class extends Migration
             $t->timestamps();
         });
 
-        Schema::connection('demos_db')->create('risky_clients', function (Blueprint $t) {
+        $create('risky_clients', function (Blueprint $t) {
             $t->id();
             $t->unsignedBigInteger('tenant_id')->nullable()->index();
             $t->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
