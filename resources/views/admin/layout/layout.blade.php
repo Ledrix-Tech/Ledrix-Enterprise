@@ -28,6 +28,7 @@
             @yield('admin-content')
         </main>
     </div>
+    @include('getting-started.modal')
 
     <script>
         window.LedrixFlash = {!! json_encode([

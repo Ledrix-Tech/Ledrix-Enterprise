@@ -4,7 +4,10 @@
             <h4 class="mb-1">Organization settings</h4>
             <p class="text-muted mb-0 small">Update company profile and billing contact details</p>
         </div>
-        <a href="{{ org_route('overview') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+        <div class="d-flex gap-2">
+            <a href="{{ org_route('getting-started') }}" class="btn btn-outline-secondary btn-sm">Getting started</a>
+            <a href="{{ org_route('overview') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+        </div>
     </div>
 
     @if (session('success'))

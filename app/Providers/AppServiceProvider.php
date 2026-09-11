@@ -6,6 +6,7 @@ use App\Services\PayPalGateway;
 use App\Services\PaymentGatewayFactory;
 use App\Services\StripeGateway;
 use App\View\Composers\DemoSandboxBannerComposer;
+use App\View\Composers\GettingStartedComposer;
 use App\View\Composers\MarketingTrialComposer;
 use Illuminate\Mail\MailManager;
 use Illuminate\Pagination\Paginator;
@@ -92,6 +93,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('sandbox.banner', DemoSandboxBannerComposer::class);
+        View::composer(['admin.layout.layout', 'front.layout.layout'], GettingStartedComposer::class);
 
         View::composer([
             'front.pages.index',

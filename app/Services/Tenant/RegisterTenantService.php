@@ -3,6 +3,7 @@
 namespace App\Services\Tenant;
 
 use App\Mail\TenantVerifyEmail;
+use App\Support\GettingStartedGuide;
 use App\Models\Central\AuditLog;
 use App\Models\Central\PackagePricing;
 use App\Services\Tenant\TenantDatabaseProvisioner;
@@ -156,6 +157,7 @@ class RegisterTenantService
             }
 
             $this->sendVerificationEmail($tenant, $verification);
+            GettingStartedGuide::sendEmail($tenant);
 
             return [
                 'tenant'       => $tenant->fresh(['plan', 'activeMembership']),

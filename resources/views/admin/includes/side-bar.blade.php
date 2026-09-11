@@ -181,6 +181,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="crm-nav-link {{ str_starts_with($route, 'admin.org.getting-started') ? 'active' : '' }}"
+                            href="{{ route('admin.org.getting-started') }}">
+                            <i class="bi bi-list-check"></i><span>Getting started</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="crm-nav-link {{ str_starts_with($route, 'admin.org.support') ? 'active' : '' }}"
                             href="{{ route('admin.org.support.index') }}">
                             <i class="bi bi-headset"></i><span>Support</span>

@@ -116,6 +116,8 @@ trait ResolvesOrganizationTenant
             'support.store' => $admin ? 'admin.org.support.store' : 'tenant.support.store',
             'support.show' => $admin ? 'admin.org.support.show' : 'tenant.support.show',
             'support.reply' => $admin ? 'admin.org.support.reply' : 'tenant.support.reply',
+            'getting-started' => $admin ? 'admin.org.getting-started' : 'tenant.getting-started',
+            'getting-started.dismiss' => $admin ? 'admin.org.getting-started.dismiss' : 'tenant.getting-started.dismiss',
             'referrals' => $admin ? 'admin.org.referrals' : 'tenant.referrals',
             'referrals.issue' => $admin ? 'admin.org.referrals.issue' : 'tenant.referrals.issue',
             default => throw new \InvalidArgumentException("Unknown organization route [{$name}]"),

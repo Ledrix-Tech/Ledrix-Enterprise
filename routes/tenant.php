@@ -56,6 +56,11 @@ Route::middleware('tenant')->group(function () {
         ->name('tenant.announcements.dismiss')
         ->whereNumber('id');
 
+    Route::get('/tenant-profile/getting-started', [\App\Http\Controllers\Tenant\GettingStartedController::class, 'show'])
+        ->name('tenant.getting-started');
+    Route::post('/tenant-profile/getting-started/dismiss', [\App\Http\Controllers\Tenant\GettingStartedController::class, 'dismiss'])
+        ->name('tenant.getting-started.dismiss');
+
     Route::get('/tenant-profile/support', [PlatformSupportController::class, 'index'])
         ->name('tenant.support.index');
     Route::get('/tenant-profile/support/new', [PlatformSupportController::class, 'create'])

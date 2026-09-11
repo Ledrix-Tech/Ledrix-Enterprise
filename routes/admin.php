@@ -215,6 +215,9 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/billing/bank-transfer/{payment}', [BankTransferBillingController::class, 'show'])->name('billing.bank-transfer.show');
             Route::post('/billing/bank-transfer/{payment}/report', [BankTransferBillingController::class, 'report'])->name('billing.bank-transfer.report');
 
+            Route::get('/getting-started', [\App\Http\Controllers\Tenant\GettingStartedController::class, 'show'])->name('getting-started');
+            Route::post('/getting-started/dismiss', [\App\Http\Controllers\Tenant\GettingStartedController::class, 'dismiss'])->name('getting-started.dismiss');
+
             Route::get('/support', [PlatformSupportController::class, 'index'])->name('support.index');
             Route::get('/support/new', [PlatformSupportController::class, 'create'])->name('support.create');
             Route::post('/support', [PlatformSupportController::class, 'store'])->name('support.store');

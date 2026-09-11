@@ -20,6 +20,7 @@
                 <div class="d-flex gap-2">
                     <a href="{{ route('tenant.data-export') }}" class="btn btn-outline-secondary btn-sm">Data export</a>
                     <a href="{{ route('tenant.referrals') }}" class="btn btn-outline-secondary btn-sm">Referrals</a>
+                    <a href="{{ route('tenant.getting-started') }}" class="btn btn-outline-secondary btn-sm">Getting started</a>
                     <a href="{{ route('tenant.support.index') }}" class="btn btn-outline-secondary btn-sm">Support</a>
                     <a href="{{ route('tenant.billing') }}" class="btn btn-outline-primary btn-sm">Billing</a>
                     <form method="POST" action="{{ route('tenant.logout') }}">

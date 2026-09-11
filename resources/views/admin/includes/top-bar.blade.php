@@ -36,6 +36,11 @@
                 </li>
                 @if (($user->role ?? null) === 'admin')
                 <li>
+                    <a class="dropdown-item" href="{{ route('admin.org.getting-started') }}">
+                        <i class="bi bi-list-check me-2"></i> Getting started
+                    </a>
+                </li>
+                <li>
                     <a class="dropdown-item" href="{{ route('admin.org.overview') }}">
                         <i class="bi bi-building me-2"></i> Organization
                     </a>
